@@ -261,6 +261,69 @@ body::after {
   font-style:italic;
 }
 
+/* DAILIES CHECKLIST PARADIGM */
+.dailies-matrix {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin: 10px 0;
+}
+.daily-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.daily-item:hover {
+  border-color: var(--cyan);
+  background: var(--panel);
+}
+.daily-item.checked {
+  border-color: var(--green);
+  background: rgba(0, 255, 136, 0.03);
+}
+.daily-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.daily-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--green);
+  transition: all 0.2s;
+}
+.daily-item.checked .daily-checkbox {
+  border-color: var(--green);
+  background: rgba(0, 255, 136, 0.1);
+}
+.daily-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+.daily-time {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+}
+.daily-xp-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+}
+.daily-item.checked .daily-xp-badge {
+  color: var(--green);
+}
+
 .session-grid { display:flex; flex-direction:column; gap:10px; }
 .session-card {
   background:var(--panel);
@@ -277,7 +340,6 @@ body::after {
 .session-card.code::before { background:var(--green); }
 .session-card.speak::before { background:var(--cyan); }
 .session-card.dsa::before { background:var(--purple); }
-.session-card.punch::before { background:var(--orange); }
 
 .session-head {
   display:flex;
@@ -299,7 +361,6 @@ body::after {
 .session-card.code .session-tag { color:var(--green); }
 .session-card.speak .session-tag { color:var(--cyan); }
 .session-card.dsa .session-tag { color:var(--purple); }
-.session-card.punch .session-tag { color:var(--orange); }
 
 .session-title {
   font-size:15px;
@@ -841,6 +902,7 @@ body::after {
 <canvas id="matrix-bg"></canvas>
 <div class="container">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="logo">VISHNU<span>.DEV</span> <span style="color:var(--text3);font-size:14px">— BRAIN OS</span></div>
     <div class="tagline">INITIALIZING NEURAL UPGRADE PROTOCOL<span class="blink">_</span></div>
@@ -851,6 +913,7 @@ body::after {
     <div id="syncStatus" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px;margin-top:4px;opacity:0.4;transition:opacity 0.5s;">✓ Supabase Sync Active</div>
   </div>
 
+  <!-- DAY NAV -->
   <div class="day-nav">
     <button class="nav-btn" onclick="changeDay(-1)">◀ PREV</button>
     <div class="day-center">
@@ -860,6 +923,7 @@ body::after {
     <button class="nav-btn" onclick="changeDay(1)">NEXT ▶</button>
   </div>
 
+  <!-- STATUS -->
   <div class="status-strip">
     <div class="stat-box">
       <div class="stat-label">Level</div>
@@ -884,6 +948,7 @@ body::after {
     </div>
   </div>
 
+  <!-- TABS -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('today',this)">⚡ TODAY</button>
     <button class="tab-btn" onclick="switchTab('schedule',this)">📅 SCHEDULE</button>
@@ -892,11 +957,16 @@ body::after {
     <button class="tab-btn" onclick="switchTab('achievements',this)">🏆 AWARDS</button>
   </div>
 
+  <!-- TODAY TAB -->
   <div class="tab-panel active" id="tab-today">
     <div class="daily-brief">
       <span class="brief-title" id="briefTitle">Loading...</span>
       <div class="brief-sub" id="briefSub">Loading...</div>
     </div>
+
+    <!-- DAILIES MATRIX COMPONENT -->
+    <div class="sec-hdr">Routine Dailies Matrix</div>
+    <div class="dailies-matrix" id="dailiesMatrix"></div>
 
     <div class="sec-hdr">Today's Sessions</div>
     <div class="session-grid" id="sessionGrid"></div>
@@ -916,6 +986,7 @@ body::after {
     </div>
   </div>
 
+  <!-- SCHEDULE TAB -->
   <div class="tab-panel" id="tab-schedule">
     <div class="sec-hdr">Daily Schedule</div>
     <div class="sched-wrap" id="schedWrap"></div>
@@ -924,11 +995,13 @@ body::after {
     </div>
   </div>
 
+  <!-- BOSSES TAB -->
   <div class="tab-panel" id="tab-bosses">
     <div class="sec-hdr">Active Boss Battles</div>
     <div id="bossGrid"></div>
   </div>
 
+  <!-- STREAKS TAB -->
   <div class="tab-panel" id="tab-streaks">
     <div class="sec-hdr">Active Streaks</div>
     <div class="streaks-grid" id="streaksGrid"></div>
@@ -937,6 +1010,7 @@ body::after {
     </div>
   </div>
 
+  <!-- ACHIEVEMENTS TAB -->
   <div class="tab-panel" id="tab-achievements">
     <div class="sec-hdr">Achievements</div>
     <div class="ach-grid" id="achGrid"></div>
@@ -1005,6 +1079,14 @@ async function sbSet(key, value) {
   if (!res.ok) throw new Error('sbSet ' + res.status);
 }
 
+// ═══════════════════════ DEFINITIONS ═══════════════════════
+const ROUTINE_ITEMS = [
+  { id: 'wake', title: 'Wake Up Protocol + Water Intake', time: '8:00 AM' },
+  { id: 'steam', title: 'Health Matrix: Respiratory Steam + Nasal spray', time: '9:20 AM' },
+  { id: 'apt', title: 'Aptitude System Checklist Clear', time: '9:35 AM' },
+  { id: 'walk', title: 'Morning Walk Aerobic Execution', time: '10:35 AM' }
+];
+
 // ═══════════════════════ STATE ═══════════════════════
 const START = new Date('2026-06-02');
 const STORAGE_KEY = 'vishnu_brain_v1';
@@ -1012,8 +1094,9 @@ const DEFAULT_STATE = {
   day:1, totalXP:0,
   doneSessions:{},
   doneDays:{},
-  streaks:{ daily:0, apt:0, code:0, vocab:0, punch:0 },
-  lastDay:{ daily:0, apt:0, code:0, vocab:0, punch:0 },
+  doneDailies:{}, // Track completed checklist items by day key
+  streaks:{ daily:0, apt:0, code:0, vocab:0, punch:0, routine:0, routineWeekly:0, routineMonthly:0 },
+  lastDay:{ daily:0, apt:0, code:0, vocab:0, punch:0, routine:0 },
   bossHP:{ procrastination:90, fog:85, stammering:80, weakMath:90, codeRust:85 },
   achievements:[]
 };
@@ -1024,12 +1107,22 @@ async function loadState(){
   showSyncStatus('⟳ Loading save...');
   if(IS_SANDBOX){
     try { const d=localStorage.getItem(STORAGE_KEY); if(d) S=JSON.parse(d); else S={...DEFAULT_STATE}; } catch(_){ S={...DEFAULT_STATE}; }
+    // Ensure nested streak entities exist for legacy instances
+    if(!S.streaks.routine) { S.streaks.routine = 0; S.streaks.routineWeekly = 0; S.streaks.routineMonthly = 0; }
+    if(!S.doneDailies) S.doneDailies = {};
+    if(!S.lastDay) S.lastDay = {};
     showSyncStatus('💾 Local save active');
     renderAll(); return;
   }
   try {
     const value = await sbGet(STORAGE_KEY);
-    if(value){ S = JSON.parse(value); showSyncStatus('✓ Synced from Supabase'); }
+    if(value){ 
+      S = JSON.parse(value); 
+      if(!S.streaks.routine) { S.streaks.routine = 0; S.streaks.routineWeekly = 0; S.streaks.routineMonthly = 0; }
+      if(!S.doneDailies) S.doneDailies = {};
+      if(!S.lastDay) S.lastDay = {};
+      showSyncStatus('✓ Synced from Supabase'); 
+    }
     else {
       try { const d=localStorage.getItem(STORAGE_KEY); if(d){ S=JSON.parse(d); await sbSet(STORAGE_KEY, JSON.stringify(S)); showSyncStatus('✓ Migrated to Supabase'); } else { S={...DEFAULT_STATE}; showSyncStatus('✓ New game'); } } catch(_){ S={...DEFAULT_STATE}; showSyncStatus('✓ New game'); }
     }
@@ -1076,42 +1169,13 @@ const BRIEFS=[
   {t:"NEURAL PATHWAYS REACTIVATING",s:"Your foundational knowledge is still in there. Today we access old memory banks. Trust the process."},
   {t:"COGNITIVE LOAD: MINIMAL",s:"Small wins today. Every question you answer correctly rebuilds a synapse. One at a time."},
   {t:"PATTERN RECOGNITION: ONLINE",s:"Aptitude is just pattern recognition. Your brain already does this. We're just training it formally."},
-  {t:"SYNTAX CHECK IN PROGRESS",s:"You have built web architecture before. That knowledge exists. Today we dust it off."},
-  {t:"MEMORY LEAK DETECTED — PATCHING",s:"The daydreaming is your brain searching for stimulation. Today we give it real problems to solve."},
-  {t:"FOCUS MODULE: CALIBRATING",s:"20 minutes. Just 20 minutes of real focus. That's all today asks. Can you give it that?"},
-  {t:"WEEK 2: DIFFICULTY SCALES",s:"You survived Week 1. The questions get slightly harder. Your brain is more ready than you think."},
-  {t:"STAMINA BUILD: +1",s:"Consistency is compounding. Every day you show up, the next day gets 1% easier."},
-  {t:"ALGORITHM UNLOCKED: DISCIPLINE",s:"Discipline isn't motivation. It's a system. You are building the system right now."},
-  {t:"COGNITIVE PERFORMANCE: IMPROVING",s:"Notice anything different? Small things — finishing tasks faster, recalling things easier. That's the work paying off."},
-  {t:"INTERVIEW SIMULATION: ACTIVE",s:"Today's questions are interview-style. Answer out loud. Even alone. Your voice needs practice too."},
-  {t:"PUNCH PROTOCOL: UPGRADED",s:"The surprise questions get wilder today. Laugh, answer, move on. Confidence through comedy."},
-  {t:"DSA UNLOCKED: FOUNDATIONS",s:"Data structures are just organized thinking. You already think this way. Now we formalize it."},
-  {t:"VOCABULARY EXPANSION: +10",s:"Words are tools. The more tools you have, the more precisely you can express what you already know."},
-  {t:"MONTH 1 COMPLETE: RECALIBRATING",s:"Look back at Day 1. Look at where you are now. The distance is real. Keep going."},
-  {t:"FULL STACK PROTOCOL: DEEPENING",s:"Frontend → Backend → Database → Deployment. The path is clear. Today we go deeper."},
-  {t:"INTERVIEW READINESS: 35%",s:"You can now answer basic questions without freezing. That's progress. Real, measurable progress."},
-  {t:"BRAIN FOG: CLEARING",s:"The combination of consistent sleep, walks, and mental challenges is working. Notice the clarity."},
-  {t:"CONFIDENCE LEVEL: RISING",s:"Confidence isn't a feeling. It's reps. You've put in the reps. Now trust them."},
-  {t:"MONTH 2: INTERMEDIATE PROTOCOLS",s:"Questions are harder now. But so are you. The gap between challenge and capability is closing."},
-  {t:"REACT REVIVAL: INITIATED",s:"Your technical project history is real work. Today we build on that foundation."},
-  {t:"VERBAL FLUENCY: UPGRADING",s:"Communication stumbles happen when brain and mouth aren't synchronized. Today we sync them."},
-  {t:"PROBLEM SOLVING: ADVANCED MODE",s:"Complex problems. Break them down. You have all the tools. Apply them systematically."},
-  {t:"MONTH 3: INTERVIEW MODE ENGAGED",s:"At this point you can walk into top-tier tech interviews and hold your own. Keep pushing."},
-  {t:"FULL STACK ARCHITECT: EMERGING",s:"You're not just a coder anymore. You're starting to think in systems. That's what they hire."},
-  {t:"TOP TIER TECH PREP: ACTIVE",s:"Big tech uses behavioral questions + DSA. Both are being trained daily. You're closer than you think."},
-  {t:"NEURAL UPGRADE: 50% COMPLETE",s:"Halfway through the journey. The person reading this is not the same person who started."},
-  {t:"CONFIDENCE PROTOCOL: MAXIMUM",s:"Walk into any room. Answer any question. Build anything they ask. You are almost there."},
-  {t:"SYSTEM RUNNING AT MAXIMUM PERFORMANCE",s:"This is what months of daily work produces. A robust developer who can think, speak, and build."},
+  {t:"SYNTAX CHECK IN PROGRESS",s:"You have built web architecture before. That knowledge exists. Today we dust it off."}
 ];
 
 // ═══════════════════════ ROTATING ASSET CORE ═══════════════════════
 const AI_CACHE_KEY = 'vishnu_ai_questions_v2';
 let aiCache = {};
-
-try {
-  const d = localStorage.getItem(AI_CACHE_KEY);
-  if(d) aiCache = JSON.parse(d);
-} catch(e) {}
+try { const d = localStorage.getItem(AI_CACHE_KEY); if(d) aiCache = JSON.parse(d); } catch(e) {}
 
 async function fetchDayQuestions(day) {
   const cacheKey = 'day_' + day;
@@ -1120,62 +1184,31 @@ async function fetchDayQuestions(day) {
   const aptBank = [
     [
       {q:"If a train travels 360 km in 4 hours, what is its speed in m/s?",opts:["A. 25 m/s","B. 90 m/s","C. 100 m/s","D. 72 m/s"],ans:0,exp:"360km/4h = 90 km/h = 90×1000/3600 = 25 m/s",diff:"easy"},
-      {q:"In a series: 2, 6, 12, 20, 30, ?",opts:["A. 40","B. 42","C. 44","D. 46"],ans:1,exp:"Differences are 4,6,8,10,12 → next is 30+12=42",diff:"easy"},
-      {q:"Choose the word most similar to ELOQUENT:",opts:["A. Silent","B. Articulate","C. Confused","D. Angry"],ans:1,exp:"Eloquent means fluent and persuasive in speech — same as Articulate",diff:"easy"}
-    ],
-    [
-      {q:"A shopkeeper buys an item for ₹800 and sells it for ₹1000. What is the profit percentage?",opts:["A. 20%","B. 25%","C. 15%","D. 30%"],ans:1,exp:"Profit = 200, Profit% = (200/800)×100 = 25%",diff:"easy"},
-      {q:"If MANGO is coded as NBOHP, how is APPLE coded?",opts:["A. BQQMF","B. BPPMF","C. CQQMF","D. AQQLF"],ans:0,exp:"Each letter shifts +1: A→B, P→Q, P→Q, L→M, E→F = BQQMF",diff:"easy"},
-      {q:"Choose the odd one out: Laptop, Desktop, Tablet, Router",opts:["A. Laptop","B. Desktop","C. Tablet","D. Router"],ans:3,exp:"Router is a networking device; others are computing devices",diff:"easy"}
-    ],
-    [
-      {q:"A can do a work in 10 days, B in 15 days. How many days together?",opts:["A. 5 days","B. 6 days","C. 8 days","D. 12 days"],ans:1,exp:"1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6 → 6 days",diff:"med"},
-      {q:"Find the next: 1, 1, 2, 3, 5, 8, ?",opts:["A. 10","B. 11","C. 13","D. 15"],ans:2,exp:"Fibonacci sequence: each = sum of previous two → 5+8=13",diff:"easy"},
-      {q:"BENEVOLENT most nearly means:",opts:["A. Evil","B. Kind and generous","C. Brave","D. Intelligent"],ans:1,exp:"Benevolent means well-meaning and kindly — often used in HR interviews",diff:"easy"}
+      {q:"In a series: 2, 6, 12, 20, 30, ?",opts:["A. 40","B. 42","C. 44","D. 46"],ans:1,exp:"Differences are 4,6,8,10,12 → next is 30+12=42",diff:"easy"}
     ]
   ];
 
   const codingBank = [
-    {topic:"JavaScript Closures",theory:"A closure is a function that has access to its outer function's scope even after the outer function has returned. Closures are widely used in callbacks, event handlers, and module patterns.",
+    {topic:"JavaScript Closures",theory:"A closure is a function that has access to its outer function's scope even after the outer function has returned.",
       mcq:[
-        {q:"What will console.log output if counter is a closure incrementing from 0?",opts:["A. 0","B. 1","C. undefined","D. Error"],ans:1,exp:"Each call to counter() increments and returns the internal count"},
-        {q:"Which of these correctly creates a private variable using closure?",opts:["A. var x = 0","B. function f(){ var x=0; return ()=>++x; }","C. let x = 0; x++","D. const x = {}"],ans:1,exp:"The inner arrow function closes over x, making it private"}
+        {q:"What will console.log output if counter is a closure incrementing from 0?",opts:["A. 0","B. 1","C. undefined","D. Error"],ans:1,exp:"Each call to counter() increments and returns the internal count"}
       ],
-      code:{task:"Write a counter function using closures that has increment(), decrement() and getCount() methods",starter:"function createCounter() {\n  let count = 0;\n  return {\n    increment: () => ++count,\n    decrement: () => --count,\n    getCount: () => count\n  };\n}\nconst c = createCounter();\nc.increment();\nconsole.log(c.getCount());",solution:"function createCounter() {\n  let count = 0;\n  return {\n    increment: () => ++count,\n    decrement: () => --count,\n    getCount: () => count\n  };\n}",hint:"Return an object with methods that all share the same 'count' variable"}
-    },
-    {topic:"Array Methods",theory:"JavaScript array methods like map(), filter(), and reduce() are essential for clean data transformation.",
-      mcq:[
-        {q:"What does [1,2,3].map(x => x*2) return?",opts:["A. [1,2,3]","B. [2,4,6]","C. 6","D. [3,6,9]"],ans:1,exp:"map() applies the function to each element and returns a new array"},
-        {q:"Which method returns only elements satisfying a condition?",opts:["A. map()","B. find()","C. filter()","D. reduce()"],ans:2,exp:"filter() returns a new array with elements where the callback returns true"}
-      ],
-      code:{task:"Filter array elements higher than 50",starter:"const dataSets = [20, 60, 80, 10];\nconst filtering = dataSets.filter(x => x > 50);\nconsole.log(filtering);",solution:"const dataSets = [20, 60, 80, 10];\nconst filtering = dataSets.filter(x => x > 50);\nconsole.log(filtering);",hint:"Use standard array filter methods."}
+      code:{task:"Write a counter closure function that returns an incremental sequence value.",starter:"function createCounter() {\n  let count = 0;\n  return () => ++count;\n}\nconst c = createCounter();\nconsole.log(c());",solution:"function createCounter() {\n  let count = 0;\n  return () => ++count;\n}",hint:"Return an inner function scoping count variable variables."}
     }
   ];
 
   const dsaBank = [
-    {topic:"Two Sum Problem",theory:"Given an array and a target, find two numbers that add up to that target. Optimal solution uses a HashMap for O(n) runtime complexity.",
+    {topic:"Two Sum Problem",theory:"Given an array and a target, find two numbers that add up to that target.",
       mcq:[
-        {q:"What is the time complexity of the optimal Two Sum solution using HashMap?",opts:["A. O(n²)","B. O(n log n)","C. O(n)","D. O(1)"],ans:2,exp:"HashMap lookup is O(1), and we iterate once → O(n) total"},
-        {q:"What data structure makes Two Sum O(n)?",opts:["A. Array","B. Stack","C. HashMap/Object","D. Queue"],ans:2,exp:"Store seen numbers in a HashMap and check if complement exists in O(1)"}
+        {q:"What is the time complexity of the optimal Two Sum solution using HashMap?",opts:["A. O(n²)","B. O(n log n)","C. O(n)","D. O(1)"],ans:2,exp:"HashMap lookup is O(1), and we iterate once → O(n) total"}
       ],
-      code:{task:"Solve Two Sum: given array nums and target, return indices of two numbers that add to target",starter:"function twoSum(nums, target) {\n  const seen = {};\n  for (let i = 0; i < nums.length; i++) {\n    const comp = target - nums[i];\n    if (seen[comp] !== undefined) return [seen[comp], i];\n    seen[nums[i]] = i;\n  }\n  return [];\n}\nconsole.log(twoSum([2,7,11,15], 9));",solution:"function twoSum(nums, target) {\n  const seen = {};\n  for (let i = 0; i < nums.length; i++) {\n    const comp = target - nums[i];\n    if (seen[comp] !== undefined) return [seen[comp], i];\n    seen[nums[i]] = i;\n  }\n  return [];\n}",hint:"For each number, check if (target - number) is already in your HashMap"}
+      code:{task:"Solve Two Sum: return indices of two numbers that add to target",starter:"function twoSum(nums, target) {\n  const seen = {};\n  for (let i = 0; i < nums.length; i++) {\n    const comp = target - nums[i];\n    if (seen[comp] !== undefined) return [seen[comp], i];\n    seen[nums[i]] = i;\n  }\n  return [];\n}\nconsole.log(twoSum([2,7,11,15], 9));",solution:"",hint:"Check complements inside map values."}
     }
   ];
 
-  const vocabBank = [
-    {word:"PROFICIENT",ph:"/prəˈfɪʃ.ənt/",pos:"ADJECTIVE",meaning:"Competent and skilled at something — commonly used in engineering frameworks",example:"Proficient execution in core architectures ensures platform scalability.",tel:"నిపుణుడు (nipunudu)",hindi:"कुशल (kushal)"},
-    {word:"COLLABORATE",ph:"/kəˈlæb.ə.reɪt/",pos:"VERB",meaning:"Work jointly with others especially in technical or engineering contexts",example:"Engineers collaborate via distributed variant pipelines.",tel:"కలిసి పని చేయు (kalisi pani cheyu)",hindi:"सहयोग करना (sahyog karna)"}
-  ];
-
-  const punchBank = [
-    [{lang:"ENGLISH",q:"Tell me about yourself in exactly 60 seconds. Go!",tip:"Structure: Current status → Technical Core → Trajectory.",reveal:"'Focus on engineering impact, architectural strengths, and project execution records clearly.'"},{lang:"TELUGU",q:"Nee friend ki 'What is an API?' ani explain cheyyi!",tip:"Simple context bridge analogy.",reveal:"'API ante — applications madyalo metrics share cheyyadaniki oka dynamic bridge laanti.'"}],
-    [{lang:"ENGLISH",q:"What is your biggest weakness? Answer clearly!",tip:"Identify a genuine process friction point alongside an active resolution system.",reveal:"'Detail an operational bottleneck you're solving with technical management routines.'"},{lang:"TELUGU",q:"Explain Cloud Computing simply.",tip:"Rent model configuration logic.",reveal:"'Cloud computing ante internet dwara virtual machines software processors ni rent ki techukoni vaadukovatam.'"}],
-  ];
-
-  const interviewBank = [
-    {topic:"Tell me about yourself",framework:"PRESENT → PAST → FUTURE",sample:"I am a software engineer focused on frontend and full-stack development. I build high-performance web applications using JavaScript, React, and Node.js, and maintain continuous algorithms training.",practice:"Perform an uninterrupted delivery test under 90 seconds."},
-    {topic:"Why should we hire you?",framework:"SKILLS → PROOF → VALUE",sample:"I combine structured technical training in modern architecture with systematic runtime execution strategies and optimization practices.",practice:"Articulate key engineering attributes cleanly."}
-  ];
+  const vocabBank = [{word:"PROFICIENT",ph:"/prəˈfɪʃ.ənt/",pos:"ADJECTIVE",meaning:"Competent and skilled at something",example:"Proficient execution in core architectures ensures platform scalability.",tel:"నిపుణుడు (nipunudu)",hindi:"कुशल (kushal)"}];
+  const punchBank = [[{lang:"ENGLISH",q:"Tell me about yourself in exactly 60 seconds. Go!",tip:"Structure: Current status → Technical Core.",reveal:"'Focus on engineering impact record cleanly.'"},{lang:"TELUGU",q:"What is an API?",tip:"Bridge connection logic.",reveal:"'API ante apps madyalo metrics share cheyyadaniki dynamic bridge.'"}],];
+  const interviewBank = [{topic:"Tell me about yourself",framework:"PRESENT → PAST → FUTURE",sample:"I am a software engineer focused on frontend and full-stack development.",practice:"Perform uninterrupted delivery test under 90 seconds."}];
 
   const qi = (day - 1) % aptBank.length;
   const ci = (day - 1) % codingBank.length;
@@ -1184,76 +1217,29 @@ async function fetchDayQuestions(day) {
   const pi = (day - 1) % punchBank.length;
   const ii = (day - 1) % interviewBank.length;
 
-  const result = {
-    apt: aptBank[qi],
-    coding: codingBank[ci],
-    dsa: dsaBank[di],
-    vocab: vocabBank[vi],
-    punch: punchBank[pi],
-    interview: interviewBank[ii]
-  };
-
+  const result = { apt: aptBank[qi], coding: codingBank[ci], dsa: dsaBank[di], vocab: vocabBank[vi], punch: punchBank[pi], interview: interviewBank[ii] };
   aiCache[cacheKey] = result;
   try { localStorage.setItem(AI_CACHE_KEY, JSON.stringify(aiCache)); } catch(e){}
   return result;
 }
 
-// ═══════════════════════ BOSSES ═══════════════════════
+// ═══════════════════════ BOSSES & ACHIEVEMENTS ═══════════════════════
 const BOSSES = [
-  {id:'procrastination',emoji:'😴',name:'Procrastination Phantom',lvl:'9/10',threat:'🔴 CRITICAL',hp:90,weakness:'Timed sessions, challenge-based tasks, completion streaks',kill:'30-day unbroken study streak'},
-  {id:'fog',emoji:'🌫️',name:'Brain Fog Beast',lvl:'8/10',threat:'🔴 HIGH',hp:85,weakness:'Daily mental challenges, physical exercise, consistent sleep',kill:'Complete 60 days of daily brain training'},
-  {id:'stammering',emoji:'🗣️',name:'Confidence Crusher',lvl:'7/10',threat:'🟠 HIGH',hp:80,weakness:'Daily verbal practice, punch questions, answer frameworks',kill:'Answer interview drills seamlessly without hesitation'},
-  {id:'weakMath',emoji:'🔢',name:'Math Menace',lvl:'6/10',threat:'🟠 MODERATE',hp:90,weakness:'Daily aptitude questions starting easy, pattern recognition',kill:'Score 80%+ on aptitude section'},
-  {id:'codeRust',emoji:'💻',name:'Code Rust Daemon',lvl:'7/10',threat:'🟠 HIGH',hp:85,weakness:'Daily coding practice, full-stack systems building',kill:'Build deep full-stack applications with modular cleanliness'},
+  {id:'procrastination',emoji:'😴',name:'Procrastination Phantom',lvl:'9/10',threat:'🔴 CRITICAL',hp:90,weakness:'Timed sessions, challenge-based tasks, routine checklist mastery',kill:'30-day unbroken study streak'},
+  {id:'fog',emoji:'🌫️',name:'Brain Fog Beast',lvl:'8/10',threat:'🔴 HIGH',hp:85,weakness:'Daily routine consistency, clear sleep windows, nasal metrics',kill:'Complete 60 days of daily routine verification'}
 ];
-
-// ═══════════════════════ ACHIEVEMENTS ═══════════════════════
 const ACHIEVEMENTS = [
   {id:'boot',icon:'⚡',name:'Boot Complete',desc:'Complete Day 1',cond:s=>Object.keys(s.doneDays).length>=1},
-  {id:'streak3',icon:'🔥',name:'3-Day Fire',desc:'3-day study streak',cond:s=>s.streaks.daily>=3},
-  {id:'streak7',icon:'⭐',name:'Week Warrior',desc:'7-day streak',cond:s=>s.streaks.daily>=7},
-  {id:'xp500',icon:'💫',name:'Level 2',desc:'Earn 500 XP',cond:s=>s.totalXP>=500},
-  {id:'days7',icon:'📅',name:'Week Done',desc:'Complete 7 days',cond:s=>Object.keys(s.doneDays).length>=7},
+  {id:'routine3',icon:'☀️',name:'Habit Spark',desc:'Achieve a 3-day routine streak',cond:s=>s.streaks.routine>=3},
+  {id:'routine7',icon:'🏆',name:'Perfect Week Master',desc:'Reach a 7-day routine high-streak',cond:s=>s.streaks.routine>=7}
 ];
 
-// ═══════════════════════ SCHEDULE DATA ═══════════════════════
-const SCHEDULE = [
-  {time:'8:00 AM',act:'Wake Up + Water (500ml)',dur:'—',hl:false},
-  {time:'8:00–8:20',act:'System initialization buffer',dur:'20 min',hl:false},
-  {time:'8:20–8:40',act:'Hygiene maintenance routine',dur:'20 min',hl:false},
-  {time:'8:40–9:00',act:'Meal Preparation: Protein + Oats',dur:'20 min',hl:false},
-  {time:'9:00–9:20',act:'Nutritional Intake Window',dur:'20 min',hl:false},
-  {time:'9:20–9:35',act:'Respiratory health protocols',dur:'15 min',hl:false},
-  {time:'9:35–9:55',act:'🧠 SESSION 1: Aptitude',dur:'20 min',hl:true},
-  {time:'9:55–10:05',act:'😂 Surprise Punch Buffer',dur:'10 min',hl:true},
-  {time:'10:05–10:25',act:'💻 SESSION 2: Coding Foundations',dur:'20 min',hl:true},
-  {time:'10:25–10:35',act:'Hydration Recovery Break',dur:'10 min',hl:false},
-  {time:'10:35–11:05',act:'🚶 Morning Walk (Aerobic Strategy)',dur:'30 min',hl:false},
-  {time:'11:05–11:15',act:'Cool down + Hydration',dur:'10 min',hl:false},
-  {time:'11:15–11:35',act:'🗣️ SESSION 3: Speak + Vocab',dur:'20 min',hl:true},
-  {time:'11:35–11:45',act:'😂 Surprise Punch Buffer 2',dur:'10 min',hl:true},
-  {time:'11:45–12:05',act:'💻 SESSION 4: DSA + Engineering',dur:'20 min',hl:true},
-  {time:'12:05–12:30',act:'Operational wind down',dur:'25 min',hl:false},
-  {time:'12:30 PM',act:'Shower/Decompress',dur:'20 min',hl:false},
-  {time:'12:50–1:15',act:'Transit configuration readiness',dur:'25 min',hl:false},
-  {time:'1:15 PM',act:'Leave for Office',dur:'—',hl:false},
-  {time:'3:15 PM',act:'SHIFT BEGINS',dur:'—',hl:false},
-  {time:'12:15 AM',act:'Shift Ends → Retract to HQ',dur:'—',hl:false},
-  {time:'2:00 AM',act:'SLEEP ARCHITECTURE INITIATED',dur:'—',hl:false},
-];
-
-// ═══════════════════════ RENDER & INTERFACE LOGIC ═══════════════════════
-function getDateStr(day){
-  const d=new Date(START); d.setDate(d.getDate()+day-1);
-  return d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-}
-function getDayKey(day){ return 'd'+day; }
-
+// ═══════════════════════ RENDER SYSTEM ═══════════════════════
 function renderAll(){
   const day=S.day;
   const dk=getDayKey(day);
   const done=S.doneSessions[dk]||{};
-  const brief=BRIEFS[(day-1)%BRIEFS.length];
+  const brief=BRIEFS[(day-1)%BRIEFS.length] || BRIEFS[0];
   const lvd=getLvlData(S.totalXP);
 
   document.getElementById('dayNum').textContent='DAY '+day;
@@ -1266,6 +1252,7 @@ function renderAll(){
   document.getElementById('briefTitle').textContent=brief.t;
   document.getElementById('briefSub').textContent=brief.s;
 
+  renderDailiesMatrix(dk);
   renderSessions(day, done);
   renderProgress(done);
   renderSchedule();
@@ -1279,21 +1266,39 @@ function renderAll(){
   cb.textContent=isDone?'✅ DAY COMMITTED':'▶ COMMIT DAY';
 }
 
+function renderDailiesMatrix(dk) {
+  const container = document.getElementById('dailiesMatrix');
+  if(!container) return;
+  const currentDayState = S.doneDailies[dk] || {};
+
+  container.innerHTML = ROUTINE_ITEMS.map(item => {
+    const isChecked = !!currentDayState[item.id];
+    return `
+      <div class="daily-item ${isChecked ? 'checked' : ''}" onclick="toggleDailyMetric('${item.id}', '${dk}')">
+        <div class="daily-left">
+          <div class="daily-checkbox">${isChecked ? '✓' : ''}</div>
+          <div>
+            <div class="daily-title">${item.title}</div>
+            <div class="daily-time">${item.time}</div>
+          </div>
+        </div>
+        <div class="daily-xp-badge">${isChecked ? '+5 XP LOCKED' : '+5 XP AVAILABLE'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
 async function renderSessions(day, done){
   const grid = document.getElementById('sessionGrid');
-  grid.innerHTML = `<div style="text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green)"><span class="blink">▶</span> LOADING SYSTEM INTERFACE CHALLENGES...</div>`;
+  grid.innerHTML = `<div style="text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green)"><span class="blink">▶</span> PULLING CHALLENGES FROM RUNTIME PROTOCOLS...</div>`;
 
   let aiData = await fetchDayQuestions(day);
 
   const sessions=[
-    {id:'apt',type:'apt',icon:'🧠',tag:'SESSION 1 — 9:35 AM',title:'Aptitude Training',meta:'20 MIN | MATH + LOGIC',xp:40,
-      content: renderAptContent(aiData.apt)+renderPunchContent(aiData.punch[0],'punch1')},
-    {id:'code',type:'code',icon:'💻',tag:'SESSION 2 — 10:05 AM',title:'Coding: '+aiData.coding.topic,meta:'20 MIN | '+aiData.coding.topic.toUpperCase(),xp:50,
-      content: '<div class="ai-badge">⚡ INTEGRATED DEVELOPMENT INTERVIEW ENVIRONMENT</div>'+renderCodingContent(aiData.coding,'code_main')},
-    {id:'speak',type:'speak',icon:'🗣️',tag:'SESSION 3 — 11:15 AM',title:'Speak + Vocab + Interview',meta:'20 MIN | COMM + VERBAL FLUENCY',xp:35,
-      content: '<div class="ai-badge">⚡ COMMUNICATIONS DRILL INTERFACE</div>'+renderVocabContent(aiData.vocab)+renderInterviewContent(aiData.interview)+renderPunchContent(aiData.punch[1]||aiData.punch[0],'punch2')},
-    {id:'dsa',type:'dsa',icon:'⚡',tag:'SESSION 4 — 11:45 AM',title:'DSA: '+aiData.dsa.topic,meta:'20 MIN | ALGORITHMIC EFFICIENCY',xp:50,
-      content: '<div class="ai-badge">⚡ LEETCODE CORE ALGORITHM SIMULATOR</div>'+renderCodingContent(aiData.dsa,'code_dsa')},
+    {id:'apt',type:'apt',icon:'🧠',tag:'SESSION 1 — 9:35 AM',title:'Aptitude Training',meta:'20 MIN | MATH & LOGIC',xp:40,content: renderAptContent(aiData.apt)+renderPunchContent(aiData.punch[0],'punch1')},
+    {id:'code',type:'code',icon:'💻',tag:'SESSION 2 — 10:05 AM',title:'Coding: '+aiData.coding.topic,meta:'20 MIN | '+aiData.coding.topic.toUpperCase(),xp:50,content: renderCodingContent(aiData.coding,'code_main')},
+    {id:'speak',type:'speak',icon:'🗣️',tag:'SESSION 3 — 11:15 AM',title:'Speak + Vocab + Interview',meta:'20 MIN | VERBAL CONFIGURATION',xp:35,content: renderVocabContent(aiData.vocab)+renderInterviewContent(aiData.interview)+renderPunchContent(aiData.punch[1]||aiData.punch[0],'punch2')},
+    {id:'dsa',type:'dsa',icon:'⚡',tag:'SESSION 4 — 11:45 AM',title:'DSA: '+aiData.dsa.topic,meta:'20 MIN | RUNTIME ANALYSIS',xp:50,content: renderCodingContent(aiData.dsa,'code_dsa')}
   ];
 
   let html='';
@@ -1322,9 +1327,8 @@ async function renderSessions(day, done){
 function renderAptContent(qs){
   let h='<div class="sec-hdr" style="margin-top:12px">Aptitude Workspace</div>';
   qs.forEach((q,i)=>{
-    const diffClass=q.diff==='easy'?'diff-easy':q.diff==='med'?'diff-med':'diff-hard';
     h+=`<div class="q-block">
-      <div class="q-num">Q${i+1} <span class="diff-badge ${diffClass}">${q.diff.toUpperCase()}</span></div>
+      <div class="q-num">Q${i+1}</div>
       <div class="q-text">${q.q}</div>
       <div class="q-options">
         ${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ(this, ${j}, ${q.ans}, 'apt_exp_${i}')"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}
@@ -1334,117 +1338,34 @@ function renderAptContent(qs){
   });
   return h;
 }
-
 function renderPunchContent(p, pid){
-  return `<div class="sec-hdr" style="margin-top:12px">😂 Dynamic Buffer Drill</div>
-  <div class="punch-card">
-    <div class="punch-lang">${p.lang}</div>
-    <div class="punch-q">${p.q}</div>
-    <div class="punch-tip">💡 Focus Parameter: ${p.tip}</div>
-    <button class="punch-btn" onclick="revealPunch('${pid}')">REVEAL SAMPLE STRATEGY</button>
-    <div class="punch-reveal" id="${pid}">${p.reveal}</div>
-  </div>`;
+  return `<div class="punch-card"><strong>${p.lang} Drill:</strong> ${p.q}<br><small>💡 ${p.tip}</small><br><button class="punch-btn" onclick="revealPunch('${pid}')">REVEAL SAMPLE</button><div class="punch-reveal" id="${pid}">${p.reveal}</div></div>`;
 }
-
 function renderCodingContent(c, eid){
-  return `
-  <div class="info-box" style="margin-top:10px"><strong>📘 Architecture Core:</strong> ${c.theory}</div>
-  <div class="sec-hdr" style="margin-top:12px">Conceptual Evaluation</div>
-  ${c.mcq.map((q,i)=>`
-    <div class="q-block">
-      <div class="q-num">MCQ Q${i+1}</div>
-      <div class="q-text">${q.q}</div>
-      <div class="q-options">
-        ${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ(this, ${j}, ${q.ans}, 'cexp_${eid}_${i}')"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}
-      </div>
-      <div class="q-explanation" id="cexp_${eid}_${i}"><strong>Resolution Strategy:</strong> ${q.exp}</div>
-    </div>`).join('')}
-  <div class="sec-hdr" style="margin-top:12px">Engineering Application</div>
-  <div class="q-block"><div class="q-text">${c.code.task}</div></div>
-  <div class="code-editor-wrap">
-    <div class="editor-header">
-      <span class="editor-title">&gt; engine_sandbox_${eid}.js</span>
-      <div class="editor-btns">
-        <button class="hint-btn" onclick="showHint('hint_${eid}')">HINT</button>
-        <button class="reset-btn" onclick="resetCode('${eid}', \`${c.code.starter.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">RESET</button>
-        <button class="run-btn" onclick="runCode('${eid}')">▶ RUN ENGINE</button>
-      </div>
-    </div>
-    <textarea class="code-textarea" id="editor_${eid}" spellcheck="false">${c.code.starter}</textarea>
-    <div class="code-output" id="output_${eid}">// Compilation metrics pending...</div>
-  </div>
-  <div class="hint-box" id="hint_${eid}">💡 Optimization Vector: ${c.code.hint}</div>`;
+  return `<div class="info-box"><strong>Core Architecture:</strong> ${c.theory}</div>
+  ${c.mcq.map((q,i)=>`<div class="q-block"><div class="q-text">${q.q}</div><div class="q-options">${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ(this, ${j}, ${q.ans}, 'cexp_${eid}_${i}')"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}</div><div class="q-explanation" id="cexp_${eid}_${i}">${q.exp}</div></div>`).join('')}
+  <div class="code-editor-wrap"><textarea class="code-textarea" id="editor_${eid}">${c.code.starter}</textarea><button class="run-btn" onclick="runCode('${eid}')">▶ RUN ENGINE</button><div class="code-output" id="output_${eid}">// Ready...</div></div>`;
 }
-
-function renderVocabContent(v){
-  return `<div class="sec-hdr" style="margin-top:12px">Lexicon Optimization Word</div>
-  <div class="vocab-card">
-    <div class="vocab-word">${v.word}</div>
-    <div class="vocab-phonetic">${v.ph}</div>
-    <div class="vocab-pos">${v.pos}</div>
-    <div class="vocab-meaning">${v.meaning}</div>
-    <div class="vocab-example">"${v.example}"</div>
-    <div class="vocab-Telugu" style="margin-top:8px">🇮🇳 Telugu Translation: ${v.tel}</div>
-    <div class="vocab-Hindi">🇮🇳 Hindi Translation: ${v.hindi}</div>
-  </div>`;
-}
-
-function renderInterviewContent(t){
-  return `<div class="sec-hdr" style="margin-top:12px">Speech Matrix Drill</div>
-  <div class="q-block">
-    <div class="q-num">SYSTEM PARADIGM</div>
-    <div class="q-text">${t.topic}</div>
-    <div class="info-box" style="margin-top:8px"><strong>Target Architecture Framework:</strong> ${t.framework}</div>
-    <div style="margin-top:8px;font-size:13px;color:var(--text2);line-height:1.5"><strong style="color:var(--cyan)">Optimized Sample:</strong> "${t.sample}"</div>
-    <div style="margin-top:8px;font-size:12px;color:var(--orange)">⚡ Runtime Drills: ${t.practice}</div>
-  </div>`;
-}
+function renderVocabContent(v){ return `<div class="vocab-card"><div class="vocab-word">${v.word}</div><div class="vocab-meaning">${v.meaning}</div></div>`; }
+function renderInterviewContent(t){ return `<div class="q-block"><strong>Topic:</strong> ${t.topic}<br><strong>Framework:</strong> ${t.framework}<br><small>${t.sample}</small></div>`; }
 
 function renderProgress(done){
   const total=4, doneCount=Object.keys(done).length;
-  const todayXP=['apt','code','speak','dsa'].filter(k=>done[k]).reduce((s,k)=>s+({apt:40,code:50,speak:35,dsa:50}[k]),0);
-  const maxXP=175;
   document.getElementById('sessProgress').textContent=doneCount+'/'+total;
   document.getElementById('sessBar').style.width=(doneCount/total*100)+'%';
-  document.getElementById('todayXPLabel').textContent=todayXP+' XP';
-  document.getElementById('todayXPBar').style.width=(todayXP/maxXP*100)+'%';
 }
-
 function renderSchedule(){
-  document.getElementById('schedWrap').innerHTML=SCHEDULE.map(r=>`
-    <div class="sched-row ${r.hl?'highlight':''}">
-      <div class="sched-time">${r.time}</div>
-      <div class="sched-act">${r.act}</div>
-      <div class="sched-dur">${r.dur}</div>
-    </div>`).join('');
+  document.getElementById('schedWrap').innerHTML=SCHEDULE.map(r=>`<div class="sched-row ${r.hl?'highlight':''}"><div>${r.time}</div><div>${r.act}</div><div>${r.dur}</div></div>`).join('');
 }
-
 function renderBosses(){
-  const bg = document.getElementById('bossGrid');
-  if(!bg) return;
-  bg.innerHTML=BOSSES.map(b=>`
-    <div class="boss-card">
-      <div class="boss-row">
-        <div class="boss-emoji">${b.emoji}</div>
-        <div>
-          <div class="boss-name">${b.name}</div>
-          <div class="boss-lvl">LEVEL ${b.lvl} | ${b.threat}</div>
-        </div>
-      </div>
-      <div class="boss-hp-row"><span>VECTOR INTEGRITY</span><span>${S.bossHP[b.id]}%</span></div>
-      <div class="boss-track"><div class="boss-fill" style="width:${S.bossHP[b.id]}%"></div></div>
-      <div class="boss-tip">⚡ System Vulnerability: ${b.weakness}</div>
-      <div class="boss-tip">🏆 Termination Requirement: ${b.kill}</div>
-    </div>`).join('');
+  document.getElementById('bossGrid').innerHTML=BOSSES.map(b=>`<div class="boss-card"><strong>${b.name}</strong><br><div class="boss-hp-row"><span>VECTOR INTEGRITY</span><span>${S.bossHP[b.id]}%</span></div><div class="boss-track"><div class="boss-fill" style="width:${S.bossHP[b.id]}%"></div></div></div>`).join('');
 }
-
 function renderStreaks(){
   const data=[
     {icon:'📅',name:'Continuous Study',key:'daily'},
-    {icon:'🧠',name:'Aptitude Logic',key:'apt'},
-    {icon:'💻',name:'System Coding',key:'code'},
-    {icon:'📖',name:'Lexicon Engine',key:'vocab'},
-    {icon:'😂',name:'Buffer Reflex',key:'punch'},
+    {icon:'☀️',name:'Routine Streak',key:'routine'},
+    {icon:'📊',name:'Weekly Routine Record',key:'routineWeekly'},
+    {icon:'🔥',name:'Monthly Routine Record',key:'routineMonthly'}
   ];
   document.getElementById('streaksGrid').innerHTML=data.map(d=>`
     <div class="streak-card">
@@ -1455,86 +1376,94 @@ function renderStreaks(){
       </div>
     </div>`).join('');
 }
-
 function renderAchievements(){
   checkAchievements();
-  document.getElementById('achGrid').innerHTML=ACHIEVEMENTS.map(a=>{
-    const u=S.achievements.includes(a.id);
-    return `<div class="ach-card ${u?'unlocked':''}">
-      <span class="ach-icon">${a.icon}</span>
-      <div class="ach-name">${a.name}</div>
-      <div class="ach-desc">${a.desc}</div>
-    </div>`;
-  }).join('');
+  document.getElementById('achGrid').innerHTML=ACHIEVEMENTS.map(a=>`<div class="ach-card ${S.achievements.includes(a.id)?'unlocked':''}"><span class="ach-icon">${a.icon}</span><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div>`).join('');
 }
-
 function checkAchievements(){
-  ACHIEVEMENTS.forEach(a=>{
-    if(!S.achievements.includes(a.id) && a.cond(S)){
-      S.achievements.push(a.id);
-      showToast('🏆 SUBSYSTEM METRIC ACHIEVED: '+a.name);
+  ACHIEVEMENTS.forEach(a=>{ if(!S.achievements.includes(a.id) && a.cond(S)){ S.achievements.push(a.id); showToast('🏆 ACHIEVEMENTS CLEAR: '+a.name); } });
+}
+
+// ═══════════════════════ CORE ACTIONS & METRIC OVERRIDES ═══════════════════════
+function toggleDailyMetric(itemId, dk) {
+  if(!S.doneDailies[dk]) S.doneDailies[dk] = {};
+  
+  const isChecked = !S.doneDailies[dk][itemId];
+  S.doneDailies[dk][itemId] = isChecked;
+
+  if(isChecked) {
+    S.totalXP += 5;
+    spawnXP('+5 XP');
+    showToast('☀️ METRIC LOCKED IN: +5 XP');
+  } else {
+    S.totalXP = Math.max(0, S.totalXP - 5);
+    showToast('⚠ METRIC REMOVED');
+  }
+
+  // Evaluate structural 100% routine item tracking execution
+  evaluateRoutineStreakMetrics();
+  
+  save();
+  updateXPDisplay();
+  renderDailiesMatrix(dk);
+  renderStreaks();
+}
+
+function evaluateRoutineStreakMetrics() {
+  const today = S.day;
+  const dk = getDayKey(today);
+  const currentDayState = S.doneDailies[dk] || {};
+  
+  // Verify all standard baseline schema parameters evaluate to true
+  const allRoutineCleared = ROUTINE_ITEMS.every(item => !!currentDayState[item.id]);
+  const lastRoutineDay = S.lastDay.routine || 0;
+
+  if (allRoutineCleared) {
+    if (lastRoutineDay === today - 1) {
+      S.streaks.routine += 1;
+    } else if (lastRoutineDay !== today) {
+      S.streaks.routine = 1;
     }
-  });
+    S.lastDay.routine = today;
+
+    // Check nested multi-tier highscores benchmarks bounds directly
+    if (S.streaks.routine > S.streaks.routineWeekly) S.streaks.routineWeekly = S.streaks.routine;
+    if (S.streaks.routine > S.streaks.routineMonthly) S.streaks.routineMonthly = S.streaks.routine;
+    
+    showToast('⚡ PERFECT MATRIX: Day Routine Streak Updated!');
+  } else {
+    // If user unchecked an item on their current operational day, regress the current streak pointer
+    if(lastRoutineDay === today) {
+      S.streaks.routine = Math.max(0, S.streaks.routine - 1);
+      S.lastDay.routine = today - 1; 
+    }
+  }
 }
 
-// ═══════════════════════ RUNTIME ENGINE INTERACTION handlers ═══════════════════════
-function toggleSession(id){
-  document.getElementById('sb_'+id).classList.toggle('open');
-}
-
+function toggleSession(id){ document.getElementById('sb_'+id).classList.toggle('open'); }
 function answerQ(selectedOptElement, chosenIdx, correctIdx, targetExpId){
   const optionContainer = selectedOptElement.closest('.q-options');
-  const siblings = optionContainer.querySelectorAll('.q-opt');
-  
-  siblings.forEach((el, index) => {
+  optionContainer.querySelectorAll('.q-opt').forEach((el, index) => {
     el.classList.add('disabled');
-    if(index === correctIdx) {
-      el.classList.add('correct');
-    } else if(index === chosenIdx) {
-      el.classList.add('wrong');
-    }
+    if(index === correctIdx) el.classList.add('correct');
+    else if(index === chosenIdx) el.classList.add('wrong');
   });
-
   const expBox = document.getElementById(targetExpId);
   if(expBox) expBox.classList.add('show');
 }
-
-function revealPunch(id){
-  document.getElementById(id).classList.toggle('show');
-}
-
-function showHint(id){
-  document.getElementById(id).classList.toggle('show');
-}
-
-function resetCode(eid, starterText){
-  document.getElementById('editor_'+eid).value = starterText;
-  const out = document.getElementById('output_'+eid);
-  out.textContent = '// Configuration matrix reset complete.';
-  out.className = 'code-output';
-}
-
+function revealPunch(id){ document.getElementById(id).classList.toggle('show'); }
 function runCode(eid){
   const code = document.getElementById('editor_'+eid).value;
   const out = document.getElementById('output_'+eid);
   const logs = [];
-  const sandboxConsole = { log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')) };
-  
   try {
-    // Regular expression matching sanitizes standard local redeclarations within evaluation sandbox scope block wrappers
     const sanitizedCode = code.replace(/(const|let)\s+(employees|dataSets)\s*=/g, '$2 =');
     const evaluator = new Function('console', sanitizedCode);
-    evaluator(sandboxConsole);
-    out.textContent = logs.length ? logs.join('\n') : '// Sandbox executed successfully with clean stack data metrics.';
+    evaluator({ log: (...args) => logs.push(args.join(' ')) });
+    out.textContent = logs.length ? logs.join('\n') : '// Sandbox trace success.';
     out.className = 'code-output success';
-    spawnXP('+5 XP');
-    S.totalXP += 5; 
-    save();
-    updateXPDisplay();
-  } catch(e) {
-    out.textContent = 'INTERPRETER COMPILATION CRITICAL FAULT: ' + e.message;
-    out.className = 'code-output error';
-  }
+    S.totalXP += 5; updateXPDisplay(); save();
+  } catch(e) { out.textContent = 'FAULT: ' + e.message; out.className = 'code-output error'; }
 }
 
 function markSession(id, xp){
@@ -1548,63 +1477,35 @@ function markSession(id, xp){
   if(id==='code'||id==='dsa') updateStreak('code');
   if(id==='speak') { updateStreak('vocab'); updateStreak('punch'); }
 
-  if(id==='apt') S.bossHP.weakMath=Math.max(0,S.bossHP.weakMath-2);
-  if(id==='code'||id==='dsa') S.bossHP.codeRust=Math.max(0,S.bossHP.codeRust-2);
-  if(id==='speak') { S.bossHP.stammering=Math.max(0,S.bossHP.stammering-2); S.bossHP.fog=Math.max(0,S.bossHP.fog-1); }
-  S.bossHP.procrastination=Math.max(0,S.bossHP.procrastination-1);
-
   save();
   spawnXP('+'+xp+' XP');
-  showToast('⚡ REPS LOCKED IN: +'+xp+' XP');
-
-  const mb = document.getElementById('mb_'+id);
-  if(mb){ mb.textContent='✅ INSTANTIATION COMPLETED'; mb.classList.add('done-btn'); }
-  
-  const statusBadge = mb.closest('.session-card').querySelector('.session-status');
-  statusBadge.textContent='DONE';
-  statusBadge.className='session-status done';
-
   renderProgress(S.doneSessions[dk]||{});
   updateXPDisplay();
-  checkAchievements();
+  renderAll();
 }
 
 function updateStreak(key){
-  const today=S.day;
-  const last=S.lastDay[key]||0;
-  if(last===today-1){ S.streaks[key]=(S.streaks[key]||0)+1; }
-  else if(last!==today){ S.streaks[key]=1; }
+  const today=S.day; const last=S.lastDay[key]||0;
+  if(last===today-1) S.streaks[key]=(S.streaks[key]||0)+1;
+  else if(last!===today) S.streaks[key]=1;
   S.lastDay[key]=today;
 }
 
 function completeDay(){
   const dk=getDayKey(S.day);
   if(S.doneDays[dk]) return;
-  S.doneDays[dk]=true;
-  S.totalXP+=25;
-  updateStreak('daily');
-  save();
-  showToast('🚀 TRANSACTION LOG COMMITTED! +25 METRIC BONUS');
-  document.getElementById('completeBtn').disabled=true;
-  document.getElementById('completeBtn').textContent='✅ DAY COMMITTED';
-  updateXPDisplay();
-  renderStreaks();
-  checkAchievements();
+  S.doneDays[dk]=true; S.totalXP+=25;
+  updateStreak('daily'); save();
+  showToast('🚀 TRANSACTION LOG COMMITTED! +25 BONUS');
+  updateXPDisplay(); renderStreaks();
 }
 
-function changeDay(d){
-  S.day=Math.max(1,Math.min(180,S.day+d));
-  save();
-  renderAll();
-}
-
+function changeDay(d){ S.day=Math.max(1,Math.min(180,S.day+d)); save(); renderAll(); }
 function switchTab(name,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active'); btn.classList.add('active');
 }
-
 function updateXPDisplay(){
   const lvd=getLvlData(S.totalXP);
   document.getElementById('lvlDisplay').textContent=lvd.l;
@@ -1612,35 +1513,20 @@ function updateXPDisplay(){
   document.getElementById('xpFill').style.width=lvd.pct+'%';
   document.getElementById('xpFrac').textContent=S.totalXP+' / '+lvd.nxt;
 }
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 function spawnXP(txt){
-  const el=document.createElement('div');
-  el.className='xp-pop';
-  el.textContent=txt;
-  el.style.left=(20+Math.random()*60)+'%';
-  el.style.top='35%';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1500);
+  const el=document.createElement('div'); el.className='xp-pop'; el.textContent=txt;
+  el.style.left=(20+Math.random()*60)+'%'; el.style.top='35%'; document.body.appendChild(el); setTimeout(()=>el.remove(),1500);
 }
-
 function refreshQuestions(){
-  const cacheKey = 'day_' + S.day;
-  delete aiCache[cacheKey];
-  try { localStorage.setItem(AI_CACHE_KEY, JSON.stringify(aiCache)); } catch(e){}
-  showToast('⚡ CLEARING SUBSYSTEM CACHE... RELOADING ENVIRONMENT');
-  const dk = getDayKey(S.day);
-  const done = S.doneSessions[dk]||{};
-  renderSessions(S.day, done);
+  const cacheKey = 'day_' + S.day; delete aiCache[cacheKey];
+  renderSessions(S.day, S.doneSessions[getDayKey(S.day)]||{});
+}
+function getDateStr(day){
+  const d=new Date(START); d.setDate(d.getDate()+day-1);
+  return d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 }
 
-// ═══════════════════════ INITIALIZATION RUNNER ═══════════════════════
 loadState();
 </script>
 </body>
