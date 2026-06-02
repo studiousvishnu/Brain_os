@@ -1271,35 +1271,40 @@ RULES:
 - ans is 0-indexed (0=A, 1=B, 2=C, 3=D)
 - Return ONLY the JSON object, nothing else`;
 
-  // Route through Supabase Edge Function proxy (avoids CORS issues from browser)
-  const AI_ENDPOINT = `${SUPABASE_URL}/functions/v1/anthropic-proxy`;
+  const payload = JSON.stringify({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 3000,
+    messages: [{ role: "user", content: prompt }]
+  });
 
-  try {
-    const response = await fetch(AI_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "x-anthropic-key": ANTHROPIC_KEY
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 3000,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    const data = await response.json();
-    let text = data.content.map(i => i.text || '').join('');
-    // Strip any markdown fences
-    text = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(text);
-    aiCache[cacheKey] = parsed;
-    saveAICache(aiCache);
-    return parsed;
-  } catch(err) {
-    console.error('AI fetch error:', err);
-    return null;
+  // Try Supabase Edge Function proxy first, then direct Anthropic as fallback
+  const endpoints = [
+    {
+      url: `${SUPABASE_URL}/functions/v1/anthropic-proxy`,
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_KEY, "x-anthropic-key": ANTHROPIC_KEY }
+    },
+    {
+      url: "https://api.anthropic.com/v1/messages",
+      headers: { "Content-Type": "application/json", "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01" }
+    }
+  ];
+
+  for (const ep of endpoints) {
+    try {
+      const response = await fetch(ep.url, { method: "POST", headers: ep.headers, body: payload });
+      const data = await response.json();
+      if (!data.content) { console.warn('No content from', ep.url, JSON.stringify(data)); continue; }
+      let text = data.content.map(i => i.text || '').join('');
+      text = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(text);
+      aiCache[cacheKey] = parsed;
+      saveAICache(aiCache);
+      return parsed;
+    } catch(err) {
+      console.warn('AI endpoint failed:', ep.url, err.message);
+    }
   }
+  return null;
 }
 
 // ═══════════════════════ BOSSES ═══════════════════════
