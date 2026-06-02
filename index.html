@@ -997,6 +997,7 @@ const SUPABASE_URL = 'https://gdzwwfwpxbohfirupvnk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkend3ZndweGJvaGZpcnVwdm5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMzg2NTQsImV4cCI6MjA5NTkxNDY1NH0.ny3lGhrRCuP6UCS0PY90WxPqa0_aU2btVe7j6BrQA4I';
 const SB_TABLE = 'brain_os_state';
 const SB_USER_ID = 'vishnu';
+const ANTHROPIC_KEY = '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';
 
 // Detect if running inside Claude artifact sandbox (which blocks external fetches)
 // When opened as a real file:// or hosted page, Supabase works fine.
@@ -1270,10 +1271,17 @@ RULES:
 - ans is 0-indexed (0=A, 1=B, 2=C, 3=D)
 - Return ONLY the JSON object, nothing else`;
 
+  // Route through Supabase Edge Function proxy (avoids CORS issues from browser)
+  const AI_ENDPOINT = `${SUPABASE_URL}/functions/v1/anthropic-proxy`;
+
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch(AI_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "x-anthropic-key": ANTHROPIC_KEY
+      },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
         max_tokens: 3000,
