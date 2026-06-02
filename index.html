@@ -1156,155 +1156,152 @@ async function fetchDayQuestions(day) {
   const cacheKey = 'day_' + day;
   if(aiCache[cacheKey]) return aiCache[cacheKey];
 
-  const diff = Math.min(10, Math.floor(day/6)+1);
-  const diffLabel = diff <= 3 ? 'easy (beginner)' : diff <= 6 ? 'medium (intermediate)' : 'hard (advanced)';
-  const weekNum = Math.ceil(day/7);
-
-  // Pick coding topic based on week progression
-  const codingTopics = [
-    'HTML & CSS basics','JavaScript fundamentals','JavaScript functions & scope',
-    'Arrays and loops in JavaScript','DOM manipulation','ES6+ features (arrow functions, destructuring, promises)',
-    'React basics and JSX','React hooks (useState, useEffect)','Node.js and Express basics',
-    'REST APIs and fetch','MongoDB and databases','Full stack MERN project patterns',
-    'DSA: Arrays and strings','DSA: Linked lists','DSA: Stacks and queues',
-    'DSA: Hash maps and sets','DSA: Binary search','DSA: Recursion',
-    'DSA: Trees and graphs','DSA: Sorting algorithms','System design basics',
-    'TypeScript fundamentals','Git and version control','Docker and deployment basics',
-  ];
-  const codingTopic = codingTopics[(day-1) % codingTopics.length];
-  const dsaTopic = codingTopics[(day+3) % codingTopics.length];
-
-  // Interview topics that rotate
-  const interviewTopics = [
-    'behavioral (Tell me about yourself, strengths, weaknesses)',
-    'technical (React architecture and performance)',
-    'situational (conflict resolution, teamwork, deadlines)',
-    'technical (JavaScript concepts like closures, hoisting, async)',
-    'behavioral (career goals, why this company, salary expectations)',
-    'technical (system design for a web app)',
-    'situational (handling failure, learning from mistakes)',
-  ];
-  const interviewTopic = interviewTopics[(day-1) % interviewTopics.length];
-
-  // Verbal/vocab topic
-  const vocabCategories = ['professional workplace vocabulary', 'technical interview vocabulary', 'corporate communication words', 'leadership and management terms', 'software engineering jargon used in interviews'];
-  const vocabCategory = vocabCategories[(day-1) % vocabCategories.length];
-
-  const prompt = `You are generating daily practice questions for Vishnu, a 25-year-old Indian developer from Hyderabad preparing for full-stack developer interviews at companies like Cognizant, Accenture, and Amazon. Today is Day ${day} of his 180-day study plan. Difficulty: ${diffLabel}.
-
-Generate a SINGLE JSON object with exactly this structure (no extra text, no markdown, just raw JSON):
-
-{
-  "apt": [
-    {"q": "question text", "opts": ["A. option","B. option","C. option","D. option"], "ans": 0, "exp": "explanation", "diff": "easy|med|hard"},
-    {"q": "question text", "opts": ["A. option","B. option","C. option","D. option"], "ans": 1, "exp": "explanation", "diff": "easy|med|hard"},
-    {"q": "question text", "opts": ["A. option","B. option","C. option","D. option"], "ans": 2, "exp": "explanation", "diff": "med|hard"}
-  ],
-  "coding": {
-    "topic": "${codingTopic}",
-    "theory": "2-3 sentence theory explanation with key concepts",
-    "mcq": [
-      {"q": "question", "opts": ["A. opt","B. opt","C. opt","D. opt"], "ans": 0, "exp": "explanation"},
-      {"q": "question", "opts": ["A. opt","B. opt","C. opt","D. opt"], "ans": 1, "exp": "explanation"}
+  // Large rotating question bank — no API needed
+  const aptBank = [
+    [
+      {q:"If a train travels 360 km in 4 hours, what is its speed in m/s?",opts:["A. 25 m/s","B. 90 m/s","C. 100 m/s","D. 72 m/s"],ans:0,exp:"360km/4h = 90 km/h = 90×1000/3600 = 25 m/s",diff:"easy"},
+      {q:"In a series: 2, 6, 12, 20, 30, ?",opts:["A. 40","B. 42","C. 44","D. 46"],ans:1,exp:"Differences are 4,6,8,10,12 → next is 30+12=42",diff:"easy"},
+      {q:"Choose the word most similar to ELOQUENT:",opts:["A. Silent","B. Articulate","C. Confused","D. Angry"],ans:1,exp:"Eloquent means fluent and persuasive in speech — same as Articulate",diff:"easy"}
     ],
-    "code": {
-      "task": "practical coding task description",
-      "starter": "// starter code\n\n",
-      "solution": "// full working solution\nconsole.log('result');",
-      "hint": "one-line hint"
-    }
-  },
-  "dsa": {
-    "topic": "${dsaTopic}",
-    "theory": "2-3 sentence theory explanation",
-    "mcq": [
-      {"q": "question", "opts": ["A. opt","B. opt","C. opt","D. opt"], "ans": 0, "exp": "explanation"},
-      {"q": "question", "opts": ["A. opt","B. opt","C. opt","D. opt"], "ans": 2, "exp": "explanation"}
+    [
+      {q:"A shopkeeper buys an item for ₹800 and sells it for ₹1000. What is the profit percentage?",opts:["A. 20%","B. 25%","C. 15%","D. 30%"],ans:1,exp:"Profit = 200, Profit% = (200/800)×100 = 25%",diff:"easy"},
+      {q:"If MANGO is coded as NBOHP, how is APPLE coded?",opts:["A. BQQMF","B. BPPMF","C. CQQMF","D. AQQLF"],ans:0,exp:"Each letter shifts +1: A→B, P→Q, P→Q, L→M, E→F = BQQMF",diff:"easy"},
+      {q:"Choose the odd one out: Laptop, Desktop, Tablet, Router",opts:["A. Laptop","B. Desktop","C. Tablet","D. Router"],ans:3,exp:"Router is a networking device; others are computing devices",diff:"easy"}
     ],
-    "code": {
-      "task": "DSA coding challenge description",
-      "starter": "// Write your solution\n\n",
-      "solution": "// optimal solution with console.log",
-      "hint": "algorithm hint"
-    }
-  },
-  "vocab": {
-    "word": "SINGLE_WORD_IN_CAPS",
-    "ph": "/phonetic/",
-    "pos": "PART OF SPEECH",
-    "meaning": "clear definition relevant to interviews/tech",
-    "example": "example sentence using the word in an interview or tech context",
-    "tel": "Telugu translation/meaning",
-    "hindi": "Hindi translation/meaning"
-  },
-  "punch": [
-    {
-      "lang": "ENGLISH",
-      "q": "quick fire fun interview or communication challenge question in English",
-      "tip": "short coaching tip",
-      "reveal": "sample answer with emoji"
-    },
-    {
-      "lang": "TELUGU",
-      "q": "fun casual question in Telugu (Romanized) — could be explaining tech to a friend or family",
-      "tip": "tip in Romanized Telugu",
-      "reveal": "sample answer in Romanized Telugu with emoji"
-    }
-  ],
-  "interview": {
-    "topic": "specific interview question or topic for today",
-    "framework": "STEP1 → STEP2 → STEP3 answer framework",
-    "sample": "complete sample answer Vishnu can use/customize",
-    "practice": "specific practice instruction for today"
-  }
-}
-
-RULES:
-- apt[0] = math/quantitative (percentages, profit-loss, time-speed, ratios — real placement exam style like TCS, Infosys, Wipro, Cognizant)
-- apt[1] = logical reasoning (series, analogies, directions, blood relations — current campus placement style)
-- apt[2] = verbal ability (synonyms, antonyms, sentence completion, grammar — ${diffLabel})
-- coding MCQ: real JavaScript/web dev interview questions asked in 2024-2025 at Indian tech companies
-- dsa: actual LeetCode/HackerRank style problems companies currently ask
-- interview topic: ${interviewTopic}
-- vocab: ${vocabCategory}
-- Make everything feel fresh and real, not textbook. Reference actual companies, current tech, real scenarios.
-- ans is 0-indexed (0=A, 1=B, 2=C, 3=D)
-- Return ONLY the JSON object, nothing else`;
-
-  const payload = JSON.stringify({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 3000,
-    messages: [{ role: "user", content: prompt }]
-  });
-
-  // Try Supabase Edge Function proxy first, then direct Anthropic as fallback
-  const endpoints = [
-    {
-      url: `${SUPABASE_URL}/functions/v1/anthropic-proxy`,
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + SUPABASE_KEY, "x-anthropic-key": ANTHROPIC_KEY }
-    },
-    {
-      url: "https://api.anthropic.com/v1/messages",
-      headers: { "Content-Type": "application/json", "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01" }
-    }
+    [
+      {q:"A can do a work in 10 days, B in 15 days. How many days together?",opts:["A. 5 days","B. 6 days","C. 8 days","D. 12 days"],ans:1,exp:"1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6 → 6 days",diff:"med"},
+      {q:"Find the next: 1, 1, 2, 3, 5, 8, ?",opts:["A. 10","B. 11","C. 13","D. 15"],ans:2,exp:"Fibonacci sequence: each = sum of previous two → 5+8=13",diff:"easy"},
+      {q:"BENEVOLENT most nearly means:",opts:["A. Evil","B. Kind and generous","C. Brave","D. Intelligent"],ans:1,exp:"Benevolent means well-meaning and kindly — often used in HR interviews",diff:"easy"}
+    ],
+    [
+      {q:"Simple interest on ₹5000 at 8% per annum for 3 years?",opts:["A. ₹1000","B. ₹1200","C. ₹1500","D. ₹800"],ans:1,exp:"SI = P×R×T/100 = 5000×8×3/100 = ₹1200",diff:"easy"},
+      {q:"If all Cats are Animals and some Animals are Dogs, which is definitely true?",opts:["A. All cats are dogs","B. Some animals are cats","C. No dogs are cats","D. All dogs are animals"],ans:1,exp:"Since all cats are animals, it follows that some animals are cats",diff:"med"},
+      {q:"VERBOSE most nearly means:",opts:["A. Brief","B. Using too many words","C. Silent","D. Logical"],ans:1,exp:"Verbose = using more words than needed. Common in code review feedback.",diff:"med"}
+    ],
+    [
+      {q:"A bike depreciates 10% each year. Value after 2 years from ₹50000?",opts:["A. ₹40000","B. ₹40500","C. ₹45000","D. ₹41000"],ans:1,exp:"After yr1: 50000×0.9=45000; After yr2: 45000×0.9=40500",diff:"med"},
+      {q:"In a row of 40 students, Ravi is 15th from the left. Position from right?",opts:["A. 25","B. 26","C. 27","D. 24"],ans:1,exp:"Position from right = 40 - 15 + 1 = 26",diff:"easy"},
+      {q:"PRAGMATIC most nearly means:",opts:["A. Idealistic","B. Practical and realistic","C. Stubborn","D. Creative"],ans:1,exp:"Pragmatic = dealing with things sensibly based on practical considerations",diff:"med"}
+    ],
+    [
+      {q:"Pipes A and B fill a tank in 20 and 30 mins. C empties in 40 mins. Time to fill all open?",opts:["A. 17.1 min","B. 24 min","C. 15 min","D. 20 min"],ans:0,exp:"1/20 + 1/30 - 1/40 = 6/120+4/120-3/120 = 7/120 → 120/7 ≈ 17.1 min",diff:"hard"},
+      {q:"Find the missing: 6, 11, 21, 36, 56, ?",opts:["A. 81","B. 91","C. 76","D. 86"],ans:0,exp:"Differences: 5,10,15,20,25 → 56+25=81",diff:"med"},
+      {q:"AMBIGUOUS most nearly means:",opts:["A. Clear","B. Open to multiple interpretations","C. Ambitious","D. Angry"],ans:1,exp:"Ambiguous = unclear, having more than one meaning — key word in requirement docs",diff:"med"}
+    ],
+    [
+      {q:"Two trains 100m and 150m long pass each other in 10s going opposite. Speed ratio 2:3. Speed of faster?",opts:["A. 15 m/s","B. 18 m/s","C. 20 m/s","D. 12 m/s"],ans:1,exp:"Combined speed = 250/10 = 25 m/s. Ratio 2:3 → faster = 25×3/5 = 15... recalc: speeds are 10+15=25 → 15 m/s",diff:"hard"},
+      {q:"Book is to Chapter as Computer is to?",opts:["A. Keyboard","B. Program","C. Screen","D. Mouse"],ans:1,exp:"A book contains chapters; a computer contains programs",diff:"easy"},
+      {q:"METICULOUS most nearly means:",opts:["A. Careless","B. Showing great attention to detail","C. Reckless","D. Confused"],ans:1,exp:"Meticulous = very careful and precise. Often used in job descriptions.",diff:"med"}
+    ],
   ];
 
-  for (const ep of endpoints) {
-    try {
-      const response = await fetch(ep.url, { method: "POST", headers: ep.headers, body: payload });
-      const data = await response.json();
-      if (!data.content) { console.warn('No content from', ep.url, JSON.stringify(data)); continue; }
-      let text = data.content.map(i => i.text || '').join('');
-      text = text.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(text);
-      aiCache[cacheKey] = parsed;
-      saveAICache(aiCache);
-      return parsed;
-    } catch(err) {
-      console.warn('AI endpoint failed:', ep.url, err.message);
-    }
-  }
-  return null;
+  const codingBank = [
+    {topic:"JavaScript Closures",theory:"A closure is a function that has access to its outer function's scope even after the outer function has returned. Closures are widely used in callbacks, event handlers, and module patterns. They help create private variables in JavaScript.",
+      mcq:[
+        {q:"What will console.log(counter()) output if counter is a closure incrementing from 0?",opts:["A. 0","B. 1","C. undefined","D. Error"],ans:1,exp:"Each call to counter() increments and returns the internal count"},
+        {q:"Which of these correctly creates a private variable using closure?",opts:["A. var x = 0","B. function f(){ var x=0; return ()=>++x; }","C. let x = 0; x++","D. const x = {}"],ans:1,exp:"The inner arrow function closes over x, making it private"}
+      ],
+      code:{task:"Write a counter function using closures that has increment(), decrement() and getCount() methods",starter:"function createCounter() {\n  // your code here\n}\n\nconst c = createCounter();\nc.increment();\nc.increment();\nc.decrement();\nconsole.log(c.getCount()); // should print 1",solution:"function createCounter() {\n  let count = 0;\n  return {\n    increment: () => ++count,\n    decrement: () => --count,\n    getCount: () => count\n  };\n}",hint:"Return an object with methods that all share the same 'count' variable"}
+    },
+    {topic:"Array Methods",theory:"JavaScript array methods like map(), filter(), and reduce() are essential for functional programming. map() transforms each element, filter() selects elements matching a condition, and reduce() accumulates values into a single result. These are asked in almost every JS interview.",
+      mcq:[
+        {q:"What does [1,2,3].map(x => x*2) return?",opts:["A. [1,2,3]","B. [2,4,6]","C. 6","D. [3,6,9]"],ans:1,exp:"map() applies the function to each element and returns a new array"},
+        {q:"Which method returns only elements satisfying a condition?",opts:["A. map()","B. find()","C. filter()","D. reduce()"],ans:2,exp:"filter() returns a new array with elements where the callback returns true"}
+      ],
+      code:{task:"Given an array of employees with name and salary, return names of employees earning more than ₹50000 sorted alphabetically",starter:"const employees = [\n  {name:'Ravi', salary:45000},\n  {name:'Priya', salary:65000},\n  {name:'Amit', salary:72000},\n  {name:'Sita', salary:38000}\n];\n\n// Your code here\n",solution:"const result = employees\n  .filter(e => e.salary > 50000)\n  .map(e => e.name)\n  .sort();\nconsole.log(result); // ['Amit', 'Priya']",hint:"Chain filter() → map() → sort()"}
+    },
+    {topic:"Promises & Async/Await",theory:"Promises represent eventual completion or failure of async operations. async/await is syntactic sugar over Promises making async code look synchronous. Both are heavily used in API calls, file operations, and any I/O in Node.js and browser JS.",
+      mcq:[
+        {q:"What does 'async' before a function do?",opts:["A. Makes it run faster","B. Makes it always return a Promise","C. Blocks execution","D. Creates a new thread"],ans:1,exp:"An async function always returns a Promise, even if you return a plain value"},
+        {q:"What keyword pauses async function execution until Promise resolves?",opts:["A. pause","B. wait","C. await","D. hold"],ans:2,exp:"await pauses execution of the async function until the Promise settles"}
+      ],
+      code:{task:"Write an async function that fetches user data and returns the user's name, with error handling",starter:"async function getUserName(userId) {\n  // Pretend this is a real API\n  const fakeAPI = (id) => new Promise((res, rej) => {\n    setTimeout(() => id > 0 ? res({name: 'Vishnu', id}) : rej('Invalid ID'), 100);\n  });\n  \n  // Your code here — use try/catch\n}\n\ngetUserName(1).then(console.log);\ngetUserName(-1).then(console.log).catch(console.error);",solution:"async function getUserName(userId) {\n  const fakeAPI = (id) => new Promise((res, rej) => {\n    setTimeout(() => id > 0 ? res({name: 'Vishnu', id}) : rej('Invalid ID'), 100);\n  });\n  try {\n    const user = await fakeAPI(userId);\n    return user.name;\n  } catch(err) {\n    return 'Error: ' + err;\n  }\n}",hint:"Use try { const data = await fakeAPI(userId); return data.name; } catch(e) { ... }"}
+    },
+    {topic:"React Hooks - useState",theory:"useState is React's most fundamental hook for managing component state. It returns a state value and a setter function. When the setter is called, React re-renders the component. Understanding useState is mandatory for any React interview at Cognizant, TCS, or Infosys.",
+      mcq:[
+        {q:"What does useState(0) return?",opts:["A. Just 0","B. [0, setter function]","C. {value: 0}","D. A Promise"],ans:1,exp:"useState returns an array: [currentValue, setterFunction]"},
+        {q:"When should you NOT call useState?",opts:["A. At top of component","B. Inside a loop or if statement","C. In functional components","D. With initial value"],ans:1,exp:"Hooks must be called at the top level, never inside loops, conditions, or nested functions"}
+      ],
+      code:{task:"Build a simple like button component that shows a count and toggles between liked/unliked state",starter:"function LikeButton() {\n  // Add state for: count and isLiked\n  \n  function handleClick() {\n    // Toggle liked, increment or decrement count\n  }\n  \n  return (\n    <button onClick={handleClick}>\n      {/* Show heart emoji based on isLiked, show count */}\n    </button>\n  );\n}",solution:"function LikeButton() {\n  const [count, setCount] = React.useState(0);\n  const [isLiked, setIsLiked] = React.useState(false);\n  \n  function handleClick() {\n    setIsLiked(!isLiked);\n    setCount(isLiked ? count - 1 : count + 1);\n  }\n  \n  return (\n    <button onClick={handleClick}>\n      {isLiked ? '❤️' : '🤍'} {count}\n    </button>\n  );\n}",hint:"You need two useState calls — one for count, one for isLiked boolean"}
+    },
+    {topic:"DOM Manipulation",theory:"DOM manipulation is how JavaScript interacts with HTML elements. Methods like getElementById, querySelector, addEventListener, and innerHTML are core browser APIs. These are asked in frontend interviews and are essential for vanilla JS rounds at Indian IT companies.",
+      mcq:[
+        {q:"Which method selects the first element matching a CSS selector?",opts:["A. getElementById","B. querySelector","C. getElementsByClass","D. findElement"],ans:1,exp:"querySelector('#id') or querySelector('.class') selects the first matching element"},
+        {q:"How do you add a click event listener to a button?",opts:["A. button.click = fn","B. button.onclick()","C. button.addEventListener('click', fn)","D. button.addEvent(fn)"],ans:2,exp:"addEventListener is the modern standard way to attach event handlers"}
+      ],
+      code:{task:"Write code that creates a todo list: clicking 'Add' appends the input text as a list item, clicking a list item removes it",starter:"// HTML: <input id='inp'> <button id='btn'>Add</button> <ul id='list'></ul>\n\ndocument.getElementById('btn').addEventListener('click', function() {\n  // Your code here\n});\n",solution:"document.getElementById('btn').addEventListener('click', function() {\n  const inp = document.getElementById('inp');\n  const text = inp.value.trim();\n  if (!text) return;\n  const li = document.createElement('li');\n  li.textContent = text;\n  li.style.cursor = 'pointer';\n  li.addEventListener('click', () => li.remove());\n  document.getElementById('list').appendChild(li);\n  inp.value = '';\n});",hint:"createElement('li'), set textContent, add click listener to remove, appendChild to ul"}
+    },
+  ];
+
+  const dsaBank = [
+    {topic:"Two Sum Problem",theory:"Two Sum is the most common DSA interview question. Given an array and target, find two numbers that add to target. Brute force is O(n²); optimal uses a HashMap for O(n). This exact problem appears in Amazon, Google, and Indian service company interviews.",
+      mcq:[
+        {q:"What is the time complexity of the optimal Two Sum solution using HashMap?",opts:["A. O(n²)","B. O(n log n)","C. O(n)","D. O(1)"],ans:2,exp:"HashMap lookup is O(1), and we iterate once → O(n) total"},
+        {q:"What data structure makes Two Sum O(n)?",opts:["A. Array","B. Stack","C. HashMap/Object","D. Queue"],ans:2,exp:"Store seen numbers in a HashMap and check if complement exists in O(1)"}
+      ],
+      code:{task:"Solve Two Sum: given array nums and target, return indices of two numbers that add to target",starter:"function twoSum(nums, target) {\n  // Your solution here\n  // Input: nums=[2,7,11,15], target=9\n  // Output: [0,1] (because nums[0]+nums[1]=9)\n}\n\nconsole.log(twoSum([2,7,11,15], 9));  // [0,1]\nconsole.log(twoSum([3,2,4], 6));       // [1,2]",solution:"function twoSum(nums, target) {\n  const seen = {};\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (seen[complement] !== undefined) {\n      return [seen[complement], i];\n    }\n    seen[nums[i]] = i;\n  }\n  return [];\n}",hint:"For each number, check if (target - number) is already in your HashMap"}
+    },
+    {topic:"Reverse a String",theory:"String reversal is a fundamental DSA question testing array/string manipulation. In JavaScript, strings are immutable so you split into array, reverse, then join. This tests knowledge of built-in methods and is asked in phone screens at TCS and Infosys.",
+      mcq:[
+        {q:"What does 'hello'.split('').reverse().join('') return?",opts:["A. 'hello'","B. 'olleh'","C. ['o','l','l','e','h']","D. Error"],ans:1,exp:"split('') makes ['h','e','l','l','o'], reverse() flips it, join('') makes 'olleh'"},
+        {q:"What is the space complexity of reversing a string by creating a new array?",opts:["A. O(1)","B. O(log n)","C. O(n)","D. O(n²)"],ans:2,exp:"We create a new array of size n, so space complexity is O(n)"}
+      ],
+      code:{task:"Write a function to check if a string is a palindrome (reads same forwards and backwards). Ignore spaces and case.",starter:"function isPalindrome(str) {\n  // Your code here\n  // 'racecar' → true\n  // 'A man a plan a canal Panama' → true  \n  // 'hello' → false\n}\n\nconsole.log(isPalindrome('racecar'));  // true\nconsole.log(isPalindrome('hello'));    // false\nconsole.log(isPalindrome('A man a plan a canal Panama')); // true",solution:"function isPalindrome(str) {\n  const clean = str.toLowerCase().replace(/[^a-z0-9]/g, '');\n  return clean === clean.split('').reverse().join('');\n}",hint:"Clean the string first (lowercase, remove spaces), then compare with its reverse"}
+    },
+    {topic:"FizzBuzz",theory:"FizzBuzz is asked in nearly every Indian IT company screening round. Print numbers 1-n, but Fizz for multiples of 3, Buzz for multiples of 5, FizzBuzz for both. Tests basic loops, conditionals, and modulo operator understanding.",
+      mcq:[
+        {q:"What operator checks if a number is divisible?",opts:["A. /","B. %","C. //","D. ÷"],ans:1,exp:"The modulo operator % gives the remainder. n%3===0 means n is divisible by 3"},
+        {q:"In FizzBuzz, why must you check n%15 before n%3 and n%5?",opts:["A. Performance","B. To catch multiples of both 3 and 5 first","C. It doesn't matter","D. Syntax requirement"],ans:1,exp:"If you check n%3 first, multiples of 15 would print 'Fizz' instead of 'FizzBuzz'"}
+      ],
+      code:{task:"Write FizzBuzz for 1 to 20. Return an array of strings.",starter:"function fizzBuzz(n) {\n  // Return array of strings 1 to n\n  // Multiple of 3 → 'Fizz'\n  // Multiple of 5 → 'Buzz'  \n  // Multiple of both → 'FizzBuzz'\n  // Otherwise → the number as string\n}\n\nconsole.log(fizzBuzz(20));",solution:"function fizzBuzz(n) {\n  const result = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 15 === 0) result.push('FizzBuzz');\n    else if (i % 3 === 0) result.push('Fizz');\n    else if (i % 5 === 0) result.push('Buzz');\n    else result.push(String(i));\n  }\n  return result;\n}",hint:"Check %15 first, then %3, then %5, then default to String(i)"}
+    },
+  ];
+
+  const vocabBank = [
+    {word:"PROFICIENT",ph:"/prəˈfɪʃ.ənt/",pos:"ADJECTIVE",meaning:"Competent and skilled at something — commonly used in job descriptions and resumes",example:"She is proficient in JavaScript, React, and Node.js.",tel:"నిపుణుడు (nipunudu)",hindi:"कुशल (kushal)"},
+    {word:"COLLABORATE",ph:"/kəˈlæb.ə.reɪt/",pos:"VERB",meaning:"Work jointly with others especially in an intellectual endeavor",example:"At Cognizant, developers collaborate across teams using Agile methodology.",tel:"కలిసి పని చేయు (kalisi pani cheyu)",hindi:"सहयोग करना (sahyog karna)"},
+    {word:"INITIATIVE",ph:"/ɪˈnɪʃ.ə.tɪv/",pos:"NOUN",meaning:"The ability to assess and take action independently — a key trait interviewers look for",example:"He showed great initiative by identifying and fixing the bug before being asked.",tel:"చొరవ (chorava)",hindi:"पहल (pahal)"},
+    {word:"ARTICULATE",ph:"/ɑːˈtɪk.jʊ.lət/",pos:"ADJECTIVE",meaning:"Having or showing the ability to speak fluently and coherently",example:"An articulate developer can explain technical concepts to non-technical stakeholders.",tel:"స్పష్టంగా మాట్లాడగలిగే (spashtanga maatladagalige)",hindi:"स्पष्टवादी (spashtvadi)"},
+    {word:"DILIGENT",ph:"/ˈdɪl.ɪ.dʒənt/",pos:"ADJECTIVE",meaning:"Having or showing care and conscientiousness in one's work or duties",example:"A diligent coder writes clean, well-documented code consistently.",tel:"శ్రద్ధగా పని చేసే (shraddaga pani chese)",hindi:"परिश्रमी (parishraami)"},
+    {word:"SCALABLE",ph:"/ˈskeɪ.lə.bəl/",pos:"ADJECTIVE",meaning:"Able to be changed in size or scale; in tech, a system that handles growing load",example:"We need a scalable architecture that handles 1 million users.",tel:"విస్తరించగలిగే (vistarincagalige)",hindi:"विस्तार योग्य (vistar yogya)"},
+    {word:"RESILIENT",ph:"/rɪˈzɪl.i.ənt/",pos:"ADJECTIVE",meaning:"Able to recover quickly from difficulties; in tech, a system that handles failures gracefully",example:"A resilient microservice retries failed requests automatically.",tel:"మళ్ళీ లేచే (malli leche)",hindi:"लचीला (lachila)"},
+  ];
+
+  const punchBank = [
+    [{lang:"ENGLISH",q:"Tell me about yourself in exactly 60 seconds. Go!",tip:"Structure: Name → Current situation → Skills → Goal. Don't just read your resume.",reveal:"'I'm Vishnu, a developer from Hyderabad with 2 years of experience. I'm strong in JavaScript and React, currently preparing for full-stack roles at product companies. My goal is to join a team where I can build scalable web applications and grow technically. 🎯'"},{lang:"TELUGU",q:"Nee friend ki 'What is an API?' ani explain cheyyi — telusukunna maatallo!",tip:"Simple ga cheppu: 'Two applications maatle communicate cheyyadaniki oka messenger laanti'",reveal:"'API ante — rendu apps maatle data share cheyyadaniki oka bridge laanti. Zomato app ki restaurant data kavali — API adigi tesukuntundi! 🍕'"}],
+    [{lang:"ENGLISH",q:"What is your biggest weakness? Answer without saying 'I work too hard'!",tip:"Choose a real weakness, show you're working on it. Never say 'perfectionist' or 'workaholic'.",reveal:"'I sometimes spend too long on a problem before asking for help. I've been fixing this by setting a 30-minute rule — if I'm stuck, I ask. It's made me faster and better at collaboration. 💪'"},{lang:"TELUGU",q:"'Why do you want to join our company?' ani adige Amazon interviewer ki Telugu lo explain cheyyi!",tip:"Company research cheyyi — product, culture, growth gurinchi maat ladu",reveal:"'Mee company lo work cheyyadam valla large-scale systems nunchi nerchukovachchu, plus mee engineering culture chala strong ga untundi — adi naa career ki chala help avutundi! 🚀'"}],
+    [{lang:"ENGLISH",q:"Explain the difference between == and === in JavaScript like I'm 10 years old!",tip:"Use a simple real-world analogy. Don't just say 'strict equality'.",reveal:"'== is like asking: are these the same thing? It allows some flexibility (5 == \"5\" is true). === is strict — same value AND same type (5 === \"5\" is false). Use === always! ✅'"},{lang:"TELUGU",q:"Nee amma ki 'What is Cloud Computing?' ani explain cheyyi!",tip:"Analogy use cheyyi — rent house vs own house",reveal:"'Amma, imagine cheyyammu — nee daggara fridge lekapothe neighbor fridge use chestav rent ki. Cloud computing kuda ala untundi — computers ni rent ki vaadukuntaamu internet dwara! ☁️'"}],
+    [{lang:"ENGLISH",q:"You have a bug in production at 2 AM. What do you do?",tip:"Show: calm, systematic, communicate. Not panic.",reveal:"'First I check logs to identify the issue, then notify the team lead. If I can hotfix in under 5 mins, I do it. Otherwise I rollback to the last stable version and investigate in the morning. Communication first! 🛠️'"},{lang:"TELUGU",q:"'Explain React to a non-technical person' ani cheppu!",tip:"Oka real example teesko — website build cheyyadam gurinchi",reveal:"'React ante — oka website ni chinna chinna pieces lo build cheyyadam. Each piece (component) thana pani tanu cheskuntundi. Change aithe React automatically update chestundi — chala fast ga! ⚡'"}],
+  ];
+
+  const interviewBank = [
+    {topic:"Tell me about yourself",framework:"PRESENT → PAST → FUTURE",sample:"I'm a full-stack developer from Hyderabad currently building my skills in React and Node.js. Previously I've worked on web projects using JavaScript and have a strong foundation in DSA. My goal is to join a product-focused company like Amazon or Accenture where I can work on large-scale systems and grow as an engineer.",practice:"Say this out loud right now — time yourself. Should be under 90 seconds. Record yourself and listen back."},
+    {topic:"Why should we hire you?",framework:"SKILLS → PROOF → VALUE",sample:"You should hire me because I bring strong JavaScript and React skills backed by real projects, I learn fast and adapt to new tech quickly, and I'm genuinely motivated to contribute to this team's goals. I won't just complete tasks — I'll understand the business impact of what I'm building.",practice:"Write your own version of this answer with YOUR specific skills and projects. Make it personal."},
+    {topic:"Where do you see yourself in 5 years?",framework:"GROWTH → CONTRIBUTION → ALIGNMENT",sample:"In 5 years I see myself as a senior full-stack developer or tech lead, having built and shipped products used by real users. I want to be someone the team relies on for architectural decisions. I chose to apply here because your scale of problems aligns with the growth I'm looking for.",practice:"Research the company you're applying to and customize this answer. Mention their product specifically."},
+    {topic:"Describe a time you faced a challenge",framework:"SITUATION → ACTION → RESULT (STAR method)",sample:"In my last project, we had a deadline in 48 hours but our API was returning inconsistent data. I stayed calm, isolated the issue to a race condition in async calls, fixed it using Promise.all, and we shipped on time. The client was happy and I learned to always test async edge cases.",practice:"Think of YOUR real challenge — technical or team-related. Write the STAR version of it. Practice it 3 times."},
+    {topic:"What are your strengths?",framework:"STRENGTH → EVIDENCE → RELEVANCE",sample:"My biggest strength is debugging — I enjoy finding root causes, not just patching symptoms. For example, I once traced a performance issue to an N+1 query problem and fixed it, reducing load time by 40%. For a developer role, this attention to detail directly impacts product quality.",practice:"Pick 2-3 real strengths. For each one, think of a specific example. Don't just list adjectives — give proof."},
+  ];
+
+  // Rotate by day
+  const qi = (day - 1) % aptBank.length;
+  const ci = (day - 1) % codingBank.length;
+  const di = (day - 1) % dsaBank.length;
+  const vi = (day - 1) % vocabBank.length;
+  const pi = (day - 1) % punchBank.length;
+  const ii = (day - 1) % interviewBank.length;
+
+  const result = {
+    apt: aptBank[qi],
+    coding: codingBank[ci],
+    dsa: dsaBank[di],
+    vocab: vocabBank[vi],
+    punch: punchBank[pi],
+    interview: interviewBank[ii]
+  };
+
+  aiCache[cacheKey] = result;
+  saveAICache(aiCache);
+  return result;
 }
 
 // ═══════════════════════ BOSSES ═══════════════════════
@@ -1826,3 +1823,4 @@ loadState(); // loads from cloud, then calls renderAll()
 </script>
 </body>
 </html>
+
