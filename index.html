@@ -7,847 +7,275 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #030508;
-  --bg2: #060a0f;
-  --bg3: #0a1020;
-  --panel: #0d1526;
-  --panel2: #111d35;
-  --border: #1a2d55;
-  --green: #00ff88;
-  --green2: #00cc66;
-  --cyan: #00d4ff;
-  --cyan2: #0099cc;
-  --blue: #0066ff;
-  --red: #ff3355;
-  --yellow: #ffcc00;
-  --orange: #ff6600;
-  --purple: #aa44ff;
-  --text: #c8d8f0;
-  --text2: #7890b8;
-  --text3: #3a5080;
-  --gold: #ffcc00;
+  --bg:#030508;--bg2:#060a0f;--bg3:#0a1020;--panel:#0d1526;--panel2:#111d35;
+  --border:#1a2d55;--green:#00ff88;--green2:#00cc66;--cyan:#00d4ff;--cyan2:#0099cc;
+  --red:#ff3355;--yellow:#ffcc00;--orange:#ff6600;--purple:#aa44ff;
+  --text:#c8d8f0;--text2:#7890b8;--text3:#3a5080;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Rajdhani', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-/* MATRIX RAIN BG */
-#matrix-bg {
-  position: fixed;
-  top:0; left:0; right:0; bottom:0;
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 0;
-}
-.container { max-width: 860px; margin: 0 auto; padding: 12px; position: relative; z-index: 1; }
-
-/* SCANLINES */
-body::after {
-  content:'';
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.015) 2px,rgba(0,255,136,0.015) 4px);
-  pointer-events:none;
-  z-index:999;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;}
+#matrix-bg{position:fixed;top:0;left:0;right:0;bottom:0;opacity:0.03;pointer-events:none;z-index:0;}
+.container{max-width:860px;margin:0 auto;padding:12px;position:relative;z-index:1;}
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.015) 2px,rgba(0,255,136,0.015) 4px);pointer-events:none;z-index:999;}
 
 /* HEADER */
-.header {
-  text-align:center;
-  padding: 20px 0 12px;
-  position:relative;
-}
-.header::after {
-  content:'';
-  display:block;
-  height:1px;
-  background: linear-gradient(90deg, transparent, var(--green), var(--cyan), var(--green), transparent);
-  margin-top:14px;
-  box-shadow: 0 0 10px rgba(0,255,136,0.3);
-}
-.logo {
-  font-family:'Orbitron', monospace;
-  font-size: clamp(16px,4vw,26px);
-  font-weight:900;
-  color: var(--green);
-  text-shadow: 0 0 20px rgba(0,255,136,0.6), 0 0 40px rgba(0,255,136,0.2);
-  letter-spacing:3px;
-}
-.logo span { color: var(--cyan); }
-.tagline {
-  font-family:'Share Tech Mono', monospace;
-  font-size:10px;
-  color: var(--text3);
-  letter-spacing:4px;
-  margin-top:4px;
-}
-.blink { animation: blink 1s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.header{text-align:center;padding:20px 0 12px;}
+.header::after{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),var(--green),transparent);margin-top:14px;box-shadow:0 0 10px rgba(0,255,136,0.3);}
+.logo{font-family:'Orbitron',monospace;font-size:clamp(16px,4vw,26px);font-weight:900;color:var(--green);text-shadow:0 0 20px rgba(0,255,136,0.6);letter-spacing:3px;}
+.logo span{color:var(--cyan);}
+.tagline{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:4px;margin-top:4px;}
+.blink{animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* DAY NAV */
-.day-nav {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-  margin:14px 0;
-}
-.nav-btn {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--green);
-  padding: 7px 18px;
-  font-family:'Orbitron', monospace;
-  font-size:11px;
-  cursor:pointer;
-  clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
-  transition:all 0.2s;
-  letter-spacing:1px;
-}
-.nav-btn:hover { background:var(--panel2); border-color:var(--green); box-shadow:0 0 10px rgba(0,255,136,0.2); }
-.day-center { text-align:center; }
-.day-num {
-  font-family:'Orbitron', monospace;
-  font-size:22px;
-  color:var(--text);
-  font-weight:700;
-}
-.day-date {
-  font-family:'Share Tech Mono', monospace;
-  font-size:10px;
-  color:var(--text3);
-  margin-top:2px;
-}
+/* NAV */
+.day-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0;}
+.nav-btn{background:var(--panel);border:1px solid var(--border);color:var(--green);padding:7px 18px;font-family:'Orbitron',monospace;font-size:11px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all 0.2s;letter-spacing:1px;}
+.nav-btn:hover{background:var(--panel2);border-color:var(--green);}
+.day-center{text-align:center;}
+.day-num{font-family:'Orbitron',monospace;font-size:22px;color:var(--text);font-weight:700;}
+.day-date{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px;}
 
-/* STATUS STRIP */
-.status-strip {
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:8px;
-  margin:10px 0;
-}
-.stat-box {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:8px 12px;
-  clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
-  position:relative;
-  overflow:hidden;
-}
-.stat-box::before {
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,var(--green),transparent);
-}
-.stat-label {
-  font-family:'Share Tech Mono', monospace;
-  font-size:8px;
-  color:var(--text3);
-  letter-spacing:2px;
-  text-transform:uppercase;
-}
-.stat-val {
-  font-family:'Orbitron', monospace;
-  font-size:20px;
-  font-weight:700;
-  line-height:1.1;
-  margin-top:2px;
-}
-.stat-val.g { color:var(--green); text-shadow:0 0 10px rgba(0,255,136,0.4); }
-.stat-val.c { color:var(--cyan); }
-.stat-val.y { color:var(--yellow); }
-
-.xp-full {
-  grid-column: 1/-1;
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:8px 12px;
-}
-.xp-row {
-  display:flex;
-  justify-content:space-between;
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--text3);
-  margin-bottom:5px;
-}
-.xp-track {
-  height:6px;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  overflow:hidden;
-  position:relative;
-}
-.xp-fill {
-  height:100%;
-  background:linear-gradient(90deg,var(--green2),var(--green));
-  transition:width 0.8s ease;
-  box-shadow:0 0 8px rgba(0,255,136,0.5);
-}
+/* STATUS */
+.status-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+.stat-box{background:var(--panel);border:1px solid var(--border);padding:8px 12px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));position:relative;overflow:hidden;}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--green),transparent);}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+.stat-val{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;line-height:1.1;margin-top:2px;}
+.stat-val.g{color:var(--green);text-shadow:0 0 10px rgba(0,255,136,0.4);}
+.stat-val.c{color:var(--cyan);}
+.stat-val.y{color:var(--yellow);}
+.xp-full{grid-column:1/-1;background:var(--panel);border:1px solid var(--border);padding:8px 12px;}
+.xp-row{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:5px;}
+.xp-track{height:6px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--green2),var(--green));transition:width 0.8s ease;box-shadow:0 0 8px rgba(0,255,136,0.5);}
 
 /* TABS */
-.tabs {
-  display:flex;
-  gap:2px;
-  margin:14px 0 0;
-  border-bottom:1px solid var(--border);
-  overflow-x:auto;
-  scrollbar-width:none;
-}
-.tabs::-webkit-scrollbar { display:none; }
-.tab-btn {
-  background:transparent;
-  border:none;
-  color:var(--text3);
-  padding:8px 14px;
-  font-family:'Rajdhani', sans-serif;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  letter-spacing:1px;
-  border-bottom:2px solid transparent;
-  margin-bottom:-1px;
-  transition:all 0.2s;
-  white-space:nowrap;
-}
-.tab-btn.active { color:var(--green); border-bottom-color:var(--green); }
-.tab-btn:hover:not(.active) { color:var(--text2); }
-.tab-panel { display:none; padding-top:8px; }
-.tab-panel.active { display:block; }
+.tabs{display:flex;gap:2px;margin:14px 0 0;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{background:transparent;border:none;color:var(--text3);padding:8px 14px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;white-space:nowrap;}
+.tab-btn.active{color:var(--green);border-bottom-color:var(--green);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+.tab-panel{display:none;padding-top:8px;}
+.tab-panel.active{display:block;}
 
 /* SECTION HEADER */
-.sec-hdr {
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--green);
-  letter-spacing:4px;
-  text-transform:uppercase;
-  margin:16px 0 8px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.sec-hdr::after {
-  content:'';
-  flex:1;
-  height:1px;
-  background:linear-gradient(90deg,var(--border),transparent);
-}
+.sec-hdr{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);letter-spacing:4px;text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px;}
+.sec-hdr::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
-/* DAILY BRIEF */
-.daily-brief {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-left:2px solid var(--green);
-  padding:12px 16px;
-  margin:10px 0;
-  position:relative;
-  overflow:hidden;
-}
-.daily-brief::before {
-  content:'> ';
-  color:var(--green);
-  font-family:'Share Tech Mono', monospace;
-}
-.brief-title {
-  font-family:'Orbitron', monospace;
-  font-size:13px;
-  color:var(--green);
-  display:inline;
-}
-.brief-sub {
-  color:var(--text2);
-  font-size:12px;
-  margin-top:6px;
-  line-height:1.5;
-  font-style:italic;
-}
+/* BRIEF */
+.daily-brief{background:var(--panel);border:1px solid var(--border);border-left:2px solid var(--green);padding:12px 16px;margin:10px 0;}
+.daily-brief::before{content:'> ';color:var(--green);font-family:'Share Tech Mono',monospace;}
+.brief-title{font-family:'Orbitron',monospace;font-size:13px;color:var(--green);display:inline;}
+.brief-sub{color:var(--text2);font-size:12px;margin-top:6px;line-height:1.5;font-style:italic;}
 
-/* SESSION CARDS */
-.session-grid { display:flex; flex-direction:column; gap:10px; }
-.session-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  overflow:hidden;
-  position:relative;
-}
-.session-card::before {
-  content:'';
-  position:absolute;
-  top:0;left:0;bottom:0;width:3px;
-}
-.session-card.apt::before { background:var(--yellow); }
-.session-card.code::before { background:var(--green); }
-.session-card.speak::before { background:var(--cyan); }
-.session-card.dsa::before { background:var(--purple); }
-.session-card.punch::before { background:var(--orange); }
-
-.session-head {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 14px;
-  cursor:pointer;
-  user-select:none;
-}
-.session-icon { font-size:20px; }
-.session-info { flex:1; }
-.session-tag {
-  font-family:'Share Tech Mono', monospace;
-  font-size:8px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-}
-.session-card.apt .session-tag { color:var(--yellow); }
-.session-card.code .session-tag { color:var(--green); }
-.session-card.speak .session-tag { color:var(--cyan); }
-.session-card.dsa .session-tag { color:var(--purple); }
-.session-card.punch .session-tag { color:var(--orange); }
-
-.session-title {
-  font-size:15px;
-  font-weight:700;
-  margin-top:2px;
-}
-.session-meta {
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--text3);
-  margin-top:2px;
-}
-.session-status {
-  font-family:'Orbitron', monospace;
-  font-size:11px;
-  font-weight:700;
-  padding:4px 10px;
-  border:1px solid;
-  text-align:center;
-}
-.session-status.done { color:var(--green); border-color:var(--green); background:rgba(0,255,136,0.1); }
-.session-status.pending { color:var(--text3); border-color:var(--border); }
-
-.session-body {
-  display:none;
-  padding:0 14px 14px;
-  border-top:1px solid var(--border);
-}
-.session-body.open { display:block; }
+/* SESSIONS */
+.session-grid{display:flex;flex-direction:column;gap:10px;}
+.session-card{background:var(--panel);border:1px solid var(--border);overflow:hidden;position:relative;}
+.session-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;}
+.session-card.apt::before{background:var(--yellow);}
+.session-card.code::before{background:var(--green);}
+.session-card.speak::before{background:var(--cyan);}
+.session-card.dsa::before{background:var(--purple);}
+.session-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;}
+.session-icon{font-size:20px;}
+.session-info{flex:1;}
+.session-tag{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;}
+.session-card.apt .session-tag{color:var(--yellow);}
+.session-card.code .session-tag{color:var(--green);}
+.session-card.speak .session-tag{color:var(--cyan);}
+.session-card.dsa .session-tag{color:var(--purple);}
+.session-title{font-size:15px;font-weight:700;margin-top:2px;}
+.session-meta{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);margin-top:2px;}
+.session-status{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;padding:4px 10px;border:1px solid;text-align:center;}
+.session-status.done{color:var(--green);border-color:var(--green);background:rgba(0,255,136,0.1);}
+.session-status.pending{color:var(--text3);border-color:var(--border);}
+.session-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border);}
+.session-body.open{display:block;}
 
 /* QUESTIONS */
-.q-block {
-  background:var(--bg3);
-  border:1px solid var(--border);
-  padding:12px;
-  margin:10px 0;
-  position:relative;
-}
-.q-num {
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--text3);
-  margin-bottom:6px;
-}
-.q-text {
-  font-size:14px;
-  font-weight:600;
-  line-height:1.5;
-  color:var(--text);
-}
-.q-options {
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  margin-top:10px;
-}
-.q-opt {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:8px 12px;
-  font-size:13px;
-  cursor:pointer;
-  transition:all 0.2s;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.q-opt:hover { border-color:var(--green); color:var(--green); }
-.q-opt.correct { background:rgba(0,255,136,0.1); border-color:var(--green); color:var(--green); }
-.q-opt.wrong { background:rgba(255,51,85,0.1); border-color:var(--red); color:var(--red); }
-.q-opt.disabled { pointer-events:none; }
-.opt-letter {
-  font-family:'Share Tech Mono', monospace;
-  font-size:11px;
-  width:20px;
-  flex-shrink:0;
-}
+.q-block{background:var(--bg3);border:1px solid var(--border);padding:12px;margin:10px 0;}
+.q-num{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:6px;}
+.q-text{font-size:14px;font-weight:600;line-height:1.5;color:var(--text);}
+.q-options{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.q-opt{background:var(--panel);border:1px solid var(--border);padding:8px 12px;font-size:13px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+.q-opt:hover{border-color:var(--green);color:var(--green);}
+.q-opt.correct{background:rgba(0,255,136,0.1);border-color:var(--green);color:var(--green);}
+.q-opt.wrong{background:rgba(255,51,85,0.1);border-color:var(--red);color:var(--red);}
+.q-opt.disabled{pointer-events:none;}
+.opt-letter{font-family:'Share Tech Mono',monospace;font-size:11px;width:20px;flex-shrink:0;}
+.q-explanation{display:none;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);padding:10px;margin-top:8px;font-size:12px;color:var(--cyan);line-height:1.5;}
+.q-explanation.show{display:block;}
 
-.q-explanation {
-  display:none;
-  background:rgba(0,212,255,0.05);
-  border:1px solid rgba(0,212,255,0.2);
-  padding:10px;
-  margin-top:8px;
-  font-size:12px;
-  color:var(--cyan);
-  line-height:1.5;
-}
-.q-explanation.show { display:block; }
-
-/* CODE EDITOR */
-.code-editor-wrap {
-  margin:10px 0;
-  border:1px solid var(--border);
-  overflow:hidden;
-}
-.editor-header {
-  background:var(--bg3);
-  padding:6px 12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--border);
-}
-.editor-title {
-  font-family:'Share Tech Mono', monospace;
-  font-size:10px;
-  color:var(--green);
-}
-.editor-btns { display:flex; gap:6px; }
-.run-btn, .reset-btn, .hint-btn {
-  padding:4px 12px;
-  font-family:'Share Tech Mono', monospace;
-  font-size:10px;
-  cursor:pointer;
-  border:1px solid;
-  background:transparent;
-  transition:all 0.2s;
-}
-.run-btn { color:var(--green); border-color:var(--green); }
-.run-btn:hover { background:rgba(0,255,136,0.1); }
-.reset-btn { color:var(--text3); border-color:var(--border); }
-.reset-btn:hover { color:var(--text); border-color:var(--text3); }
-.hint-btn { color:var(--yellow); border-color:var(--yellow); }
-.hint-btn:hover { background:rgba(255,204,0,0.1); }
-
-.code-textarea {
-  width:100%;
-  min-height:140px;
-  background:var(--bg2);
-  color:var(--green);
-  font-family:'Share Tech Mono', monospace;
-  font-size:13px;
-  padding:12px;
-  border:none;
-  outline:none;
-  resize:vertical;
-  line-height:1.6;
-  tab-size:2;
-}
-.code-output {
-  background:var(--bg);
-  border-top:1px solid var(--border);
-  padding:10px 12px;
-  font-family:'Share Tech Mono', monospace;
-  font-size:12px;
-  min-height:40px;
-  color:var(--cyan);
-  white-space:pre-wrap;
-}
-.code-output.error { color:var(--red); }
-.code-output.success { color:var(--green); }
-
-.hint-box {
-  display:none;
-  background:rgba(255,204,0,0.05);
-  border:1px solid rgba(255,204,0,0.2);
-  padding:8px 12px;
-  font-size:12px;
-  color:var(--yellow);
-  margin-top:6px;
-  line-height:1.5;
-}
-.hint-box.show { display:block; }
+/* CODE */
+.code-editor-wrap{margin:10px 0;border:1px solid var(--border);overflow:hidden;}
+.editor-header{background:var(--bg3);padding:6px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+.editor-title{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);}
+.editor-btns{display:flex;gap:6px;}
+.run-btn,.reset-btn,.hint-btn{padding:4px 12px;font-family:'Share Tech Mono',monospace;font-size:10px;cursor:pointer;border:1px solid;background:transparent;transition:all 0.2s;}
+.run-btn{color:var(--green);border-color:var(--green);}
+.run-btn:hover{background:rgba(0,255,136,0.1);}
+.reset-btn{color:var(--text3);border-color:var(--border);}
+.hint-btn{color:var(--yellow);border-color:var(--yellow);}
+.hint-btn:hover{background:rgba(255,204,0,0.1);}
+.code-textarea{width:100%;min-height:140px;background:var(--bg2);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:13px;padding:12px;border:none;outline:none;resize:vertical;line-height:1.6;}
+.code-output{background:var(--bg);border-top:1px solid var(--border);padding:10px 12px;font-family:'Share Tech Mono',monospace;font-size:12px;min-height:40px;color:var(--cyan);white-space:pre-wrap;}
+.code-output.error{color:var(--red);}
+.code-output.success{color:var(--green);}
+.hint-box{display:none;background:rgba(255,204,0,0.05);border:1px solid rgba(255,204,0,0.2);padding:8px 12px;font-size:12px;color:var(--yellow);margin-top:6px;line-height:1.5;}
+.hint-box.show{display:block;}
 
 /* VOCAB */
-.vocab-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-top:2px solid var(--cyan);
-  padding:14px;
-  margin:10px 0;
-  text-align:center;
-}
-.vocab-word {
-  font-family:'Orbitron', monospace;
-  font-size:22px;
-  color:var(--cyan);
-  text-shadow:0 0 15px rgba(0,212,255,0.4);
-  font-weight:700;
-}
-.vocab-phonetic {
-  font-family:'Share Tech Mono', monospace;
-  font-size:11px;
-  color:var(--text3);
-  margin-top:4px;
-}
-.vocab-pos {
-  display:inline-block;
-  background:rgba(0,212,255,0.1);
-  color:var(--cyan);
-  font-size:10px;
-  padding:2px 8px;
-  margin-top:6px;
-  font-family:'Share Tech Mono', monospace;
-  letter-spacing:2px;
-}
-.vocab-meaning {
-  font-size:14px;
-  color:var(--text);
-  margin-top:8px;
-  line-height:1.5;
-  font-weight:600;
-}
-.vocab-example {
-  font-size:12px;
-  color:var(--text2);
-  margin-top:6px;
-  font-style:italic;
-  line-height:1.5;
-}
-.vocab-Telugu, .vocab-Hindi {
-  font-size:12px;
-  margin-top:4px;
-  color:var(--text3);
-}
+.vocab-card{background:var(--panel);border:1px solid var(--border);border-top:2px solid var(--cyan);padding:14px;margin:10px 0;text-align:center;}
+.vocab-word{font-family:'Orbitron',monospace;font-size:22px;color:var(--cyan);text-shadow:0 0 15px rgba(0,212,255,0.4);font-weight:700;}
+.vocab-phonetic{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3);margin-top:4px;}
+.vocab-pos{display:inline-block;background:rgba(0,212,255,0.1);color:var(--cyan);font-size:10px;padding:2px 8px;margin-top:6px;font-family:'Share Tech Mono',monospace;letter-spacing:2px;}
+.vocab-meaning{font-size:14px;color:var(--text);margin-top:8px;line-height:1.5;font-weight:600;}
+.vocab-example{font-size:12px;color:var(--text2);margin-top:6px;font-style:italic;line-height:1.5;}
 
-/* PUNCH QUESTIONS */
-.punch-card {
-  background:var(--panel);
-  border:1px solid var(--orange);
-  padding:14px;
-  margin:10px 0;
-  position:relative;
-  overflow:hidden;
-}
-.punch-card::before {
-  content:'😂';
-  position:absolute;
-  top:10px; right:14px;
-  font-size:28px;
-  opacity:0.3;
-}
-.punch-lang {
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--orange);
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-bottom:6px;
-}
-.punch-q {
-  font-size:15px;
-  font-weight:700;
-  color:var(--text);
-  line-height:1.4;
-}
-.punch-tip {
-  font-size:11px;
-  color:var(--text3);
-  margin-top:6px;
-  font-style:italic;
-}
-.punch-reveal {
-  display:none;
-  background:rgba(255,102,0,0.08);
-  border:1px solid rgba(255,102,0,0.3);
-  padding:10px;
-  margin-top:10px;
-  font-size:13px;
-  color:var(--orange);
-  line-height:1.5;
-}
-.punch-reveal.show { display:block; }
-.punch-btn {
-  margin-top:10px;
-  background:transparent;
-  border:1px solid var(--orange);
-  color:var(--orange);
-  padding:6px 16px;
-  font-family:'Share Tech Mono', monospace;
-  font-size:11px;
-  cursor:pointer;
-  transition:all 0.2s;
-}
-.punch-btn:hover { background:rgba(255,102,0,0.1); }
+/* PUNCH */
+.punch-card{background:var(--panel);border:1px solid var(--orange);padding:14px;margin:10px 0;position:relative;overflow:hidden;}
+.punch-lang{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--orange);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+.punch-q{font-size:15px;font-weight:700;color:var(--text);line-height:1.4;}
+.punch-tip{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic;}
+.punch-reveal{display:none;background:rgba(255,102,0,0.08);border:1px solid rgba(255,102,0,0.3);padding:10px;margin-top:10px;font-size:13px;color:var(--orange);line-height:1.5;}
+.punch-reveal.show{display:block;}
+.punch-btn{margin-top:10px;background:transparent;border:1px solid var(--orange);color:var(--orange);padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:11px;cursor:pointer;transition:all 0.2s;}
 
 /* STREAKS */
-.streaks-grid {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-}
-.streak-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:10px 12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.streak-icon { font-size:20px; }
-.streak-count {
-  font-family:'Orbitron', monospace;
-  font-size:20px;
-  color:var(--orange);
-  font-weight:700;
-}
-.streak-name { font-size:12px; font-weight:600; }
-.streak-label { font-size:10px; color:var(--text3); }
+.streaks-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.streak-card{background:var(--panel);border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.streak-icon{font-size:20px;}
+.streak-count{font-family:'Orbitron',monospace;font-size:20px;color:var(--orange);font-weight:700;}
+.streak-name{font-size:12px;font-weight:600;}
+.streak-label{font-size:10px;color:var(--text3);}
 
 /* BOSS */
-.boss-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-top:2px solid var(--red);
-  padding:12px 14px;
-  margin:8px 0;
-}
-.boss-row {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:8px;
-}
-.boss-emoji { font-size:24px; }
-.boss-name { font-weight:700; font-size:14px; }
-.boss-lvl {
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--red);
-}
-.boss-hp-row {
-  display:flex;
-  justify-content:space-between;
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--text3);
-  margin-bottom:4px;
-}
-.boss-track {
-  height:8px;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  overflow:hidden;
-}
-.boss-fill {
-  height:100%;
-  background:linear-gradient(90deg,#cc0022,var(--red));
-  transition:width 1s ease;
-  box-shadow:0 0 6px rgba(255,51,85,0.4);
-}
-.boss-tip {
-  font-size:11px;
-  color:var(--text3);
-  margin-top:6px;
-  font-style:italic;
-}
+.boss-card{background:var(--panel);border:1px solid var(--border);border-top:2px solid var(--red);padding:12px 14px;margin:8px 0;}
+.boss-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.boss-emoji{font-size:24px;}
+.boss-name{font-weight:700;font-size:14px;}
+.boss-lvl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--red);}
+.boss-hp-row{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:4px;}
+.boss-track{height:8px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.boss-fill{height:100%;background:linear-gradient(90deg,#cc0022,var(--red));transition:width 1s ease;}
+.boss-tip{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic;}
 
 /* PROGRESS */
-.prog-wrap { margin:8px 0; }
-.prog-label {
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  color:var(--text2);
-  margin-bottom:4px;
-  font-weight:600;
-}
-.prog-track {
-  height:8px;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  overflow:hidden;
-}
-.prog-fill {
-  height:100%;
-  transition:width 0.8s ease;
-}
+.prog-wrap{margin:8px 0;}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:600;}
+.prog-track{height:8px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;}
+.prog-fill{height:100%;transition:width 0.8s ease;}
+.complete-wrap{text-align:center;margin:20px 0 10px;}
+.complete-btn{background:linear-gradient(135deg,var(--green2),var(--green));color:var(--bg);border:none;padding:14px 40px;font-family:'Orbitron',monospace;font-size:13px;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all 0.2s;font-weight:700;letter-spacing:2px;}
+.complete-btn:hover{transform:scale(1.03);box-shadow:0 0 20px rgba(0,255,136,0.4);}
+.complete-btn:disabled{opacity:0.4;cursor:default;transform:none;}
 
-/* COMPLETE BTN */
-.complete-wrap { text-align:center; margin:20px 0 10px; }
-.complete-btn {
-  background:linear-gradient(135deg,var(--green2),var(--green));
-  color:var(--bg);
-  border:none;
-  padding:14px 40px;
-  font-family:'Orbitron', monospace;
-  font-size:13px;
-  cursor:pointer;
-  clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
-  transition:all 0.2s;
-  font-weight:700;
-  letter-spacing:2px;
-}
-.complete-btn:hover { transform:scale(1.03); box-shadow:0 0 20px rgba(0,255,136,0.4); }
-.complete-btn:disabled { opacity:0.4; cursor:default; transform:none; }
-
-/* TOAST */
-.toast {
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:var(--panel2);
-  border:1px solid var(--green);
-  color:var(--green);
-  padding:10px 22px;
-  font-family:'Share Tech Mono', monospace;
-  font-size:12px;
-  z-index:9999;
-  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  white-space:nowrap;
-  box-shadow:0 0 20px rgba(0,255,136,0.2);
-}
-.toast.show { transform:translateX(-50%) translateY(0); }
-
-/* XP POP */
-.xp-pop {
-  position:fixed;
-  pointer-events:none;
-  font-family:'Orbitron', monospace;
-  color:var(--green);
-  font-size:16px;
-  font-weight:700;
-  text-shadow:0 0 10px var(--green);
-  animation:floatUp 1.5s ease-out forwards;
-  z-index:9999;
-}
-@keyframes floatUp {
-  0%{opacity:1;transform:translateY(0) scale(1)}
-  100%{opacity:0;transform:translateY(-80px) scale(1.3)}
-}
+/* TOAST / XP */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel2);border:1px solid var(--green);color:var(--green);padding:10px 22px;font-family:'Share Tech Mono',monospace;font-size:12px;z-index:9999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.xp-pop{position:fixed;pointer-events:none;font-family:'Orbitron',monospace;color:var(--green);font-size:16px;font-weight:700;text-shadow:0 0 10px var(--green);animation:floatUp 1.5s ease-out forwards;z-index:9999;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(1.3)}}
 
 /* ACHIEVEMENTS */
-.ach-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-  gap:8px;
-}
-.ach-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:12px;
-  text-align:center;
-  opacity:0.35;
-  transition:all 0.3s;
-}
-.ach-card.unlocked {
-  opacity:1;
-  border-color:var(--green);
-  background:rgba(0,255,136,0.05);
-  box-shadow:0 0 10px rgba(0,255,136,0.1);
-}
-.ach-icon { font-size:26px; display:block; }
-.ach-name { font-size:11px; font-weight:700; margin-top:4px; color:var(--green); }
-.ach-desc { font-size:9px; color:var(--text3); margin-top:2px; }
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;}
+.ach-card{background:var(--panel);border:1px solid var(--border);padding:12px;text-align:center;opacity:0.35;transition:all 0.3s;}
+.ach-card.unlocked{opacity:1;border-color:var(--green);background:rgba(0,255,136,0.05);}
+.ach-icon{font-size:26px;display:block;}
+.ach-name{font-size:11px;font-weight:700;margin-top:4px;color:var(--green);}
+.ach-desc{font-size:9px;color:var(--text3);margin-top:2px;}
 
 /* SCHEDULE */
-.sched-wrap {
-  background:var(--panel);
-  border:1px solid var(--border);
-  overflow:hidden;
-}
-.sched-row {
-  display:grid;
-  grid-template-columns:75px 1fr auto;
-  gap:8px;
-  padding:8px 12px;
-  border-bottom:1px solid var(--border);
-  align-items:center;
-}
-.sched-row:last-child { border-bottom:none; }
-.sched-time {
-  font-family:'Share Tech Mono', monospace;
-  font-size:10px;
-  color:var(--cyan);
-}
-.sched-act { font-size:13px; font-weight:500; }
-.sched-dur {
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  color:var(--text3);
-  text-align:right;
-}
-.sched-row.highlight { background:rgba(0,255,136,0.04); border-left:2px solid var(--green); }
+.sched-wrap{background:var(--panel);border:1px solid var(--border);overflow:hidden;}
+.sched-row{display:grid;grid-template-columns:75px 1fr auto;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);align-items:center;}
+.sched-row:last-child{border-bottom:none;}
+.sched-time{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);}
+.sched-act{font-size:13px;font-weight:500;}
+.sched-dur{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);text-align:right;}
+.sched-row.highlight{background:rgba(0,255,136,0.04);border-left:2px solid var(--green);}
 
-/* DIFFICULTY BADGE */
-.diff-badge {
-  display:inline-block;
-  font-family:'Share Tech Mono', monospace;
-  font-size:9px;
-  padding:2px 8px;
-  margin-left:8px;
-  letter-spacing:1px;
-}
-.diff-easy { background:rgba(0,255,136,0.1); color:var(--green); }
-.diff-med { background:rgba(255,204,0,0.1); color:var(--yellow); }
-.diff-hard { background:rgba(255,51,85,0.1); color:var(--red); }
+/* MISC */
+.diff-badge{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:9px;padding:2px 8px;margin-left:8px;letter-spacing:1px;}
+.diff-easy{background:rgba(0,255,136,0.1);color:var(--green);}
+.diff-med{background:rgba(255,204,0,0.1);color:var(--yellow);}
+.diff-hard{background:rgba(255,51,85,0.1);color:var(--red);}
+.info-box{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);padding:10px 14px;font-size:12px;color:var(--text2);line-height:1.6;margin:8px 0;}
+.info-box strong{color:var(--cyan);}
+.mark-btn{margin-top:12px;width:100%;background:transparent;border:1px solid var(--green);color:var(--green);padding:10px;font-family:'Orbitron',monospace;font-size:11px;cursor:pointer;transition:all 0.2s;letter-spacing:2px;}
+.mark-btn:hover{background:rgba(0,255,136,0.1);}
+.mark-btn.done-btn{border-color:var(--text3);color:var(--text3);}
+.ai-badge{background:linear-gradient(90deg,rgba(0,255,136,0.08),rgba(0,212,255,0.08));border:1px solid rgba(0,255,136,0.25);border-left:3px solid var(--green);padding:6px 12px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px;margin:8px 0;}
 
-.info-box {
-  background:rgba(0,212,255,0.05);
-  border:1px solid rgba(0,212,255,0.15);
-  padding:10px 14px;
-  font-size:12px;
-  color:var(--text2);
-  line-height:1.6;
-  margin:8px 0;
-}
-.info-box strong { color:var(--cyan); }
+/* ══════════════════════════════════════
+   DAILY CHECKLIST
+══════════════════════════════════════ */
+.cl-panel{background:var(--panel);border:1px solid var(--border);margin:10px 0;overflow:hidden;border-radius:0;}
+.cl-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);}
+.cl-group-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;}
+.cl-group-count{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);}
+.cl-mini-bar{height:3px;}
+.cl-mini-fill{height:100%;transition:width 0.4s ease;}
+.cl-item{display:flex;align-items:center;gap:12px;padding:8px 14px;cursor:pointer;transition:background 0.15s;user-select:none;border-bottom:1px solid rgba(26,45,85,0.4);}
+.cl-item:last-child{border-bottom:none;}
+.cl-item:hover{background:rgba(0,212,255,0.04);}
+.cl-item.done .cl-label{color:var(--text3);text-decoration:line-through;}
+.cl-box{width:16px;height:16px;border:1px solid var(--text3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-size:10px;font-family:'Share Tech Mono',monospace;}
+.cl-item.done .cl-box{border-color:var(--cyan);background:rgba(0,212,255,0.15);color:var(--cyan);}
+.cl-label{font-size:13px;font-weight:500;flex:1;}
+.cl-time{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);white-space:nowrap;}
+.cl-xp{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);opacity:0;transition:opacity 0.3s;margin-left:4px;}
+.cl-item.done .cl-xp{opacity:1;}
 
-.mark-btn {
-  margin-top:12px;
-  width:100%;
-  background:transparent;
-  border:1px solid var(--green);
-  color:var(--green);
-  padding:10px;
-  font-family:'Orbitron', monospace;
-  font-size:11px;
-  cursor:pointer;
-  transition:all 0.2s;
-  letter-spacing:2px;
-}
-.mark-btn:hover { background:rgba(0,255,136,0.1); }
-.mark-btn.done-btn { border-color:var(--text3); color:var(--text3); }
+/* ══════════════════════════════════════
+   REPORTS / ANALYTICS
+══════════════════════════════════════ */
+.period-tabs{display:flex;gap:4px;margin-bottom:14px;}
+.period-tab{background:var(--bg3);border:1px solid var(--border);color:var(--text3);padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.2s;letter-spacing:1px;}
+.period-tab.active{border-color:var(--green);color:var(--green);background:rgba(0,255,136,0.08);}
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.rpt-card{background:var(--panel);border:1px solid var(--border);padding:14px;position:relative;overflow:hidden;}
+.rpt-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--cyan));}
+.rpt-card.wide{grid-column:1/-1;}
+.rpt-card-title{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.rpt-big{font-family:'Orbitron',monospace;font-size:30px;font-weight:900;color:var(--green);line-height:1;}
+.rpt-sub{font-size:11px;color:var(--text3);margin-top:4px;}
 
-.ai-badge {
-  background: linear-gradient(90deg, rgba(0,255,136,0.08), rgba(0,212,255,0.08));
-  border: 1px solid rgba(0,255,136,0.25);
-  border-left: 3px solid var(--green);
-  padding: 6px 12px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
-  color: var(--green);
-  letter-spacing: 2px;
-  margin: 8px 0;
-}
-.ai-loading-badge {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  color: var(--green);
-  border: 1px solid var(--green);
-  padding: 4px 8px;
-  animation: blink 1.2s infinite;
-}
+/* PIE CHART */
+.pie-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;}
+.pie-legend{display:flex;flex-direction:column;gap:7px;}
+.pie-leg-row{display:flex;align-items:center;gap:8px;font-size:12px;}
+.pie-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
-@media(max-width:480px) {
-  .status-strip { grid-template-columns:1fr 1fr; }
-  .streaks-grid { grid-template-columns:1fr 1fr; }
+/* BAR CHART */
+.bar-chart{display:flex;flex-direction:column;gap:7px;}
+.bar-row{display:flex;align-items:center;gap:8px;}
+.bar-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text2);width:52px;flex-shrink:0;text-align:right;}
+.bar-track{flex:1;height:18px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;position:relative;}
+.bar-fill{height:100%;transition:width 0.8s ease;}
+.bar-val{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);width:28px;text-align:right;flex-shrink:0;}
+
+/* HEATMAP */
+.heatmap-wrap{display:flex;flex-direction:column;gap:4px;overflow-x:auto;}
+.heatmap-row{display:flex;gap:3px;align-items:center;}
+.hm-label{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text3);width:28px;flex-shrink:0;}
+.hm-cell{width:22px;height:22px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:7px;transition:all 0.2s;cursor:default;}
+.hm-cell.lv0{background:var(--bg3);color:var(--text3);}
+.hm-cell.lv1{background:rgba(0,255,136,0.13);color:var(--green);border-color:rgba(0,255,136,0.3);}
+.hm-cell.lv2{background:rgba(0,255,136,0.3);color:var(--green);border-color:rgba(0,255,136,0.5);}
+.hm-cell.lv3{background:rgba(0,255,136,0.58);color:#000;border-color:var(--green);}
+.hm-cell.lv4{background:var(--green);color:#000;border-color:var(--green);box-shadow:0 0 5px rgba(0,255,136,0.4);}
+
+/* SUMMARY TABLE */
+.rpt-table{width:100%;border-collapse:collapse;font-size:12px;}
+.rpt-table th{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text3);letter-spacing:2px;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border);}
+.rpt-table td{padding:7px 10px;border-bottom:1px solid rgba(26,45,85,0.4);}
+.rpt-table tr:last-child td{border-bottom:none;}
+.vg{color:var(--green);font-family:'Orbitron',monospace;font-weight:700;}
+.vm{color:var(--yellow);font-family:'Orbitron',monospace;font-weight:700;}
+.vb{color:var(--red);font-family:'Orbitron',monospace;font-weight:700;}
+
+@media(max-width:480px){
+  .status-strip{grid-template-columns:1fr 1fr;}
+  .rpt-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -860,54 +288,42 @@ body::after {
     <div class="logo">VISHNU<span>.DEV</span> <span style="color:var(--text3);font-size:14px">— BRAIN OS</span></div>
     <div class="tagline">INITIALIZING NEURAL UPGRADE PROTOCOL<span class="blink">_</span></div>
     <div style="margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px">
-      ⚡ AI-POWERED QUESTIONS ENGINE ACTIVE
-      <button onclick="refreshQuestions()" style="margin-left:10px;background:transparent;border:1px solid var(--green);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:8px;padding:2px 8px;cursor:pointer;letter-spacing:1px" title="Fetch new questions for today">↺ REFRESH</button>
+      &#x26A1; AI-POWERED QUESTIONS ENGINE ACTIVE
+      <button onclick="refreshQuestions()" style="margin-left:10px;background:transparent;border:1px solid var(--green);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:8px;padding:2px 8px;cursor:pointer">&#x21BA; REFRESH</button>
     </div>
-    <div id="syncStatus" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px;margin-top:4px;opacity:0.4;transition:opacity 0.5s;">✓ Supabase Sync Active</div>
+    <div id="syncStatus" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--green);letter-spacing:2px;margin-top:4px;opacity:0.4;transition:opacity 0.5s;">&#x2713; Supabase Sync Active</div>
   </div>
 
   <!-- DAY NAV -->
   <div class="day-nav">
-    <button class="nav-btn" onclick="changeDay(-1)">◀ PREV</button>
+    <button class="nav-btn" onclick="changeDay(-1)">&#x25C4; PREV</button>
     <div class="day-center">
       <div class="day-num" id="dayNum">DAY 1</div>
-      <div class="day-date" id="dayDate">—</div>
+      <div class="day-date" id="dayDate">&#x2014;</div>
     </div>
-    <button class="nav-btn" onclick="changeDay(1)">NEXT ▶</button>
+    <button class="nav-btn" onclick="changeDay(1)">NEXT &#x25BA;</button>
   </div>
 
   <!-- STATUS -->
   <div class="status-strip">
-    <div class="stat-box">
-      <div class="stat-label">Level</div>
-      <div class="stat-val g" id="lvlDisplay">1</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">Total XP</div>
-      <div class="stat-val c" id="xpDisplay">0</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">Day Streak</div>
-      <div class="stat-val y" id="streakDisplay">0</div>
-    </div>
+    <div class="stat-box"><div class="stat-label">Level</div><div class="stat-val g" id="lvlDisplay">1</div></div>
+    <div class="stat-box"><div class="stat-label">Total XP</div><div class="stat-val c" id="xpDisplay">0</div></div>
+    <div class="stat-box"><div class="stat-label">Day Streak</div><div class="stat-val y" id="streakDisplay">0</div></div>
     <div class="xp-full">
-      <div class="xp-row">
-        <span id="xpLabel">XP TO NEXT LEVEL</span>
-        <span id="xpFrac">0 / 500</span>
-      </div>
-      <div class="xp-track">
-        <div class="xp-fill" id="xpFill" style="width:0%"></div>
-      </div>
+      <div class="xp-row"><span>XP TO NEXT LEVEL</span><span id="xpFrac">0 / 500</span></div>
+      <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
     </div>
   </div>
 
   <!-- TABS -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('today',this)">⚡ TODAY</button>
-    <button class="tab-btn" onclick="switchTab('schedule',this)">📅 SCHEDULE</button>
-    <button class="tab-btn" onclick="switchTab('bosses',this)">👹 BOSSES</button>
-    <button class="tab-btn" onclick="switchTab('streaks',this)">🔥 STREAKS</button>
-    <button class="tab-btn" onclick="switchTab('achievements',this)">🏆 AWARDS</button>
+    <button class="tab-btn active" onclick="switchTab('today',this)">&#x26A1; TODAY</button>
+    <button class="tab-btn" onclick="switchTab('dailies',this)">&#x2705; DAILIES</button>
+    <button class="tab-btn" onclick="switchTab('reports',this)">&#x1F4CA; REPORTS</button>
+    <button class="tab-btn" onclick="switchTab('schedule',this)">&#x1F4C5; SCHEDULE</button>
+    <button class="tab-btn" onclick="switchTab('bosses',this)">&#x1F479; BOSSES</button>
+    <button class="tab-btn" onclick="switchTab('streaks',this)">&#x1F525; STREAKS</button>
+    <button class="tab-btn" onclick="switchTab('achievements',this)">&#x1F3C6; AWARDS</button>
   </div>
 
   <!-- TODAY TAB -->
@@ -916,23 +332,43 @@ body::after {
       <span class="brief-title" id="briefTitle">Loading...</span>
       <div class="brief-sub" id="briefSub">Loading...</div>
     </div>
-
     <div class="sec-hdr">Today's Sessions</div>
     <div class="session-grid" id="sessionGrid"></div>
-
     <div class="sec-hdr">Day Progress</div>
     <div class="prog-wrap">
-      <div class="prog-label"><span>Sessions Done</span><span id="sessProgress">0/5</span></div>
+      <div class="prog-label"><span>Sessions Done</span><span id="sessProgress">0/4</span></div>
       <div class="prog-track"><div class="prog-fill" id="sessBar" style="width:0%;background:linear-gradient(90deg,var(--green2),var(--green))"></div></div>
     </div>
     <div class="prog-wrap">
       <div class="prog-label"><span>XP Earned Today</span><span id="todayXPLabel">0 XP</span></div>
       <div class="prog-track"><div class="prog-fill" id="todayXPBar" style="width:0%;background:linear-gradient(90deg,var(--cyan2),var(--cyan))"></div></div>
     </div>
-
     <div class="complete-wrap">
-      <button class="complete-btn" id="completeBtn" onclick="completeDay()">▶ COMMIT DAY</button>
+      <button class="complete-btn" id="completeBtn" onclick="completeDay()">&#x25BA; COMMIT DAY</button>
     </div>
+  </div>
+
+  <!-- DAILIES TAB -->
+  <div class="tab-panel" id="tab-dailies">
+    <div class="daily-brief" style="border-left-color:var(--cyan)">
+      <span class="brief-title" style="color:var(--cyan)">DAILY ROUTINE TRACKER</span>
+      <div class="brief-sub">Tap each item as you complete it. Small XP awarded. Study sessions auto-sync with Today tab.</div>
+    </div>
+    <div class="prog-wrap" style="margin:12px 0 4px">
+      <div class="prog-label"><span>Today's Routine Complete</span><span id="clPctLabel">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="clBar" style="width:0%;background:linear-gradient(90deg,var(--cyan2),var(--cyan))"></div></div>
+    </div>
+    <div id="checklistContainer"></div>
+  </div>
+
+  <!-- REPORTS TAB -->
+  <div class="tab-panel" id="tab-reports">
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="switchPeriod('week',this)">THIS WEEK</button>
+      <button class="period-tab" onclick="switchPeriod('month',this)">THIS MONTH</button>
+      <button class="period-tab" onclick="switchPeriod('all',this)">ALL TIME</button>
+    </div>
+    <div id="reportsContent"></div>
   </div>
 
   <!-- SCHEDULE TAB -->
@@ -940,7 +376,7 @@ body::after {
     <div class="sec-hdr">Daily Schedule</div>
     <div class="sched-wrap" id="schedWrap"></div>
     <div class="info-box" style="margin-top:10px">
-      <strong>Night Shift Worker Protocol:</strong> Your peak cognitive window is 9 AM–1 PM. All 4 sessions + punch buffer are packed here. After 1:15 PM you are in work mode. Protect this morning window like your career depends on it — because it does.
+      <strong>Night Shift Worker Protocol:</strong> Peak cognitive window 9 AM&#x2013;1 PM. All 4 sessions packed here. Protect it like your career depends on it &#x2014; because it does.
     </div>
   </div>
 
@@ -955,7 +391,7 @@ body::after {
     <div class="sec-hdr">Active Streaks</div>
     <div class="streaks-grid" id="streaksGrid"></div>
     <div class="info-box" style="margin-top:12px">
-      <strong>Recovery Rule:</strong> Miss a day? You lose the streak count but NEVER your XP. Just restart. No punishment. The warrior gets back up.
+      <strong>Recovery Rule:</strong> Miss a day? Lose the streak count but NEVER your XP. Just restart.
     </div>
   </div>
 
@@ -966,412 +402,465 @@ body::after {
   </div>
 
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════ MATRIX BG ═══════════════════════
+// ══ MATRIX BG ══
 (function(){
-  const c = document.getElementById('matrix-bg');
-  const ctx = c.getContext('2d');
-  c.width = window.innerWidth; c.height = window.innerHeight;
-  const cols = Math.floor(c.width/18);
-  const drops = Array(cols).fill(1);
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/{}[]()=+-*&^%$#@!;:';
-  function draw(){
-    ctx.fillStyle='rgba(3,5,8,0.05)';
-    ctx.fillRect(0,0,c.width,c.height);
-    ctx.fillStyle='#00ff88';
-    ctx.font='14px Share Tech Mono';
-    drops.forEach((y,i)=>{
-      ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*18,y*18);
-      if(y*18>c.height && Math.random()>0.975) drops[i]=0;
-      drops[i]++;
-    });
-  }
+  const c=document.getElementById('matrix-bg'),ctx=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const cols=Math.floor(c.width/18),drops=Array(cols).fill(1);
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/{}[]=+-*&^%$#@!;:';
+  function draw(){ctx.fillStyle='rgba(3,5,8,0.05)';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#00ff88';ctx.font='14px Share Tech Mono';drops.forEach((y,i)=>{ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*18,y*18);if(y*18>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++;});}
   setInterval(draw,80);
 })();
 
-// ═══════════════════════ SUPABASE CONFIG ═══════════════════════
-const SUPABASE_URL = 'https://gdzwwfwpxbohfirupvnk.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkend3ZndweGJvaGZpcnVwdm5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMzg2NTQsImV4cCI6MjA5NTkxNDY1NH0.ny3lGhrRCuP6UCS0PY90WxPqa0_aU2btVe7j6BrQA4I';
-const SB_TABLE = 'brain_os_state';
-const SB_USER_ID = 'vishnu';
-const ANTHROPIC_KEY = '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';
+// ══ SUPABASE ══
+const SUPABASE_URL='https://gdzwwfwpxbohfirupvnk.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdkend3ZndweGJvaGZpcnVwdm5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMzg2NTQsImV4cCI6MjA5NTkxNDY1NH0.ny3lGhrRCuP6UCS0PY90WxPqa0_aU2btVe7j6BrQA4I';
+const SB_TABLE='brain_os_state',SB_USER_ID='vishnu';
+const IS_SANDBOX=(()=>{try{const h=window.location.hostname;return h.includes('claude.ai')||h.includes('anthropic')||window.location.protocol==='blob:';}catch(e){return true;}})();
+async function sbGet(k){const r=await fetch(`${SUPABASE_URL}/rest/v1/${SB_TABLE}?user_id=eq.${SB_USER_ID}&key=eq.${encodeURIComponent(k)}&select=value`,{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});if(!r.ok)throw r.status;const d=await r.json();return d.length?d[0].value:null;}
+async function sbSet(k,v){await fetch(`${SUPABASE_URL}/rest/v1/${SB_TABLE}`,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify({user_id:SB_USER_ID,key:k,value:v})});}
 
-// Detect if running inside Claude artifact sandbox (which blocks external fetches)
-// When opened as a real file:// or hosted page, Supabase works fine.
-const IS_SANDBOX = (() => {
-  try {
-    const h = window.location.hostname;
-    return h.includes('claude.ai') || h.includes('anthropic') || window.location.protocol === 'blob:' || (window.location.protocol === 'about:' );
-  } catch(e) { return true; }
-})();
-
-async function sbGet(key) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${SB_TABLE}?user_id=eq.${SB_USER_ID}&key=eq.${encodeURIComponent(key)}&select=value`, {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-  });
-  if (!res.ok) throw new Error('sbGet ' + res.status);
-  const rows = await res.json();
-  return rows.length ? rows[0].value : null;
-}
-
-async function sbSet(key, value) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${SB_TABLE}`, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates'
-    },
-    body: JSON.stringify({ user_id: SB_USER_ID, key, value })
-  });
-  if (!res.ok) throw new Error('sbSet ' + res.status);
-}
-
-// ═══════════════════════ STATE ═══════════════════════
-const START = new Date('2026-06-02');
-const STORAGE_KEY = 'vishnu_brain_v1';
-const DEFAULT_STATE = {
-  day:1, totalXP:0,
-  doneSessions:{},
-  doneDays:{},
-  streaks:{ daily:0, apt:0, code:0, vocab:0, punch:0 },
-  lastDay:{ daily:0, apt:0, code:0, vocab:0, punch:0 },
-  bossHP:{ procrastination:90, fog:85, stammering:80, weakMath:90, codeRust:85 },
-  achievements:[]
-};
-let S = { ...DEFAULT_STATE };
-let _saveTimeout = null;
+// ══ STATE ══
+const START=new Date('2026-06-02');
+const SK='vishnu_brain_v2';
+const DEF={day:1,totalXP:0,doneSessions:{},doneDays:{},checklistData:{},streaks:{daily:0,apt:0,code:0,vocab:0,punch:0},lastDay:{daily:0,apt:0,code:0,vocab:0,punch:0},bossHP:{procrastination:90,fog:85,stammering:80,weakMath:90,codeRust:85},achievements:[]};
+let S={...DEF},_st=null,curPeriod='week';
 
 async function loadState(){
-  showSyncStatus('⟳ Loading save...');
-  if(IS_SANDBOX){
-    // Inside Claude sandbox — localStorage only
-    try { const d=localStorage.getItem(STORAGE_KEY); if(d) S=JSON.parse(d); else S={...DEFAULT_STATE}; } catch(_){ S={...DEFAULT_STATE}; }
-    showSyncStatus('💾 Local save (open as file for Supabase sync)');
-    renderAll(); return;
-  }
-  try {
-    const value = await sbGet(STORAGE_KEY);
-    if(value){ S = JSON.parse(value); showSyncStatus('✓ Synced from Supabase'); }
-    else {
-      try { const d=localStorage.getItem(STORAGE_KEY); if(d){ S=JSON.parse(d); await sbSet(STORAGE_KEY, JSON.stringify(S)); showSyncStatus('✓ Migrated to Supabase'); } else { S={...DEFAULT_STATE}; showSyncStatus('✓ New game'); } } catch(_){ S={...DEFAULT_STATE}; showSyncStatus('✓ New game'); }
-    }
-  } catch(e) {
-    S = { ...DEFAULT_STATE };
-    try { const d=localStorage.getItem(STORAGE_KEY); if(d) S=JSON.parse(d); } catch(_){}
-    showSyncStatus('⚠ Supabase error — using local');
-    console.warn('Supabase load error:', e);
-  }
+  showSync('Loading...');
+  if(IS_SANDBOX){try{const d=localStorage.getItem(SK);S=d?JSON.parse(d):{...DEF};}catch(_){S={...DEF};}if(!S.checklistData)S.checklistData={};showSync('Local save');renderAll();return;}
+  try{const v=await sbGet(SK);if(v){S=JSON.parse(v);showSync('Synced');}else{try{const d=localStorage.getItem(SK);if(d){S=JSON.parse(d);await sbSet(SK,JSON.stringify(S));showSync('Migrated');}else{S={...DEF};showSync('New game');}}catch(_){S={...DEF};}}
+  }catch(e){S={...DEF};try{const d=localStorage.getItem(SK);if(d)S=JSON.parse(d);}catch(_){}showSync('Local fallback');}
+  if(!S.checklistData)S.checklistData={};
   renderAll();
 }
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(_){}if(IS_SANDBOX)return;clearTimeout(_st);_st=setTimeout(async()=>{try{await sbSet(SK,JSON.stringify(S));showSync('Saved');}catch(e){showSync('Local only');}},800);}
+function showSync(msg){const el=document.getElementById('syncStatus');if(el){el.textContent=msg;el.style.opacity='1';clearTimeout(el._t);el._t=setTimeout(()=>el.style.opacity='0.4',3000);}}
 
-function save(){
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); } catch(_){}
-  if(IS_SANDBOX){ showSyncStatus('💾 Saved locally'); return; }
-  clearTimeout(_saveTimeout);
-  _saveTimeout = setTimeout(async()=>{
-    showSyncStatus('⟳ Saving to Supabase...');
-    try {
-      await sbSet(STORAGE_KEY, JSON.stringify(S));
-      showSyncStatus('✓ Saved to Supabase');
-    } catch(e){
-      showSyncStatus('⚠ Saved locally only');
-      console.warn('Supabase save error:', e);
-    }
-  }, 800);
-}
+// ══ LEVELS ══
+const LVL=[0,500,1500,3000,5500,9000,14000,21000,30000,42000,60000];
+function getLevel(xp){let l=1;LVL.forEach((v,i)=>{if(xp>=v)l=i+1;});return Math.min(l,LVL.length);}
+function getLvlData(xp){const l=getLevel(xp),cur=LVL[l-1]||0,nxt=LVL[l]||LVL[LVL.length-1];return{l,cur,nxt,pct:Math.min(100,((xp-cur)/(nxt-cur))*100)};}
 
-function showSyncStatus(msg){
-  const el=document.getElementById('syncStatus');
-  if(el){ el.textContent=msg; el.style.opacity='1'; clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0.4',3000); }
-}
-
-// ═══════════════════════ LEVELS ═══════════════════════
-const LVL_XP=[0,500,1500,3000,5500,9000,14000,21000,30000,42000,60000];
-function getLevel(xp){ let l=1; LVL_XP.forEach((v,i)=>{ if(xp>=v) l=i+1; }); return Math.min(l,LVL_XP.length); }
-function getLvlData(xp){
-  const l=getLevel(xp);
-  const cur=LVL_XP[l-1]||0, nxt=LVL_XP[l]||LVL_XP[LVL_XP.length-1];
-  return { l, cur, nxt, pct:Math.min(100,((xp-cur)/(nxt-cur))*100) };
-}
-
-// ═══════════════════════ DAILY BRIEFS ═══════════════════════
+// ══ BRIEFS ══
 const BRIEFS=[
   {t:"BOOT SEQUENCE INITIATED",s:"Day 1. The brain is rusty but not broken. Today we run diagnostics. Easy mode. Just show up."},
   {t:"NEURAL PATHWAYS REACTIVATING",s:"Your 2023 knowledge is still in there. Today we access old memory banks. Trust the process."},
   {t:"COGNITIVE LOAD: MINIMAL",s:"Small wins today. Every question you answer correctly rebuilds a synapse. One at a time."},
   {t:"PATTERN RECOGNITION: ONLINE",s:"Aptitude is just pattern recognition. Your brain already does this. We're just training it formally."},
   {t:"SYNTAX CHECK IN PROGRESS",s:"You built a React project in 2023. That knowledge exists. Today we dust it off."},
-  {t:"MEMORY LEAK DETECTED — PATCHING",s:"The daydreaming is your brain searching for stimulation. Today we give it real problems to solve."},
   {t:"FOCUS MODULE: CALIBRATING",s:"20 minutes. Just 20 minutes of real focus. That's all today asks. Can you give it that?"},
   {t:"WEEK 2: DIFFICULTY SCALES",s:"You survived Week 1. The questions get slightly harder. Your brain is more ready than you think."},
   {t:"STAMINA BUILD: +1",s:"Consistency is compounding. Every day you show up, the next day gets 1% easier."},
   {t:"ALGORITHM UNLOCKED: DISCIPLINE",s:"Discipline isn't motivation. It's a system. You are building the system right now."},
-  {t:"COGNITIVE PERFORMANCE: IMPROVING",s:"Notice anything different? Small things — finishing tasks faster, recalling things easier. That's the work paying off."},
   {t:"INTERVIEW SIMULATION: ACTIVE",s:"Today's questions are interview-style. Answer out loud. Even alone. Your voice needs practice too."},
-  {t:"PUNCH PROTOCOL: UPGRADED",s:"The surprise questions get wilder today. Laugh, answer, move on. Confidence through comedy."},
-  {t:"DSA UNLOCKED: FOUNDATIONS",s:"Data structures are just organized thinking. You already think this way. Now we formalize it."},
-  {t:"VOCABULARY EXPANSION: +10",s:"Words are tools. The more tools you have, the more precisely you can express what you already know."},
-  {t:"MONTH 1 COMPLETE: RECALIBRATING",s:"Look back at Day 1. Look at where you are now. The distance is real. Keep going."},
-  {t:"FULL STACK PROTOCOL: DEEPENING",s:"Frontend → Backend → Database → Deployment. The path is clear. Today we go deeper."},
-  {t:"INTERVIEW READINESS: 35%",s:"You can now answer basic questions without freezing. That's progress. Real, measurable progress."},
-  {t:"BRAIN FOG: CLEARING",s:"The combination of consistent sleep, walks, and mental challenges is working. Notice the clarity."},
   {t:"CONFIDENCE LEVEL: RISING",s:"Confidence isn't a feeling. It's reps. You've put in the reps. Now trust them."},
-  {t:"MONTH 2: INTERMEDIATE PROTOCOLS",s:"Questions are harder now. But so are you. The gap between challenge and capability is closing."},
-  {t:"REACT REVIVAL: INITIATED",s:"Your React project from 2023 was real work. Today we build on that foundation."},
-  {t:"VERBAL FLUENCY: UPGRADING",s:"The stammer happens when brain and mouth aren't synchronized. Today we sync them."},
-  {t:"PROBLEM SOLVING: ADVANCED MODE",s:"Complex problems. Break them down. You have all the tools. Apply them systematically."},
-  {t:"MONTH 3: INTERVIEW MODE ENGAGED",s:"At this point you can walk into a Cognizant or Accenture interview and hold your own. Keep pushing."},
-  {t:"FULL STACK ARCHITECT: EMERGING",s:"You're not just a coder anymore. You're starting to think in systems. That's what they hire."},
-  {t:"AMAZON INTERVIEW PREP: ACTIVE",s:"Amazon uses behavioral questions + DSA. Both are being trained daily. You're closer than you think."},
-  {t:"NEURAL UPGRADE: 50% COMPLETE",s:"Halfway through the 6-month journey. The person reading this is not the same person who started."},
-  {t:"CONFIDENCE PROTOCOL: MAXIMUM",s:"Walk into any room. Answer any question. Build anything they ask. You are almost there."},
   {t:"VISHNU.DEV: FULLY OPERATIONAL",s:"This is what 6 months of daily work produces. A full stack developer who can think, speak, and build."},
 ];
 
-// ═══════════════════════ AI QUESTION ENGINE ═══════════════════════
-// Fetches fresh, real-world interview questions from Claude AI
-// Caches per day so it doesn't re-fetch on page reload
+// ══════════════════════════════════════════
+// CHECKLIST DATA
+// ══════════════════════════════════════════
+const CL_GROUPS=[
+  {id:'health',label:'MORNING HEALTH',color:'#00d4ff',items:[
+    {id:'wake',     label:'Wake up + drink 500ml water',     time:'8:00 AM', xp:2},
+    {id:'breakfast',label:'Eat breakfast (eggs / oats)',      time:'9:00 AM', xp:2},
+    {id:'steam',    label:'Steam inhalation (10 min)',         time:'9:20 AM', xp:3},
+    {id:'nasal',    label:'Nasal sprays / medication',         time:'9:25 AM', xp:3},
+  ]},
+  {id:'study',label:'STUDY SESSIONS',color:'#00ff88',items:[
+    {id:'s_apt',    label:'Session 1 — Aptitude (20 min)',     time:'9:35 AM', xp:5},
+    {id:'s_punch1', label:'Punch Buffer #1 (10 min)',           time:'9:55 AM', xp:3},
+    {id:'s_code',   label:'Session 2 — Coding (20 min)',        time:'10:05 AM',xp:5},
+    {id:'s_speak',  label:'Session 3 — Speak + Vocab (20 min)',time:'11:15 AM',xp:5},
+    {id:'s_punch2', label:'Punch Buffer #2 (10 min)',           time:'11:35 AM',xp:3},
+    {id:'s_dsa',    label:'Session 4 — DSA + Code (20 min)',   time:'11:45 AM',xp:5},
+  ]},
+  {id:'physical',label:'PHYSICAL',color:'#ff6600',items:[
+    {id:'walk',     label:'Morning walk (30 min)',              time:'10:35 AM',xp:5},
+    {id:'water',    label:'Drink water hourly (3+ glasses)',    time:'All day',  xp:2},
+    {id:'stretch',  label:'Stretch / cool down',               time:'After walk',xp:2},
+  ]},
+  {id:'prep',label:'WORK PREP',color:'#aa44ff',items:[
+    {id:'bath',     label:'Bath before office',                 time:'12:30 PM',xp:1},
+    {id:'ready',    label:'Get ready + pack lunch',             time:'12:50 PM',xp:1},
+    {id:'leave',    label:'Left for office on time',            time:'1:15 PM', xp:2},
+    {id:'sleep',    label:'Asleep by 2:00 AM',                  time:'2:00 AM', xp:3},
+  ]},
+];
+const CL_TOTAL=CL_GROUPS.reduce((s,g)=>s+g.items.length,0);
 
-const AI_CACHE_KEY = 'vishnu_ai_questions_v2';
+// session id → checklist id mapping
+const SESS_TO_CL={apt:'s_apt',code:'s_code',speak:'s_speak',dsa:'s_dsa'};
 
-async function loadAICache() {
-  if(!IS_SANDBOX){ try { const v = await sbGet(AI_CACHE_KEY); if(v) return JSON.parse(v); } catch(e) {} }
-  try { const d = localStorage.getItem(AI_CACHE_KEY); if(d) return JSON.parse(d); } catch(e) {}
-  return {};
-}
-async function saveAICache(cache) {
-  try { localStorage.setItem(AI_CACHE_KEY, JSON.stringify(cache)); } catch(e) {}
-  if(!IS_SANDBOX){ try { await sbSet(AI_CACHE_KEY, JSON.stringify(cache)); } catch(e) {} }
-}
+function ckKey(day){return'c'+day;}
 
-let aiCache = {};
-loadAICache().then(c => { aiCache = c; });
+function renderChecklist(){
+  const ck=ckKey(S.day);
+  const done=S.checklistData[ck]||{};
+  const doneCount=Object.keys(done).filter(k=>done[k]).length;
+  const pct=Math.round(doneCount/CL_TOTAL*100);
+  document.getElementById('clPctLabel').textContent=pct+'%';
+  document.getElementById('clBar').style.width=pct+'%';
 
-async function fetchDayQuestions(day) {
-  const cacheKey = 'day_' + day;
-  if(aiCache[cacheKey]) return aiCache[cacheKey];
-
-  // Large rotating question bank — no API needed
-  const aptBank = [
-    [
-      {q:"If a train travels 360 km in 4 hours, what is its speed in m/s?",opts:["A. 25 m/s","B. 90 m/s","C. 100 m/s","D. 72 m/s"],ans:0,exp:"360km/4h = 90 km/h = 90×1000/3600 = 25 m/s",diff:"easy"},
-      {q:"In a series: 2, 6, 12, 20, 30, ?",opts:["A. 40","B. 42","C. 44","D. 46"],ans:1,exp:"Differences are 4,6,8,10,12 → next is 30+12=42",diff:"easy"},
-      {q:"Choose the word most similar to ELOQUENT:",opts:["A. Silent","B. Articulate","C. Confused","D. Angry"],ans:1,exp:"Eloquent means fluent and persuasive in speech — same as Articulate",diff:"easy"}
-    ],
-    [
-      {q:"A shopkeeper buys an item for ₹800 and sells it for ₹1000. What is the profit percentage?",opts:["A. 20%","B. 25%","C. 15%","D. 30%"],ans:1,exp:"Profit = 200, Profit% = (200/800)×100 = 25%",diff:"easy"},
-      {q:"If MANGO is coded as NBOHP, how is APPLE coded?",opts:["A. BQQMF","B. BPPMF","C. CQQMF","D. AQQLF"],ans:0,exp:"Each letter shifts +1: A→B, P→Q, P→Q, L→M, E→F = BQQMF",diff:"easy"},
-      {q:"Choose the odd one out: Laptop, Desktop, Tablet, Router",opts:["A. Laptop","B. Desktop","C. Tablet","D. Router"],ans:3,exp:"Router is a networking device; others are computing devices",diff:"easy"}
-    ],
-    [
-      {q:"A can do a work in 10 days, B in 15 days. How many days together?",opts:["A. 5 days","B. 6 days","C. 8 days","D. 12 days"],ans:1,exp:"1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6 → 6 days",diff:"med"},
-      {q:"Find the next: 1, 1, 2, 3, 5, 8, ?",opts:["A. 10","B. 11","C. 13","D. 15"],ans:2,exp:"Fibonacci sequence: each = sum of previous two → 5+8=13",diff:"easy"},
-      {q:"BENEVOLENT most nearly means:",opts:["A. Evil","B. Kind and generous","C. Brave","D. Intelligent"],ans:1,exp:"Benevolent means well-meaning and kindly — often used in HR interviews",diff:"easy"}
-    ],
-    [
-      {q:"Simple interest on ₹5000 at 8% per annum for 3 years?",opts:["A. ₹1000","B. ₹1200","C. ₹1500","D. ₹800"],ans:1,exp:"SI = P×R×T/100 = 5000×8×3/100 = ₹1200",diff:"easy"},
-      {q:"If all Cats are Animals and some Animals are Dogs, which is definitely true?",opts:["A. All cats are dogs","B. Some animals are cats","C. No dogs are cats","D. All dogs are animals"],ans:1,exp:"Since all cats are animals, it follows that some animals are cats",diff:"med"},
-      {q:"VERBOSE most nearly means:",opts:["A. Brief","B. Using too many words","C. Silent","D. Logical"],ans:1,exp:"Verbose = using more words than needed. Common in code review feedback.",diff:"med"}
-    ],
-    [
-      {q:"A bike depreciates 10% each year. Value after 2 years from ₹50000?",opts:["A. ₹40000","B. ₹40500","C. ₹45000","D. ₹41000"],ans:1,exp:"After yr1: 50000×0.9=45000; After yr2: 45000×0.9=40500",diff:"med"},
-      {q:"In a row of 40 students, Ravi is 15th from the left. Position from right?",opts:["A. 25","B. 26","C. 27","D. 24"],ans:1,exp:"Position from right = 40 - 15 + 1 = 26",diff:"easy"},
-      {q:"PRAGMATIC most nearly means:",opts:["A. Idealistic","B. Practical and realistic","C. Stubborn","D. Creative"],ans:1,exp:"Pragmatic = dealing with things sensibly based on practical considerations",diff:"med"}
-    ],
-    [
-      {q:"Pipes A and B fill a tank in 20 and 30 mins. C empties in 40 mins. Time to fill all open?",opts:["A. 17.1 min","B. 24 min","C. 15 min","D. 20 min"],ans:0,exp:"1/20 + 1/30 - 1/40 = 6/120+4/120-3/120 = 7/120 → 120/7 ≈ 17.1 min",diff:"hard"},
-      {q:"Find the missing: 6, 11, 21, 36, 56, ?",opts:["A. 81","B. 91","C. 76","D. 86"],ans:0,exp:"Differences: 5,10,15,20,25 → 56+25=81",diff:"med"},
-      {q:"AMBIGUOUS most nearly means:",opts:["A. Clear","B. Open to multiple interpretations","C. Ambitious","D. Angry"],ans:1,exp:"Ambiguous = unclear, having more than one meaning — key word in requirement docs",diff:"med"}
-    ],
-    [
-      {q:"Two trains 100m and 150m long pass each other in 10s going opposite. Speed ratio 2:3. Speed of faster?",opts:["A. 15 m/s","B. 18 m/s","C. 20 m/s","D. 12 m/s"],ans:1,exp:"Combined speed = 250/10 = 25 m/s. Ratio 2:3 → faster = 25×3/5 = 15... recalc: speeds are 10+15=25 → 15 m/s",diff:"hard"},
-      {q:"Book is to Chapter as Computer is to?",opts:["A. Keyboard","B. Program","C. Screen","D. Mouse"],ans:1,exp:"A book contains chapters; a computer contains programs",diff:"easy"},
-      {q:"METICULOUS most nearly means:",opts:["A. Careless","B. Showing great attention to detail","C. Reckless","D. Confused"],ans:1,exp:"Meticulous = very careful and precise. Often used in job descriptions.",diff:"med"}
-    ],
-  ];
-
-  const codingBank = [
-    {topic:"JavaScript Closures",theory:"A closure is a function that has access to its outer function's scope even after the outer function has returned. Closures are widely used in callbacks, event handlers, and module patterns. They help create private variables in JavaScript.",
-      mcq:[
-        {q:"What will console.log(counter()) output if counter is a closure incrementing from 0?",opts:["A. 0","B. 1","C. undefined","D. Error"],ans:1,exp:"Each call to counter() increments and returns the internal count"},
-        {q:"Which of these correctly creates a private variable using closure?",opts:["A. var x = 0","B. function f(){ var x=0; return ()=>++x; }","C. let x = 0; x++","D. const x = {}"],ans:1,exp:"The inner arrow function closes over x, making it private"}
-      ],
-      code:{task:"Write a counter function using closures that has increment(), decrement() and getCount() methods",starter:"function createCounter() {\n  // your code here\n}\n\nconst c = createCounter();\nc.increment();\nc.increment();\nc.decrement();\nconsole.log(c.getCount()); // should print 1",solution:"function createCounter() {\n  let count = 0;\n  return {\n    increment: () => ++count,\n    decrement: () => --count,\n    getCount: () => count\n  };\n}",hint:"Return an object with methods that all share the same 'count' variable"}
-    },
-    {topic:"Array Methods",theory:"JavaScript array methods like map(), filter(), and reduce() are essential for functional programming. map() transforms each element, filter() selects elements matching a condition, and reduce() accumulates values into a single result. These are asked in almost every JS interview.",
-      mcq:[
-        {q:"What does [1,2,3].map(x => x*2) return?",opts:["A. [1,2,3]","B. [2,4,6]","C. 6","D. [3,6,9]"],ans:1,exp:"map() applies the function to each element and returns a new array"},
-        {q:"Which method returns only elements satisfying a condition?",opts:["A. map()","B. find()","C. filter()","D. reduce()"],ans:2,exp:"filter() returns a new array with elements where the callback returns true"}
-      ],
-      code:{task:"Given an array of employees with name and salary, return names of employees earning more than ₹50000 sorted alphabetically",starter:"const employees = [\n  {name:'Ravi', salary:45000},\n  {name:'Priya', salary:65000},\n  {name:'Amit', salary:72000},\n  {name:'Sita', salary:38000}\n];\n\n// Your code here\n",solution:"const result = employees\n  .filter(e => e.salary > 50000)\n  .map(e => e.name)\n  .sort();\nconsole.log(result); // ['Amit', 'Priya']",hint:"Chain filter() → map() → sort()"}
-    },
-    {topic:"Promises & Async/Await",theory:"Promises represent eventual completion or failure of async operations. async/await is syntactic sugar over Promises making async code look synchronous. Both are heavily used in API calls, file operations, and any I/O in Node.js and browser JS.",
-      mcq:[
-        {q:"What does 'async' before a function do?",opts:["A. Makes it run faster","B. Makes it always return a Promise","C. Blocks execution","D. Creates a new thread"],ans:1,exp:"An async function always returns a Promise, even if you return a plain value"},
-        {q:"What keyword pauses async function execution until Promise resolves?",opts:["A. pause","B. wait","C. await","D. hold"],ans:2,exp:"await pauses execution of the async function until the Promise settles"}
-      ],
-      code:{task:"Write an async function that fetches user data and returns the user's name, with error handling",starter:"async function getUserName(userId) {\n  // Pretend this is a real API\n  const fakeAPI = (id) => new Promise((res, rej) => {\n    setTimeout(() => id > 0 ? res({name: 'Vishnu', id}) : rej('Invalid ID'), 100);\n  });\n  \n  // Your code here — use try/catch\n}\n\ngetUserName(1).then(console.log);\ngetUserName(-1).then(console.log).catch(console.error);",solution:"async function getUserName(userId) {\n  const fakeAPI = (id) => new Promise((res, rej) => {\n    setTimeout(() => id > 0 ? res({name: 'Vishnu', id}) : rej('Invalid ID'), 100);\n  });\n  try {\n    const user = await fakeAPI(userId);\n    return user.name;\n  } catch(err) {\n    return 'Error: ' + err;\n  }\n}",hint:"Use try { const data = await fakeAPI(userId); return data.name; } catch(e) { ... }"}
-    },
-    {topic:"React Hooks - useState",theory:"useState is React's most fundamental hook for managing component state. It returns a state value and a setter function. When the setter is called, React re-renders the component. Understanding useState is mandatory for any React interview at Cognizant, TCS, or Infosys.",
-      mcq:[
-        {q:"What does useState(0) return?",opts:["A. Just 0","B. [0, setter function]","C. {value: 0}","D. A Promise"],ans:1,exp:"useState returns an array: [currentValue, setterFunction]"},
-        {q:"When should you NOT call useState?",opts:["A. At top of component","B. Inside a loop or if statement","C. In functional components","D. With initial value"],ans:1,exp:"Hooks must be called at the top level, never inside loops, conditions, or nested functions"}
-      ],
-      code:{task:"Build a simple like button component that shows a count and toggles between liked/unliked state",starter:"function LikeButton() {\n  // Add state for: count and isLiked\n  \n  function handleClick() {\n    // Toggle liked, increment or decrement count\n  }\n  \n  return (\n    <button onClick={handleClick}>\n      {/* Show heart emoji based on isLiked, show count */}\n    </button>\n  );\n}",solution:"function LikeButton() {\n  const [count, setCount] = React.useState(0);\n  const [isLiked, setIsLiked] = React.useState(false);\n  \n  function handleClick() {\n    setIsLiked(!isLiked);\n    setCount(isLiked ? count - 1 : count + 1);\n  }\n  \n  return (\n    <button onClick={handleClick}>\n      {isLiked ? '❤️' : '🤍'} {count}\n    </button>\n  );\n}",hint:"You need two useState calls — one for count, one for isLiked boolean"}
-    },
-    {topic:"DOM Manipulation",theory:"DOM manipulation is how JavaScript interacts with HTML elements. Methods like getElementById, querySelector, addEventListener, and innerHTML are core browser APIs. These are asked in frontend interviews and are essential for vanilla JS rounds at Indian IT companies.",
-      mcq:[
-        {q:"Which method selects the first element matching a CSS selector?",opts:["A. getElementById","B. querySelector","C. getElementsByClass","D. findElement"],ans:1,exp:"querySelector('#id') or querySelector('.class') selects the first matching element"},
-        {q:"How do you add a click event listener to a button?",opts:["A. button.click = fn","B. button.onclick()","C. button.addEventListener('click', fn)","D. button.addEvent(fn)"],ans:2,exp:"addEventListener is the modern standard way to attach event handlers"}
-      ],
-      code:{task:"Write code that creates a todo list: clicking 'Add' appends the input text as a list item, clicking a list item removes it",starter:"// HTML: <input id='inp'> <button id='btn'>Add</button> <ul id='list'></ul>\n\ndocument.getElementById('btn').addEventListener('click', function() {\n  // Your code here\n});\n",solution:"document.getElementById('btn').addEventListener('click', function() {\n  const inp = document.getElementById('inp');\n  const text = inp.value.trim();\n  if (!text) return;\n  const li = document.createElement('li');\n  li.textContent = text;\n  li.style.cursor = 'pointer';\n  li.addEventListener('click', () => li.remove());\n  document.getElementById('list').appendChild(li);\n  inp.value = '';\n});",hint:"createElement('li'), set textContent, add click listener to remove, appendChild to ul"}
-    },
-  ];
-
-  const dsaBank = [
-    {topic:"Two Sum Problem",theory:"Two Sum is the most common DSA interview question. Given an array and target, find two numbers that add to target. Brute force is O(n²); optimal uses a HashMap for O(n). This exact problem appears in Amazon, Google, and Indian service company interviews.",
-      mcq:[
-        {q:"What is the time complexity of the optimal Two Sum solution using HashMap?",opts:["A. O(n²)","B. O(n log n)","C. O(n)","D. O(1)"],ans:2,exp:"HashMap lookup is O(1), and we iterate once → O(n) total"},
-        {q:"What data structure makes Two Sum O(n)?",opts:["A. Array","B. Stack","C. HashMap/Object","D. Queue"],ans:2,exp:"Store seen numbers in a HashMap and check if complement exists in O(1)"}
-      ],
-      code:{task:"Solve Two Sum: given array nums and target, return indices of two numbers that add to target",starter:"function twoSum(nums, target) {\n  // Your solution here\n  // Input: nums=[2,7,11,15], target=9\n  // Output: [0,1] (because nums[0]+nums[1]=9)\n}\n\nconsole.log(twoSum([2,7,11,15], 9));  // [0,1]\nconsole.log(twoSum([3,2,4], 6));       // [1,2]",solution:"function twoSum(nums, target) {\n  const seen = {};\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (seen[complement] !== undefined) {\n      return [seen[complement], i];\n    }\n    seen[nums[i]] = i;\n  }\n  return [];\n}",hint:"For each number, check if (target - number) is already in your HashMap"}
-    },
-    {topic:"Reverse a String",theory:"String reversal is a fundamental DSA question testing array/string manipulation. In JavaScript, strings are immutable so you split into array, reverse, then join. This tests knowledge of built-in methods and is asked in phone screens at TCS and Infosys.",
-      mcq:[
-        {q:"What does 'hello'.split('').reverse().join('') return?",opts:["A. 'hello'","B. 'olleh'","C. ['o','l','l','e','h']","D. Error"],ans:1,exp:"split('') makes ['h','e','l','l','o'], reverse() flips it, join('') makes 'olleh'"},
-        {q:"What is the space complexity of reversing a string by creating a new array?",opts:["A. O(1)","B. O(log n)","C. O(n)","D. O(n²)"],ans:2,exp:"We create a new array of size n, so space complexity is O(n)"}
-      ],
-      code:{task:"Write a function to check if a string is a palindrome (reads same forwards and backwards). Ignore spaces and case.",starter:"function isPalindrome(str) {\n  // Your code here\n  // 'racecar' → true\n  // 'A man a plan a canal Panama' → true  \n  // 'hello' → false\n}\n\nconsole.log(isPalindrome('racecar'));  // true\nconsole.log(isPalindrome('hello'));    // false\nconsole.log(isPalindrome('A man a plan a canal Panama')); // true",solution:"function isPalindrome(str) {\n  const clean = str.toLowerCase().replace(/[^a-z0-9]/g, '');\n  return clean === clean.split('').reverse().join('');\n}",hint:"Clean the string first (lowercase, remove spaces), then compare with its reverse"}
-    },
-    {topic:"FizzBuzz",theory:"FizzBuzz is asked in nearly every Indian IT company screening round. Print numbers 1-n, but Fizz for multiples of 3, Buzz for multiples of 5, FizzBuzz for both. Tests basic loops, conditionals, and modulo operator understanding.",
-      mcq:[
-        {q:"What operator checks if a number is divisible?",opts:["A. /","B. %","C. //","D. ÷"],ans:1,exp:"The modulo operator % gives the remainder. n%3===0 means n is divisible by 3"},
-        {q:"In FizzBuzz, why must you check n%15 before n%3 and n%5?",opts:["A. Performance","B. To catch multiples of both 3 and 5 first","C. It doesn't matter","D. Syntax requirement"],ans:1,exp:"If you check n%3 first, multiples of 15 would print 'Fizz' instead of 'FizzBuzz'"}
-      ],
-      code:{task:"Write FizzBuzz for 1 to 20. Return an array of strings.",starter:"function fizzBuzz(n) {\n  // Return array of strings 1 to n\n  // Multiple of 3 → 'Fizz'\n  // Multiple of 5 → 'Buzz'  \n  // Multiple of both → 'FizzBuzz'\n  // Otherwise → the number as string\n}\n\nconsole.log(fizzBuzz(20));",solution:"function fizzBuzz(n) {\n  const result = [];\n  for (let i = 1; i <= n; i++) {\n    if (i % 15 === 0) result.push('FizzBuzz');\n    else if (i % 3 === 0) result.push('Fizz');\n    else if (i % 5 === 0) result.push('Buzz');\n    else result.push(String(i));\n  }\n  return result;\n}",hint:"Check %15 first, then %3, then %5, then default to String(i)"}
-    },
-  ];
-
-  const vocabBank = [
-    {word:"PROFICIENT",ph:"/prəˈfɪʃ.ənt/",pos:"ADJECTIVE",meaning:"Competent and skilled at something — commonly used in job descriptions and resumes",example:"She is proficient in JavaScript, React, and Node.js.",tel:"నిపుణుడు (nipunudu)",hindi:"कुशल (kushal)"},
-    {word:"COLLABORATE",ph:"/kəˈlæb.ə.reɪt/",pos:"VERB",meaning:"Work jointly with others especially in an intellectual endeavor",example:"At Cognizant, developers collaborate across teams using Agile methodology.",tel:"కలిసి పని చేయు (kalisi pani cheyu)",hindi:"सहयोग करना (sahyog karna)"},
-    {word:"INITIATIVE",ph:"/ɪˈnɪʃ.ə.tɪv/",pos:"NOUN",meaning:"The ability to assess and take action independently — a key trait interviewers look for",example:"He showed great initiative by identifying and fixing the bug before being asked.",tel:"చొరవ (chorava)",hindi:"पहल (pahal)"},
-    {word:"ARTICULATE",ph:"/ɑːˈtɪk.jʊ.lət/",pos:"ADJECTIVE",meaning:"Having or showing the ability to speak fluently and coherently",example:"An articulate developer can explain technical concepts to non-technical stakeholders.",tel:"స్పష్టంగా మాట్లాడగలిగే (spashtanga maatladagalige)",hindi:"स्पष्टवादी (spashtvadi)"},
-    {word:"DILIGENT",ph:"/ˈdɪl.ɪ.dʒənt/",pos:"ADJECTIVE",meaning:"Having or showing care and conscientiousness in one's work or duties",example:"A diligent coder writes clean, well-documented code consistently.",tel:"శ్రద్ధగా పని చేసే (shraddaga pani chese)",hindi:"परिश्रमी (parishraami)"},
-    {word:"SCALABLE",ph:"/ˈskeɪ.lə.bəl/",pos:"ADJECTIVE",meaning:"Able to be changed in size or scale; in tech, a system that handles growing load",example:"We need a scalable architecture that handles 1 million users.",tel:"విస్తరించగలిగే (vistarincagalige)",hindi:"विस्तार योग्य (vistar yogya)"},
-    {word:"RESILIENT",ph:"/rɪˈzɪl.i.ənt/",pos:"ADJECTIVE",meaning:"Able to recover quickly from difficulties; in tech, a system that handles failures gracefully",example:"A resilient microservice retries failed requests automatically.",tel:"మళ్ళీ లేచే (malli leche)",hindi:"लचीला (lachila)"},
-  ];
-
-  const punchBank = [
-    [{lang:"ENGLISH",q:"Tell me about yourself in exactly 60 seconds. Go!",tip:"Structure: Name → Current situation → Skills → Goal. Don't just read your resume.",reveal:"'I'm Vishnu, a developer from Hyderabad with 2 years of experience. I'm strong in JavaScript and React, currently preparing for full-stack roles at product companies. My goal is to join a team where I can build scalable web applications and grow technically. 🎯'"},{lang:"TELUGU",q:"Nee friend ki 'What is an API?' ani explain cheyyi — telusukunna maatallo!",tip:"Simple ga cheppu: 'Two applications maatle communicate cheyyadaniki oka messenger laanti'",reveal:"'API ante — rendu apps maatle data share cheyyadaniki oka bridge laanti. Zomato app ki restaurant data kavali — API adigi tesukuntundi! 🍕'"}],
-    [{lang:"ENGLISH",q:"What is your biggest weakness? Answer without saying 'I work too hard'!",tip:"Choose a real weakness, show you're working on it. Never say 'perfectionist' or 'workaholic'.",reveal:"'I sometimes spend too long on a problem before asking for help. I've been fixing this by setting a 30-minute rule — if I'm stuck, I ask. It's made me faster and better at collaboration. 💪'"},{lang:"TELUGU",q:"'Why do you want to join our company?' ani adige Amazon interviewer ki Telugu lo explain cheyyi!",tip:"Company research cheyyi — product, culture, growth gurinchi maat ladu",reveal:"'Mee company lo work cheyyadam valla large-scale systems nunchi nerchukovachchu, plus mee engineering culture chala strong ga untundi — adi naa career ki chala help avutundi! 🚀'"}],
-    [{lang:"ENGLISH",q:"Explain the difference between == and === in JavaScript like I'm 10 years old!",tip:"Use a simple real-world analogy. Don't just say 'strict equality'.",reveal:"'== is like asking: are these the same thing? It allows some flexibility (5 == \"5\" is true). === is strict — same value AND same type (5 === \"5\" is false). Use === always! ✅'"},{lang:"TELUGU",q:"Nee amma ki 'What is Cloud Computing?' ani explain cheyyi!",tip:"Analogy use cheyyi — rent house vs own house",reveal:"'Amma, imagine cheyyammu — nee daggara fridge lekapothe neighbor fridge use chestav rent ki. Cloud computing kuda ala untundi — computers ni rent ki vaadukuntaamu internet dwara! ☁️'"}],
-    [{lang:"ENGLISH",q:"You have a bug in production at 2 AM. What do you do?",tip:"Show: calm, systematic, communicate. Not panic.",reveal:"'First I check logs to identify the issue, then notify the team lead. If I can hotfix in under 5 mins, I do it. Otherwise I rollback to the last stable version and investigate in the morning. Communication first! 🛠️'"},{lang:"TELUGU",q:"'Explain React to a non-technical person' ani cheppu!",tip:"Oka real example teesko — website build cheyyadam gurinchi",reveal:"'React ante — oka website ni chinna chinna pieces lo build cheyyadam. Each piece (component) thana pani tanu cheskuntundi. Change aithe React automatically update chestundi — chala fast ga! ⚡'"}],
-  ];
-
-  const interviewBank = [
-    {topic:"Tell me about yourself",framework:"PRESENT → PAST → FUTURE",sample:"I'm a full-stack developer from Hyderabad currently building my skills in React and Node.js. Previously I've worked on web projects using JavaScript and have a strong foundation in DSA. My goal is to join a product-focused company like Amazon or Accenture where I can work on large-scale systems and grow as an engineer.",practice:"Say this out loud right now — time yourself. Should be under 90 seconds. Record yourself and listen back."},
-    {topic:"Why should we hire you?",framework:"SKILLS → PROOF → VALUE",sample:"You should hire me because I bring strong JavaScript and React skills backed by real projects, I learn fast and adapt to new tech quickly, and I'm genuinely motivated to contribute to this team's goals. I won't just complete tasks — I'll understand the business impact of what I'm building.",practice:"Write your own version of this answer with YOUR specific skills and projects. Make it personal."},
-    {topic:"Where do you see yourself in 5 years?",framework:"GROWTH → CONTRIBUTION → ALIGNMENT",sample:"In 5 years I see myself as a senior full-stack developer or tech lead, having built and shipped products used by real users. I want to be someone the team relies on for architectural decisions. I chose to apply here because your scale of problems aligns with the growth I'm looking for.",practice:"Research the company you're applying to and customize this answer. Mention their product specifically."},
-    {topic:"Describe a time you faced a challenge",framework:"SITUATION → ACTION → RESULT (STAR method)",sample:"In my last project, we had a deadline in 48 hours but our API was returning inconsistent data. I stayed calm, isolated the issue to a race condition in async calls, fixed it using Promise.all, and we shipped on time. The client was happy and I learned to always test async edge cases.",practice:"Think of YOUR real challenge — technical or team-related. Write the STAR version of it. Practice it 3 times."},
-    {topic:"What are your strengths?",framework:"STRENGTH → EVIDENCE → RELEVANCE",sample:"My biggest strength is debugging — I enjoy finding root causes, not just patching symptoms. For example, I once traced a performance issue to an N+1 query problem and fixed it, reducing load time by 40%. For a developer role, this attention to detail directly impacts product quality.",practice:"Pick 2-3 real strengths. For each one, think of a specific example. Don't just list adjectives — give proof."},
-  ];
-
-  // Rotate by day
-  const qi = (day - 1) % aptBank.length;
-  const ci = (day - 1) % codingBank.length;
-  const di = (day - 1) % dsaBank.length;
-  const vi = (day - 1) % vocabBank.length;
-  const pi = (day - 1) % punchBank.length;
-  const ii = (day - 1) % interviewBank.length;
-
-  const result = {
-    apt: aptBank[qi],
-    coding: codingBank[ci],
-    dsa: dsaBank[di],
-    vocab: vocabBank[vi],
-    punch: punchBank[pi],
-    interview: interviewBank[ii]
-  };
-
-  aiCache[cacheKey] = result;
-  saveAICache(aiCache);
-  return result;
+  let html='';
+  CL_GROUPS.forEach(g=>{
+    const gDone=g.items.filter(i=>done[i.id]).length;
+    const gPct=g.items.length?gDone/g.items.length*100:0;
+    html+=`<div class="cl-panel" style="border-top:2px solid ${g.color}">
+      <div class="cl-header">
+        <span class="cl-group-label" style="color:${g.color}">${g.label}</span>
+        <span class="cl-group-count">${gDone}/${g.items.length}</span>
+      </div>
+      <div class="cl-mini-bar"><div class="cl-mini-fill" style="width:${gPct}%;background:${g.color}"></div></div>`;
+    g.items.forEach(item=>{
+      const d=!!done[item.id];
+      html+=`<div class="cl-item ${d?'done':''}" onclick="toggleCheck('${item.id}')">
+        <div class="cl-box">${d?'&#x2713;':''}</div>
+        <div class="cl-label">${item.label}</div>
+        <div class="cl-time">${item.time}</div>
+        <div class="cl-xp">+${item.xp}xp</div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  document.getElementById('checklistContainer').innerHTML=html;
 }
 
-// ═══════════════════════ BOSSES ═══════════════════════
-const BOSSES = [
-  {id:'procrastination',emoji:'😴',name:'Procrastination Phantom',lvl:'9/10',threat:'🔴 CRITICAL',hp:90,weakness:'Timed sessions, challenge-based tasks, completion streaks',kill:'30-day unbroken study streak'},
-  {id:'fog',emoji:'🌫️',name:'Brain Fog Beast',lvl:'8/10',threat:'🔴 HIGH',hp:85,weakness:'Daily mental challenges, physical exercise, consistent sleep, BP treatment',kill:'Complete 60 days of daily brain training'},
-  {id:'stammering',emoji:'🗣️',name:'Confidence Crusher',lvl:'7/10',threat:'🟠 HIGH',hp:80,weakness:'Daily verbal practice, punch questions, answer frameworks, surprise drills',kill:'Answer 5 consecutive interview questions without freezing'},
-  {id:'weakMath',emoji:'🔢',name:'Math Menace',lvl:'6/10',threat:'🟠 MODERATE',hp:90,weakness:'Daily aptitude questions starting easy, timed calculations, pattern recognition',kill:'Score 80%+ on aptitude section'},
-  {id:'codeRust',emoji:'💻',name:'Code Rust Daemon',lvl:'7/10',threat:'🟠 HIGH',hp:85,weakness:'Daily coding practice, rebuilding projects, DSA foundations',kill:'Build a full-stack project from scratch confidently'},
+function toggleCheck(itemId){
+  const ck=ckKey(S.day);
+  if(!S.checklistData[ck])S.checklistData[ck]={};
+  const was=!!S.checklistData[ck][itemId];
+  S.checklistData[ck][itemId]=!was;
+  let xpVal=0;
+  CL_GROUPS.forEach(g=>g.items.forEach(i=>{if(i.id===itemId)xpVal=i.xp;}));
+  if(!was){S.totalXP+=xpVal;spawnXP('+'+xpVal+' XP');updateXPDisplay();}
+  else{S.totalXP=Math.max(0,S.totalXP-xpVal);updateXPDisplay();}
+  save();
+  renderChecklist();
+}
+
+// ══════════════════════════════════════════
+// REPORTS / ANALYTICS
+// ══════════════════════════════════════════
+function switchPeriod(p,btn){
+  curPeriod=p;
+  document.querySelectorAll('.period-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReports();
+}
+
+function makePieSVG(slices,sz=96){
+  const total=slices.reduce((s,x)=>s+x.val,0);
+  if(!total)return`<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}"><circle cx="${sz/2}" cy="${sz/2}" r="${sz/2-4}" fill="none" stroke="#1a2d55" stroke-width="2"/><text x="${sz/2}" y="${sz/2+4}" text-anchor="middle" fill="#3a5080" font-size="9" font-family="Share Tech Mono">NO DATA</text></svg>`;
+  const cx=sz/2,cy=sz/2,r=sz/2-5;
+  let paths='',a=-Math.PI/2;
+  slices.forEach(s=>{
+    if(s.val<=0)return;
+    const sw=s.val/total*Math.PI*2;
+    const x1=cx+r*Math.cos(a),y1=cy+r*Math.sin(a);a+=sw;
+    const x2=cx+r*Math.cos(a),y2=cy+r*Math.sin(a);
+    const lg=sw>Math.PI?1:0;
+    paths+=`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 ${lg},1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${s.color}" opacity="0.9"/>`;
+  });
+  return`<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">${paths}<circle cx="${cx}" cy="${cy}" r="${r*0.36}" fill="#0d1526"/></svg>`;
+}
+
+function getWeekData(){
+  const res=[];
+  for(let i=6;i>=0;i--){
+    const d=S.day-i;
+    if(d<1){res.push({day:d,lbl:'--',done:false,xp:0,sess:0,checks:0});continue;}
+    const dk='d'+d,ck='c'+d;
+    const sess=S.doneSessions[dk]||{};
+    const sessXP=Object.keys(sess).reduce((s,k)=>s+({apt:40,code:50,speak:35,dsa:50}[k]||0),0);
+    const checks=S.checklistData[ck]||{};
+    const dobj=new Date(START);dobj.setDate(dobj.getDate()+d-1);
+    res.push({day:d,lbl:dobj.toLocaleDateString('en-IN',{weekday:'short'}),done:!!S.doneDays[dk],xp:sessXP+(S.doneDays[dk]?25:0),sess:Object.keys(sess).length,checks:Object.keys(checks).filter(k=>checks[k]).length});
+  }
+  return res;
+}
+
+function getMonthData(){
+  const res=[];
+  const weeks=Math.ceil(Math.min(S.day,30)/7);
+  for(let w=0;w<weeks;w++){
+    let xp=0,days=0,sess=0,checks=0;
+    for(let d=w*7+1;d<=Math.min((w+1)*7,S.day);d++){
+      const dk='d'+d,ck='c'+d;
+      if(S.doneDays[dk]){days++;xp+=25;}
+      const s=S.doneSessions[dk]||{};sess+=Object.keys(s).length;
+      xp+=Object.keys(s).reduce((t,k)=>t+({apt:40,code:50,speak:35,dsa:50}[k]||0),0);
+      const c=S.checklistData[ck]||{};checks+=Object.keys(c).filter(k=>c[k]).length;
+    }
+    res.push({lbl:'Wk '+(w+1),xp,days,sess,checks});
+  }
+  return res;
+}
+
+function makeHeatmap(all){
+  const maxDay=all?S.day:Math.min(S.day,28);
+  const start=all?1:Math.max(1,S.day-maxDay+1);
+  let rows=[],week=[];
+  for(let d=start;d<=S.day;d++){
+    const dk='d'+d,s=S.doneSessions[dk]||{},sc=Object.keys(s).length;
+    const lv=S.doneDays[dk]?4:sc>=3?3:sc>=2?2:sc>=1?1:0;
+    week.push({d,lv});
+    if(week.length===7){rows.push(week);week=[];}
+  }
+  if(week.length)rows.push(week);
+  return rows.map((wk,wi)=>`<div class="heatmap-row"><div class="hm-label">W${wi+1}</div>${wk.map(c=>`<div class="hm-cell lv${c.lv}" title="Day ${c.d}">${c.d}</div>`).join('')}</div>`).join('');
+}
+
+function renderReports(){
+  let html='';
+  if(curPeriod==='week'){
+    const data=getWeekData();
+    const wXP=data.reduce((s,d)=>s+d.xp,0);
+    const daysDone=data.filter(d=>d.done).length;
+    const sessT=data.reduce((s,d)=>s+d.sess,0);
+    const chkT=data.reduce((s,d)=>s+d.checks,0);
+
+    // Session type breakdown for pie
+    const sp={apt:0,code:0,speak:0,dsa:0};
+    for(let i=S.day-6;i<=S.day;i++){if(i<1)continue;const s=S.doneSessions['d'+i]||{};Object.keys(s).forEach(k=>{if(sp[k]!==undefined)sp[k]++;});}
+    const pie=[{val:sp.apt,color:'#ffcc00',lbl:'Aptitude'},{val:sp.code,color:'#00ff88',lbl:'Coding'},{val:sp.speak,color:'#00d4ff',lbl:'Speaking'},{val:sp.dsa,color:'#aa44ff',lbl:'DSA'}];
+
+    html=`
+    <div class="rpt-grid">
+      <div class="rpt-card"><div class="rpt-card-title">WEEK XP EARNED</div><div class="rpt-big">${wXP}</div><div class="rpt-sub">XP this week</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">DAYS COMPLETED</div><div class="rpt-big" style="color:var(--cyan)">${daysDone}<span style="font-size:16px;color:var(--text3)">/7</span></div><div class="rpt-sub">${daysDone>=5?'&#x1F525; Great week!':daysDone>=3?'&#x26A1; Keep pushing':'&#x26A0; Need consistency'}</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">SESSIONS DONE</div><div class="rpt-big" style="color:var(--yellow)">${sessT}</div><div class="rpt-sub">of ${data.filter(d=>d.day>=1).length*4} possible</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">ROUTINE CHECKS</div><div class="rpt-big" style="color:var(--orange)">${chkT}</div><div class="rpt-sub">daily habits ticked</div></div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">SESSION TYPE MIX &#x2014; THIS WEEK</div>
+        <div class="pie-wrap">
+          ${makePieSVG(pie,100)}
+          <div class="pie-legend">${pie.map(s=>`<div class="pie-leg-row"><div class="pie-dot" style="background:${s.color}"></div>${s.lbl}: <strong>${s.val}</strong></div>`).join('')}</div>
+        </div>
+      </div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">DAILY XP &#x2014; LAST 7 DAYS</div>
+        <div class="bar-chart">${data.map(d=>{const pct=Math.min(100,(d.xp/200)*100);const col=d.done?'var(--green)':d.xp>0?'var(--cyan)':'var(--bg3)';return`<div class="bar-row"><div class="bar-lbl">${d.lbl}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col}"></div></div><div class="bar-val">${d.xp}</div></div>`;}).join('')}</div>
+      </div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">COMPLETION HEATMAP</div>
+        <div class="heatmap-wrap">${makeHeatmap(false)}</div>
+        <div style="margin-top:8px;font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace">&#x25A0; 0 sess &nbsp; &#x25A0; 1 &nbsp; &#x25A0; 2 &nbsp; &#x25A0; 3 &nbsp; &#x25A0; FULL DAY</div>
+      </div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">DAY-BY-DAY BREAKDOWN</div>
+        <table class="rpt-table"><tr><th>DAY</th><th>DATE</th><th>XP</th><th>SESSIONS</th><th>CHECKS</th><th>STATUS</th></tr>
+        ${data.filter(d=>d.day>=1).map(d=>{
+          const dobj=new Date(START);dobj.setDate(dobj.getDate()+d.day-1);
+          const ds=dobj.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+          const sc=d.done?'vg':d.sess>0?'vm':'vb';
+          const st=d.done?'DONE':d.sess>0?'PARTIAL':'MISSED';
+          return`<tr><td>Day ${d.day}</td><td>${ds}</td><td class="${d.xp>0?'vg':''}">${d.xp}</td><td class="${d.sess>=4?'vg':d.sess>0?'vm':'vb'}">${d.sess}/4</td><td class="${d.checks>=10?'vg':d.checks>0?'vm':'vb'}">${d.checks}</td><td class="${sc}">${st}</td></tr>`;
+        }).join('')}
+        </table>
+      </div>
+    </div>`;
+  }
+
+  else if(curPeriod==='month'){
+    const wData=getMonthData();
+    const tXP=wData.reduce((s,w)=>s+w.xp,0);
+    const tDays=wData.reduce((s,w)=>s+w.days,0);
+    const cons=S.day>0?Math.round(tDays/Math.min(S.day,30)*100):0;
+
+    // Routine category breakdown
+    let sc=0,hc=0,pc=0,wpc=0;
+    for(let d=1;d<=S.day;d++){
+      const ck='c'+d,c=S.checklistData[ck]||{};
+      ['s_apt','s_punch1','s_code','s_speak','s_punch2','s_dsa'].forEach(k=>{if(c[k])sc++;});
+      ['wake','breakfast','steam','nasal'].forEach(k=>{if(c[k])hc++;});
+      ['walk','water','stretch'].forEach(k=>{if(c[k])pc++;});
+      ['bath','ready','leave','sleep'].forEach(k=>{if(c[k])wpc++;});
+    }
+    const pie2=[{val:sc,color:'#00ff88',lbl:'Study'},{val:hc,color:'#00d4ff',lbl:'Health'},{val:pc,color:'#ff6600',lbl:'Physical'},{val:wpc,color:'#aa44ff',lbl:'Work prep'}];
+
+    html=`
+    <div class="rpt-grid">
+      <div class="rpt-card"><div class="rpt-card-title">MONTH XP</div><div class="rpt-big">${tXP}</div><div class="rpt-sub">last 30 days</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">CONSISTENCY</div><div class="rpt-big" style="color:${cons>=70?'var(--green)':cons>=40?'var(--yellow)':'var(--red)'}">${cons}%</div><div class="rpt-sub">${tDays}/${Math.min(S.day,30)} days done</div></div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">ROUTINE CATEGORY SPLIT &#x2014; ALL CHECKS THIS MONTH</div>
+        <div class="pie-wrap">
+          ${makePieSVG(pie2,110)}
+          <div class="pie-legend">${pie2.map(s=>`<div class="pie-leg-row"><div class="pie-dot" style="background:${s.color}"></div>${s.lbl}: <strong>${s.val}</strong></div>`).join('')}</div>
+        </div>
+      </div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">WEEKLY XP TREND</div>
+        <div class="bar-chart">${wData.map((w,i)=>{const cols=['var(--green)','var(--cyan)','var(--yellow)','var(--orange)','var(--purple)'];return`<div class="bar-row"><div class="bar-lbl">${w.lbl}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,(w.xp/1000)*100)}%;background:${cols[i%cols.length]}"></div></div><div class="bar-val">${w.xp}</div></div>`;}).join('')}</div>
+      </div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">MONTHLY HEATMAP</div><div class="heatmap-wrap">${makeHeatmap(false)}</div></div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">WEEKLY SUMMARY</div>
+        <table class="rpt-table"><tr><th>WEEK</th><th>XP</th><th>DAYS</th><th>SESSIONS</th><th>CHECKS</th></tr>
+        ${wData.map(w=>`<tr><td>${w.lbl}</td><td class="vg">${w.xp}</td><td class="${w.days>=5?'vg':w.days>=3?'vm':'vb'}">${w.days}</td><td class="${w.sess>=16?'vg':w.sess>=8?'vm':'vb'}">${w.sess}</td><td class="${w.checks>=50?'vg':w.checks>=25?'vm':'vb'}">${w.checks}</td></tr>`).join('')}
+        </table>
+      </div>
+    </div>`;
+  }
+
+  else { // all time
+    const tDone=Object.keys(S.doneDays).length;
+    let tSess=0,tChecks=0;
+    Object.keys(S.doneSessions).forEach(dk=>{tSess+=Object.keys(S.doneSessions[dk]).length;});
+    Object.keys(S.checklistData).forEach(ck=>{const c=S.checklistData[ck];tChecks+=Object.keys(c).filter(k=>c[k]).length;});
+    const cons=S.day>0?Math.round(tDone/S.day*100):0;
+    const lvd=getLvlData(S.totalXP);
+
+    const bPie=[
+      {val:100-S.bossHP.procrastination,color:'var(--green)',lbl:'Procrastination'},
+      {val:100-S.bossHP.codeRust,color:'var(--cyan)',lbl:'Code Rust'},
+      {val:100-S.bossHP.stammering,color:'var(--yellow)',lbl:'Stammering'},
+      {val:100-S.bossHP.weakMath,color:'var(--orange)',lbl:'Math'},
+      {val:100-S.bossHP.fog,color:'var(--purple)',lbl:'Brain Fog'},
+    ];
+
+    html=`
+    <div class="rpt-grid">
+      <div class="rpt-card"><div class="rpt-card-title">TOTAL XP</div><div class="rpt-big">${S.totalXP}</div><div class="rpt-sub">Lv${lvd.l} &#x2014; ${lvd.pct.toFixed(0)}% to next</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">DAYS DONE</div><div class="rpt-big" style="color:var(--cyan)">${tDone}</div><div class="rpt-sub">of ${S.day} total days</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">CONSISTENCY</div><div class="rpt-big" style="color:${cons>=70?'var(--green)':cons>=40?'var(--yellow)':'var(--red)'}">${cons}%</div><div class="rpt-sub">overall completion rate</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">HABIT CHECKS</div><div class="rpt-big" style="color:var(--orange)">${tChecks}</div><div class="rpt-sub">total routine items done</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">SESSIONS LOGGED</div><div class="rpt-big" style="color:var(--purple)">${tSess}</div><div class="rpt-sub">study sessions total</div></div>
+      <div class="rpt-card"><div class="rpt-card-title">AVG XP / DONE DAY</div><div class="rpt-big" style="color:var(--yellow)">${tDone?Math.round(S.totalXP/tDone):0}</div><div class="rpt-sub">on completed days</div></div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">BOSS DAMAGE DEALT (% HP REMOVED)</div>
+        <div class="pie-wrap">
+          ${makePieSVG(bPie,110)}
+          <div class="pie-legend">${bPie.map(s=>`<div class="pie-leg-row"><div class="pie-dot" style="background:${s.color}"></div>${s.lbl}: <strong>${s.val}%</strong> off</div>`).join('')}</div>
+        </div>
+      </div>
+
+      <div class="rpt-card wide"><div class="rpt-card-title">FULL JOURNEY HEATMAP</div><div class="heatmap-wrap">${makeHeatmap(true)}</div></div>
+    </div>`;
+  }
+  document.getElementById('reportsContent').innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+// AI QUESTION BANK
+// ══════════════════════════════════════════
+const AI_CACHE_KEY='vishnu_ai_q_v2';
+let aiCache={};
+(async()=>{try{if(!IS_SANDBOX){const v=await sbGet(AI_CACHE_KEY);if(v){aiCache=JSON.parse(v);return;}}const d=localStorage.getItem(AI_CACHE_KEY);if(d)aiCache=JSON.parse(d);}catch(_){}})();
+async function saveAICache(c){try{localStorage.setItem(AI_CACHE_KEY,JSON.stringify(c));}catch(_){}if(!IS_SANDBOX)try{await sbSet(AI_CACHE_KEY,JSON.stringify(c));}catch(_){}}
+
+async function fetchDayQuestions(day){
+  const ck='day_'+day;if(aiCache[ck])return aiCache[ck];
+  const aptBank=[
+    [{q:"Train travels 360km in 4h. Speed in m/s?",opts:["A. 25 m/s","B. 90 m/s","C. 100 m/s","D. 72 m/s"],ans:0,exp:"90 km/h = 25 m/s",diff:"easy"},{q:"Series: 2,6,12,20,30,?",opts:["A. 40","B. 42","C. 44","D. 46"],ans:1,exp:"Differences 4,6,8,10,12 → 42",diff:"easy"},{q:"Similar to ELOQUENT:",opts:["A. Silent","B. Articulate","C. Confused","D. Angry"],ans:1,exp:"Eloquent = fluent, persuasive speech",diff:"easy"}],
+    [{q:"Buy ₹800 sell ₹1000. Profit %?",opts:["A. 20%","B. 25%","C. 15%","D. 30%"],ans:1,exp:"(200/800)x100 = 25%",diff:"easy"},{q:"MANGO=NBOHP, APPLE=?",opts:["A. BQQMF","B. BPPMF","C. CQQMF","D. AQQLF"],ans:0,exp:"Each letter +1",diff:"easy"},{q:"Odd one out: Laptop,Desktop,Tablet,Router",opts:["A. Laptop","B. Desktop","C. Tablet","D. Router"],ans:3,exp:"Router is networking; others compute",diff:"easy"}],
+    [{q:"A does work in 10d, B in 15d. Together?",opts:["A. 5d","B. 6d","C. 8d","D. 12d"],ans:1,exp:"1/10+1/15=1/6 → 6 days",diff:"med"},{q:"Fibonacci: 1,1,2,3,5,8,?",opts:["A. 10","B. 11","C. 13","D. 15"],ans:2,exp:"5+8=13",diff:"easy"},{q:"BENEVOLENT means:",opts:["A. Evil","B. Kind/generous","C. Brave","D. Intelligent"],ans:1,exp:"Kind and charitable",diff:"easy"}],
+    [{q:"SI on ₹5000 at 8% for 3 yrs?",opts:["A. ₹1000","B. ₹1200","C. ₹1500","D. ₹800"],ans:1,exp:"5000×8×3/100=₹1200",diff:"easy"},{q:"All cats are animals. Some animals are dogs. True?",opts:["A. All cats are dogs","B. Some animals are cats","C. No dogs are cats","D. All dogs are animals"],ans:1,exp:"All cats are animals → some animals are cats",diff:"med"},{q:"VERBOSE means:",opts:["A. Brief","B. Too many words","C. Silent","D. Logical"],ans:1,exp:"Using more words than needed",diff:"med"}],
+    [{q:"Bike 10% depreciation/yr. After 2 yrs from ₹50000?",opts:["A. ₹40000","B. ₹40500","C. ₹45000","D. ₹41000"],ans:1,exp:"45000 × 0.9 = 40500",diff:"med"},{q:"Row of 40 students, Ravi 15th from left. From right?",opts:["A. 25","B. 26","C. 27","D. 24"],ans:1,exp:"40-15+1=26",diff:"easy"},{q:"PRAGMATIC means:",opts:["A. Idealistic","B. Practical/realistic","C. Stubborn","D. Creative"],ans:1,exp:"Dealing with things sensibly",diff:"med"}],
+    [{q:"Pipes A(20m),B(30m) fill; C(40m) empties. Fill time all open?",opts:["A. 17.1m","B. 24m","C. 15m","D. 20m"],ans:0,exp:"7/120 → ~17.1 min",diff:"hard"},{q:"Missing: 6,11,21,36,56,?",opts:["A. 81","B. 91","C. 76","D. 86"],ans:0,exp:"+5,10,15,20,25 → 81",diff:"med"},{q:"AMBIGUOUS means:",opts:["A. Clear","B. Multiple interpretations","C. Ambitious","D. Angry"],ans:1,exp:"Unclear, more than one meaning",diff:"med"}],
+    [{q:"Two trains 250m combined pass in 10s opposite. Ratio 2:3. Faster speed?",opts:["A. 15 m/s","B. 18 m/s","C. 10 m/s","D. 12 m/s"],ans:0,exp:"25 m/s combined. 3/5×25=15 m/s",diff:"hard"},{q:"Book:Chapter = Computer:?",opts:["A. Keyboard","B. Program","C. Screen","D. Mouse"],ans:1,exp:"A book contains chapters; computer contains programs",diff:"easy"},{q:"METICULOUS means:",opts:["A. Careless","B. Very careful/precise","C. Reckless","D. Confused"],ans:1,exp:"Showing great attention to detail",diff:"med"}],
+  ];
+  const codBank=[
+    {topic:"JavaScript Closures",theory:"A closure is a function retaining access to its outer scope after the outer function returns. Core for callbacks, modules, and private variables.",mcq:[{q:"Counter closure output after one call?",opts:["A. 0","B. 1","C. undefined","D. Error"],ans:1,exp:"Each call increments and returns internal count"},{q:"Which creates a private variable via closure?",opts:["A. var x=0","B. function f(){var x=0;return ()=>++x;}","C. let x=0;x++","D. const x={}"],ans:1,exp:"Inner arrow closes over x"}],code:{task:"Write createCounter() with increment(), decrement(), getCount() using closures",starter:"function createCounter() {\n  // your code here\n}\nconst c = createCounter();\nc.increment();\nc.increment();\nc.decrement();\nconsole.log(c.getCount()); // 1",hint:"Return object with methods sharing one 'count' variable"}},
+    {topic:"Array Methods",theory:"map(), filter(), reduce() are essential for functional JS. map() transforms, filter() selects, reduce() accumulates. Asked in every JS interview.",mcq:[{q:"[1,2,3].map(x=>x*2) returns?",opts:["A. [1,2,3]","B. [2,4,6]","C. 6","D. [3,6,9]"],ans:1,exp:"map applies function to each element"},{q:"Which returns only elements matching a condition?",opts:["A. map","B. find","C. filter","D. reduce"],ans:2,exp:"filter returns a new array where callback is true"}],code:{task:"Return names of employees earning >₹50000, sorted alphabetically",starter:"const employees = [\n  {name:'Ravi', salary:45000},\n  {name:'Priya', salary:65000},\n  {name:'Amit', salary:72000},\n  {name:'Sita', salary:38000}\n];\n// Your code here",hint:"filter() → map() → sort()"}},
+    {topic:"Promises & Async/Await",theory:"Promises represent eventual completion of async ops. async/await makes async code readable. Essential for any API/I/O code.",mcq:[{q:"'async' before a function means it...",opts:["A. Runs faster","B. Always returns a Promise","C. Blocks execution","D. Creates thread"],ans:1,exp:"Always wraps return value in a Promise"},{q:"Keyword to pause until Promise resolves?",opts:["A. pause","B. wait","C. await","D. hold"],ans:2,exp:"await pauses async function until Promise settles"}],code:{task:"Write getUserName(userId) — async with error handling",starter:"async function getUserName(userId) {\n  const fakeAPI = id => new Promise((res,rej) =>\n    setTimeout(()=> id>0 ? res({name:'Vishnu'}) : rej('Invalid'), 100));\n  // Your code here — use try/catch\n}\ngetUserName(1).then(console.log);\ngetUserName(-1).catch(console.error);",hint:"try { const user = await fakeAPI(userId); return user.name; } catch(e) {...}"}},
+  ];
+  const dsaBank=[
+    {topic:"Two Sum",theory:"Given array + target, find two indices summing to target. HashMap gives O(n). Appears in Amazon, Google, and Indian service interviews.",mcq:[{q:"Optimal Two Sum time complexity?",opts:["A. O(n²)","B. O(n log n)","C. O(n)","D. O(1)"],ans:2,exp:"HashMap O(1) lookup, one pass = O(n)"},{q:"Data structure making Two Sum O(n)?",opts:["A. Array","B. Stack","C. HashMap","D. Queue"],ans:2,exp:"Store seen numbers in HashMap, check complement in O(1)"}],code:{task:"Return indices of two nums adding to target",starter:"function twoSum(nums, target) {\n  // Your solution\n}\nconsole.log(twoSum([2,7,11,15], 9));  // [0,1]\nconsole.log(twoSum([3,2,4], 6));       // [1,2]",hint:"For each num, check if (target - num) exists in HashMap"}},
+    {topic:"Palindrome Check",theory:"String reversal: split into array, reverse, join. Classic JS pattern. Asked in TCS/Infosys phone screens.",mcq:[{q:"'hello'.split('').reverse().join('') = ?",opts:["A. 'hello'","B. 'olleh'","C. array","D. Error"],ans:1,exp:"split → reverse → join = 'olleh'"},{q:"Space complexity reversing to new array?",opts:["A. O(1)","B. O(log n)","C. O(n)","D. O(n²)"],ans:2,exp:"New array of size n = O(n) space"}],code:{task:"isPalindrome(str) — ignore spaces and case",starter:"function isPalindrome(str) {\n  // 'racecar' → true\n  // 'A man a plan a canal Panama' → true\n  // 'hello' → false\n}\nconsole.log(isPalindrome('racecar'));\nconsole.log(isPalindrome('A man a plan a canal Panama'));",hint:"Clean string (lowercase, remove non-alphanumeric), compare with its reverse"}},
+    {topic:"FizzBuzz",theory:"Print 1-n: Fizz for ×3, Buzz for ×5, FizzBuzz for ×15. Tests loops + modulo. In every Indian IT screening.",mcq:[{q:"Which operator checks divisibility?",opts:["A. /","B. %","C. //","D. div"],ans:1,exp:"% gives remainder. n%3===0 means divisible by 3"},{q:"Why check n%15 before n%3?",opts:["A. Performance","B. Catch multiples of both first","C. Doesn't matter","D. Syntax"],ans:1,exp:"Otherwise 15 would print 'Fizz' not 'FizzBuzz'"}],code:{task:"FizzBuzz 1 to 20. Return array of strings.",starter:"function fizzBuzz(n) {\n  // return array\n}\nconsole.log(fizzBuzz(20));",hint:"Check %15 first, then %3, then %5, else String(i)"}},
+  ];
+  const vocBank=[
+    {word:"PROFICIENT",ph:"/prəˈfɪʃ.ənt/",pos:"ADJECTIVE",meaning:"Competent and skilled — common in job descriptions",example:"She is proficient in JavaScript, React, and Node.js.",tel:"నిపుణుడు",hindi:"कुशल"},
+    {word:"COLLABORATE",ph:"/kəˈlæb.ə.reɪt/",pos:"VERB",meaning:"Work jointly with others — essential team skill",example:"Developers collaborate across teams using Agile.",tel:"కలిసి పని చేయు",hindi:"सहयोग करना"},
+    {word:"INITIATIVE",ph:"/ɪˈnɪʃ.ə.tɪv/",pos:"NOUN",meaning:"Ability to act independently — key interview trait",example:"He showed initiative by fixing the bug before being asked.",tel:"చొరవ",hindi:"पहल"},
+    {word:"ARTICULATE",ph:"/ɑːˈtɪk.jʊ.lət/",pos:"ADJECTIVE",meaning:"Able to speak fluently and clearly",example:"An articulate dev explains tech to non-tech stakeholders.",tel:"స్పష్టంగా మాట్లాడగలిగే",hindi:"स्पष्टवादी"},
+    {word:"SCALABLE",ph:"/ˈskeɪ.lə.bəl/",pos:"ADJECTIVE",meaning:"Handles growing load — key architecture term",example:"We need a scalable system for 1 million users.",tel:"విస్తరించగలిగే",hindi:"विस्तार योग्य"},
+    {word:"RESILIENT",ph:"/rɪˈzɪl.i.ənt/",pos:"ADJECTIVE",meaning:"Recovers from failures gracefully",example:"A resilient microservice retries failed requests automatically.",tel:"మళ్ళీ లేచే",hindi:"लचीला"},
+    {word:"DILIGENT",ph:"/ˈdɪl.ɪ.dʒənt/",pos:"ADJECTIVE",meaning:"Showing consistent care and effort",example:"A diligent coder writes clean documented code every time.",tel:"శ్రద్ధగా పని చేసే",hindi:"परिश्रमी"},
+  ];
+  const punchBank=[
+    [{lang:"ENGLISH",q:"Tell me about yourself in exactly 60 seconds. Go!",tip:"Name → Situation → Skills → Goal. Don't just read resume.",reveal:"I'm Vishnu, a developer from Hyderabad strong in JS/React, preparing for full-stack roles. Goal: join a team where I build scalable products and grow technically."},{lang:"TELUGU",q:"Friend ki 'What is an API?' explain cheyyi!",tip:"Simple: 'Two apps maatle communicate cheyyadaniki messenger laanti'",reveal:"API ante — Zomato ki restaurant data kavali, API adigi teesukuntundi! Bridge laanti."}],
+    [{lang:"ENGLISH",q:"What is your biggest weakness? Don't say 'I work too hard'!",tip:"Real weakness + show you're fixing it.",reveal:"I used to stay stuck too long before asking for help. Now I set a 30-min rule — if stuck, ask. Made me faster and better at collaboration."},{lang:"TELUGU",q:"Amazon interviewer ki 'Why our company?' cheppu!",tip:"Product + culture + growth mention cheyyi",reveal:"Mee company lo large-scale systems build cheyyadam learn avutundi — adi naa growth ki perfect match!"}],
+    [{lang:"ENGLISH",q:"Explain == vs === like I'm 10 years old!",tip:"Use a real-world analogy.",reveal:"== is lenient — 5=='5' is true. === is strict — same value AND type. 5==='5' is false. Always use ===!"},{lang:"TELUGU",q:"Amma ki 'Cloud Computing?' explain cheyyi!",tip:"Rent vs own analogy",reveal:"Amma, neighbor fridge rent ki use chestunte cloud computing ala — computers internet dwara rent ki vaadukuntaamu!"}],
+    [{lang:"ENGLISH",q:"Bug in production at 2 AM. What do you do?",tip:"Calm → logs → communicate → fix/rollback",reveal:"Check logs, notify team lead, hotfix under 5 mins or rollback to stable. Communication first, panic never."},{lang:"TELUGU",q:"'Explain React to a non-tech person'",tip:"Real component example use cheyyi",reveal:"React ante website ni chinna pieces (components) lo build cheyyadam. Change aithe React auto update chestundi — fast ga!"}],
+  ];
+  const intBank=[
+    {topic:"Tell me about yourself",framework:"PRESENT → PAST → FUTURE",sample:"I'm a full-stack developer from Hyderabad building skills in React and Node.js with strong DSA foundations. Goal: join a product company to work on large-scale systems.",practice:"Say this out loud RIGHT NOW. Time it. Under 90 seconds. Record and listen."},
+    {topic:"Why should we hire you?",framework:"SKILLS → PROOF → VALUE",sample:"I bring strong JS/React skills backed by real projects, I learn fast, and I'm motivated to understand business impact — not just complete tickets.",practice:"Write YOUR version with your specific skills and projects. Make it personal."},
+    {topic:"Where do you see yourself in 5 years?",framework:"GROWTH → CONTRIBUTION → ALIGNMENT",sample:"Senior full-stack dev or tech lead, having shipped products used by real users, relied on for architectural decisions.",practice:"Research the company. Mention their product specifically."},
+    {topic:"Describe a challenge you faced",framework:"SITUATION → ACTION → RESULT",sample:"48-hour deadline, API returning inconsistent data. I isolated a race condition in async calls, fixed with Promise.all, shipped on time. Learned to test async edge cases.",practice:"Write YOUR real challenge using STAR method. Practice 3 times out loud."},
+    {topic:"What are your strengths?",framework:"STRENGTH → EVIDENCE → RELEVANCE",sample:"Debugging — I find root causes, not patch symptoms. Traced a perf issue to N+1 queries, reduced load time 40%. This directly impacts product quality.",practice:"Pick 2-3 real strengths. For each: specific example. No adjectives without proof."},
+  ];
+  const qi=(day-1)%aptBank.length,ci=(day-1)%codBank.length,di=(day-1)%dsaBank.length;
+  const vi=(day-1)%vocBank.length,pi=(day-1)%punchBank.length,ii=(day-1)%intBank.length;
+  const result={apt:aptBank[qi],coding:codBank[ci],dsa:dsaBank[di],vocab:vocBank[vi],punch:punchBank[pi],interview:intBank[ii]};
+  aiCache[ck]=result;saveAICache(aiCache);return result;
+}
+
+// ══ BOSSES ══
+const BOSSES=[
+  {id:'procrastination',emoji:'😴',name:'Procrastination Phantom',lvl:'9/10',threat:'🔴 CRITICAL',weakness:'Timed sessions, streaks',kill:'30-day unbroken streak'},
+  {id:'fog',emoji:'🌫️',name:'Brain Fog Beast',lvl:'8/10',threat:'🔴 HIGH',weakness:'Daily challenges, exercise, sleep',kill:'60 days of training'},
+  {id:'stammering',emoji:'🗣️',name:'Confidence Crusher',lvl:'7/10',threat:'🟠 HIGH',weakness:'Daily verbal + punch drills',kill:'5 interviews without freezing'},
+  {id:'weakMath',emoji:'🔢',name:'Math Menace',lvl:'6/10',threat:'🟠 MOD',weakness:'Daily aptitude, timed calc',kill:'Score 80%+ on aptitude'},
+  {id:'codeRust',emoji:'💻',name:'Code Rust Daemon',lvl:'7/10',threat:'🟠 HIGH',weakness:'Daily coding, DSA',kill:'Build full-stack project confidently'},
 ];
 
-// ═══════════════════════ ACHIEVEMENTS ═══════════════════════
-const ACHIEVEMENTS = [
+// ══ ACHIEVEMENTS ══
+const ACHIEVEMENTS=[
   {id:'boot',icon:'⚡',name:'Boot Complete',desc:'Complete Day 1',cond:s=>Object.keys(s.doneDays).length>=1},
-  {id:'streak3',icon:'🔥',name:'3-Day Fire',desc:'3-day study streak',cond:s=>s.streaks.daily>=3},
+  {id:'streak3',icon:'🔥',name:'3-Day Fire',desc:'3-day streak',cond:s=>s.streaks.daily>=3},
   {id:'streak7',icon:'⭐',name:'Week Warrior',desc:'7-day streak',cond:s=>s.streaks.daily>=7},
   {id:'streak30',icon:'👑',name:'Month Master',desc:'30-day streak',cond:s=>s.streaks.daily>=30},
-  {id:'xp500',icon:'💫',name:'Level 2',desc:'Earn 500 XP',cond:s=>s.totalXP>=500},
-  {id:'xp2000',icon:'🌟',name:'Level 4',desc:'Earn 2000 XP',cond:s=>s.totalXP>=2000},
-  {id:'days7',icon:'📅',name:'Week Done',desc:'Complete 7 days',cond:s=>Object.keys(s.doneDays).length>=7},
-  {id:'days30',icon:'🏆',name:'Month Done',desc:'Complete 30 days',cond:s=>Object.keys(s.doneDays).length>=30},
-  {id:'days90',icon:'🎯',name:'90-Day Coder',desc:'Complete 90 days',cond:s=>Object.keys(s.doneDays).length>=90},
+  {id:'xp500',icon:'💫',name:'Level 2',desc:'500 XP',cond:s=>s.totalXP>=500},
+  {id:'xp2000',icon:'🌟',name:'Level 4',desc:'2000 XP',cond:s=>s.totalXP>=2000},
+  {id:'days7',icon:'📅',name:'Week Done',desc:'7 days',cond:s=>Object.keys(s.doneDays).length>=7},
+  {id:'days30',icon:'🏆',name:'Month Done',desc:'30 days',cond:s=>Object.keys(s.doneDays).length>=30},
   {id:'bossHit',icon:'⚔️',name:'Boss Breaker',desc:'Any boss below 70%',cond:s=>Object.values(s.bossHP).some(v=>v<70)},
-  {id:'vocab30',icon:'📖',name:'Vocab Builder',desc:'Vocab streak x7',cond:s=>s.streaks.vocab>=7},
-  {id:'punch10',icon:'😂',name:'Punch King',desc:'Punch streak x7',cond:s=>s.streaks.punch>=7},
-  {id:'code30',icon:'💻',name:'Code Consistent',desc:'Code streak x14',cond:s=>s.streaks.code>=14},
-  {id:'apt30',icon:'🧠',name:'Aptitude Ace',desc:'Apt streak x14',cond:s=>s.streaks.apt>=14},
-  {id:'fullstack',icon:'🚀',name:'Full Stack Ready',desc:'Complete 180 days',cond:s=>Object.keys(s.doneDays).length>=180},
+  {id:'fullRoutine',icon:'✅',name:'Full Routine',desc:'100% checklist once',cond:s=>Object.keys(s.checklistData).some(ck=>{const c=s.checklistData[ck];return Object.keys(c).filter(k=>c[k]).length>=CL_TOTAL;})},
+  {id:'fullstack',icon:'🚀',name:'Full Stack',desc:'180 days',cond:s=>Object.keys(s.doneDays).length>=180},
 ];
 
-// ═══════════════════════ SCHEDULE DATA ═══════════════════════
-const SCHEDULE = [
+// ══ SCHEDULE ══
+const SCHEDULE=[
   {time:'8:00 AM',act:'Wake Up + Water (500ml)',dur:'—',hl:false},
-  {time:'8:00–8:20',act:'Phone buffer (controlled)',dur:'20 min',hl:false},
-  {time:'8:20–8:40',act:'Bathroom + Brush teeth',dur:'20 min',hl:false},
-  {time:'8:40–9:00',act:'Cook: Boil eggs + Oats',dur:'20 min',hl:false},
-  {time:'9:00–9:20',act:'Breakfast + Eat',dur:'20 min',hl:false},
-  {time:'9:20–9:35',act:'Health: Steam + Nasal Sprays',dur:'15 min',hl:false},
-  {time:'9:35–9:55',act:'🧠 SESSION 1: Aptitude',dur:'20 min',hl:true},
-  {time:'9:55–10:05',act:'😂 Surprise Punch Buffer',dur:'10 min',hl:true},
-  {time:'10:05–10:25',act:'💻 SESSION 2: Coding',dur:'20 min',hl:true},
-  {time:'10:25–10:35',act:'Break + Water',dur:'10 min',hl:false},
-  {time:'10:35–11:05',act:'🚶 Morning Walk (Health RPG)',dur:'30 min',hl:false},
-  {time:'11:05–11:15',act:'Cool down + Water',dur:'10 min',hl:false},
-  {time:'11:15–11:35',act:'🗣️ SESSION 3: Speak + Vocab',dur:'20 min',hl:true},
-  {time:'11:35–11:45',act:'😂 Surprise Punch Buffer 2',dur:'10 min',hl:true},
-  {time:'11:45–12:05',act:'💻 SESSION 4: DSA + Code',dur:'20 min',hl:true},
-  {time:'12:05–12:30',act:'Wind down + Light prep',dur:'25 min',hl:false},
-  {time:'12:30 PM',act:'🚿 Bath',dur:'20 min',hl:false},
-  {time:'12:50–1:15',act:'Get Ready for Office',dur:'25 min',hl:false},
+  {time:'8:00–8:20',act:'Phone buffer (controlled)',dur:'20m',hl:false},
+  {time:'8:20–8:40',act:'Bathroom + Brush',dur:'20m',hl:false},
+  {time:'8:40–9:00',act:'Cook: Eggs + Oats',dur:'20m',hl:false},
+  {time:'9:00–9:20',act:'Breakfast',dur:'20m',hl:false},
+  {time:'9:20–9:35',act:'Steam + Nasal Sprays',dur:'15m',hl:false},
+  {time:'9:35–9:55',act:'🧠 SESSION 1: Aptitude',dur:'20m',hl:true},
+  {time:'9:55–10:05',act:'😂 Punch Buffer',dur:'10m',hl:true},
+  {time:'10:05–10:25',act:'💻 SESSION 2: Coding',dur:'20m',hl:true},
+  {time:'10:25–10:35',act:'Break + Water',dur:'10m',hl:false},
+  {time:'10:35–11:05',act:'🚶 Morning Walk',dur:'30m',hl:false},
+  {time:'11:05–11:15',act:'Cool down + Water',dur:'10m',hl:false},
+  {time:'11:15–11:35',act:'🗣️ SESSION 3: Speak + Vocab',dur:'20m',hl:true},
+  {time:'11:35–11:45',act:'😂 Punch Buffer 2',dur:'10m',hl:true},
+  {time:'11:45–12:05',act:'⚡ SESSION 4: DSA + Code',dur:'20m',hl:true},
+  {time:'12:05–12:30',act:'Wind down',dur:'25m',hl:false},
+  {time:'12:30 PM',act:'🚿 Bath',dur:'20m',hl:false},
+  {time:'12:50–1:15',act:'Get Ready',dur:'25m',hl:false},
   {time:'1:15 PM',act:'Leave for Office',dur:'—',hl:false},
   {time:'3:15 PM',act:'SHIFT BEGINS',dur:'—',hl:false},
-  {time:'12:15 AM',act:'Shift Ends → Home by 1:30 AM',dur:'—',hl:false},
+  {time:'12:15 AM',act:'Shift Ends → Home 1:30 AM',dur:'—',hl:false},
   {time:'2:00 AM',act:'SLEEP',dur:'—',hl:false},
 ];
 
-// ═══════════════════════ RENDER ═══════════════════════
-function getDateStr(day){
-  const d=new Date(START); d.setDate(d.getDate()+day-1);
-  return d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-}
-function getDayKey(day){ return 'd'+day; }
+// ══ RENDER ALL ══
+function getDateStr(day){const d=new Date(START);d.setDate(d.getDate()+day-1);return d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function getDayKey(d){return 'd'+d;}
 
 function renderAll(){
-  const day=S.day;
-  const dk=getDayKey(day);
-  const done=S.doneSessions[dk]||{};
-  const brief=BRIEFS[(day-1)%BRIEFS.length];
-  const lvd=getLvlData(S.totalXP);
-
+  const day=S.day,dk=getDayKey(day),done=S.doneSessions[dk]||{};
+  const brief=BRIEFS[(day-1)%BRIEFS.length],lvd=getLvlData(S.totalXP);
   document.getElementById('dayNum').textContent='DAY '+day;
   document.getElementById('dayDate').textContent=getDateStr(day);
   document.getElementById('lvlDisplay').textContent=lvd.l;
@@ -1381,446 +870,132 @@ function renderAll(){
   document.getElementById('xpFrac').textContent=S.totalXP+' / '+lvd.nxt;
   document.getElementById('briefTitle').textContent=brief.t;
   document.getElementById('briefSub').textContent=brief.s;
-
-  renderSessions(day, done); // async — runs in background
+  renderSessions(day,done);
   renderProgress(done);
   renderSchedule();
   renderBosses();
   renderStreaks();
   renderAchievements();
-
-  const isDone=S.doneDays[dk];
-  const cb=document.getElementById('completeBtn');
-  cb.disabled=isDone;
-  cb.textContent=isDone?'✅ DAY COMMITTED':'▶ COMMIT DAY';
+  renderChecklist();
+  renderReports();
+  const isDone=S.doneDays[dk],cb=document.getElementById('completeBtn');
+  cb.disabled=isDone;cb.textContent=isDone?'✅ DAY COMMITTED':'▶ COMMIT DAY';
 }
 
-async function renderSessions(day, done){
-  // Show loading skeletons immediately
-  const loadingHTML = `
-    <div class="session-card apt" style="opacity:0.6">
-      <div class="session-head">
-        <div class="session-icon">🧠</div>
-        <div class="session-info">
-          <div class="session-tag" style="color:var(--yellow)">SESSION 1 — 9:35 AM</div>
-          <div class="session-title">Aptitude Training</div>
-          <div class="session-meta">Fetching today's real-world questions...</div>
-        </div>
-        <div class="ai-loading-badge">⚡ AI</div>
-      </div>
-    </div>
-    <div class="session-card code" style="opacity:0.6">
-      <div class="session-head">
-        <div class="session-icon">💻</div>
-        <div class="session-info">
-          <div class="session-tag" style="color:var(--green)">SESSION 2 — 10:05 AM</div>
-          <div class="session-title">Coding Session</div>
-          <div class="session-meta">Generating fresh coding challenges...</div>
-        </div>
-        <div class="ai-loading-badge">⚡ AI</div>
-      </div>
-    </div>
-    <div class="session-card speak" style="opacity:0.6">
-      <div class="session-head">
-        <div class="session-icon">🗣️</div>
-        <div class="session-info">
-          <div class="session-tag" style="color:var(--cyan)">SESSION 3 — 11:15 AM</div>
-          <div class="session-title">Speak + Vocab + Interview</div>
-          <div class="session-meta">Loading today's interview drill...</div>
-        </div>
-        <div class="ai-loading-badge">⚡ AI</div>
-      </div>
-    </div>
-    <div class="session-card dsa" style="opacity:0.6">
-      <div class="session-head">
-        <div class="session-icon">⚡</div>
-        <div class="session-info">
-          <div class="session-tag" style="color:var(--purple)">SESSION 4 — 11:45 AM</div>
-          <div class="session-title">DSA + Deep Coding</div>
-          <div class="session-meta">Preparing algorithm challenge...</div>
-        </div>
-        <div class="ai-loading-badge">⚡ AI</div>
-      </div>
-    </div>
-    <div style="text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green)">
-      <span class="blink">▶</span> NEURAL INTERFACE ONLINE — PULLING REAL-WORLD QUESTIONS FROM AI ENGINE...
-    </div>`;
-  document.getElementById('sessionGrid').innerHTML = loadingHTML;
-
-  // Fetch AI questions
-  let aiData = null;
-  try {
-    aiData = await fetchDayQuestions(day);
-  } catch(e) {
-    console.error('Failed to fetch AI questions:', e);
-  }
-
-  if(!aiData) {
-    document.getElementById('sessionGrid').innerHTML = `
-      <div style="background:var(--panel);border:1px solid var(--red);padding:20px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--red)">
-        ⚠ AI ENGINE OFFLINE — Check your connection and reload the page.<br>
-        <span style="color:var(--text3);font-size:10px;margin-top:8px;display:block">Questions require Claude API access</span>
-      </div>`;
-    return;
-  }
-
+async function renderSessions(day,done){
+  document.getElementById('sessionGrid').innerHTML=`<div style="text-align:center;padding:20px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green)"><span class="blink">▶</span> LOADING SESSIONS...</div>`;
+  let aiData=null;try{aiData=await fetchDayQuestions(day);}catch(e){console.error(e);}
+  if(!aiData){document.getElementById('sessionGrid').innerHTML=`<div style="background:var(--panel);border:1px solid var(--red);padding:20px;text-align:center;color:var(--red);font-family:'Share Tech Mono',monospace;font-size:12px">⚠ LOAD ERROR — Reload page</div>`;return;}
   const sessions=[
-    {id:'apt',type:'apt',icon:'🧠',tag:'SESSION 1 — 9:35 AM',title:'Aptitude Training',meta:'20 MIN | MATH + LOGIC + VERBAL',xp:40,
-      content: renderAptContent(aiData.apt)+renderPunchContent(aiData.punch[0],'punch1')},
-    {id:'code',type:'code',icon:'💻',tag:'SESSION 2 — 10:05 AM',title:'Coding: '+aiData.coding.topic,meta:'20 MIN | '+aiData.coding.topic.toUpperCase(),xp:50,
-      content: '<div class="ai-badge">⚡ AI-GENERATED — Real interview question from 2024-2025</div>'+renderCodingContent(aiData.coding,'code_main')},
-    {id:'speak',type:'speak',icon:'🗣️',tag:'SESSION 3 — 11:15 AM',title:'Speak + Vocab + Interview',meta:'20 MIN | VOCAB + CONFIDENCE',xp:35,
-      content: '<div class="ai-badge">⚡ AI-GENERATED — Fresh content daily</div>'+renderVocabContent(aiData.vocab)+renderInterviewContent(aiData.interview)+renderPunchContent(aiData.punch[1]||aiData.punch[0],'punch2')},
-    {id:'dsa',type:'dsa',icon:'⚡',tag:'SESSION 4 — 11:45 AM',title:'DSA: '+aiData.dsa.topic,meta:'20 MIN | DSA + ALGORITHMS',xp:50,
-      content: '<div class="ai-badge">⚡ AI-GENERATED — LeetCode/HackerRank style</div>'+renderCodingContent(aiData.dsa,'code_dsa')},
+    {id:'apt',type:'apt',icon:'🧠',tag:'SESSION 1 — 9:35 AM',title:'Aptitude Training',meta:'20 MIN | MATH + LOGIC + VERBAL',xp:40,body:rApt(aiData.apt)+rPunch(aiData.punch[0],'punch1')},
+    {id:'code',type:'code',icon:'💻',tag:'SESSION 2 — 10:05 AM',title:'Coding: '+aiData.coding.topic,meta:'20 MIN',xp:50,body:'<div class="ai-badge">⚡ REAL INTERVIEW QUESTION</div>'+rCode(aiData.coding,'cm')},
+    {id:'speak',type:'speak',icon:'🗣️',tag:'SESSION 3 — 11:15 AM',title:'Speak + Vocab + Interview',meta:'20 MIN | VOCAB + CONFIDENCE',xp:35,body:'<div class="ai-badge">⚡ DAILY FRESH CONTENT</div>'+rVocab(aiData.vocab)+rInterview(aiData.interview)+rPunch(aiData.punch[1]||aiData.punch[0],'punch2')},
+    {id:'dsa',type:'dsa',icon:'⚡',tag:'SESSION 4 — 11:45 AM',title:'DSA: '+aiData.dsa.topic,meta:'20 MIN | DSA + ALGORITHMS',xp:50,body:'<div class="ai-badge">⚡ LEETCODE STYLE</div>'+rCode(aiData.dsa,'cd')},
   ];
-
   let html='';
   sessions.forEach(s=>{
-    const isDone=done[s.id];
-    html+=`
-    <div class="session-card ${s.type}">
+    const d=done[s.id];
+    html+=`<div class="session-card ${s.type}">
       <div class="session-head" onclick="toggleSession('${s.id}')">
         <div class="session-icon">${s.icon}</div>
-        <div class="session-info">
-          <div class="session-tag">${s.tag}</div>
-          <div class="session-title">${s.title}</div>
-          <div class="session-meta">${s.meta} | +${s.xp} XP</div>
-        </div>
-        <div class="session-status ${isDone?'done':'pending'}">${isDone?'DONE':'START'}</div>
+        <div class="session-info"><div class="session-tag">${s.tag}</div><div class="session-title">${s.title}</div><div class="session-meta">${s.meta} | +${s.xp} XP</div></div>
+        <div class="session-status ${d?'done':'pending'}">${d?'DONE':'START'}</div>
       </div>
-      <div class="session-body" id="sb_${s.id}">
-        ${s.content}
-        <button class="mark-btn ${isDone?'done-btn':''}" id="mb_${s.id}" onclick="markSession('${s.id}',${s.xp})">${isDone?'✅ COMPLETED':'✅ MARK SESSION DONE (+'+s.xp+' XP)'}</button>
+      <div class="session-body" id="sb_${s.id}">${s.body}
+        <button class="mark-btn ${d?'done-btn':''}" id="mb_${s.id}" onclick="markSession('${s.id}',${s.xp})">${d?'✅ COMPLETED':'✅ MARK DONE (+'+s.xp+' XP)'}</button>
       </div>
     </div>`;
   });
   document.getElementById('sessionGrid').innerHTML=html;
 }
 
-function renderAptContent(qs){
-  let h='<div class="sec-hdr" style="margin-top:12px">Aptitude Questions</div>';
-  qs.forEach((q,i)=>{
-    const diffClass=q.diff==='easy'?'diff-easy':q.diff==='med'?'diff-med':'diff-hard';
-    h+=`<div class="q-block">
-      <div class="q-num">Q${i+1} <span class="diff-badge ${diffClass}">${q.diff.toUpperCase()}</span></div>
-      <div class="q-text">${q.q}</div>
-      <div class="q-options" id="qopt_${i}">
-        ${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ(${i},${j},${q.ans},'apt_q${i}')" id="apt_q${i}_${j}"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}
-      </div>
-      <div class="q-explanation" id="apt_exp${i}">${q.exp}</div>
-    </div>`;
-  });
-  return h;
-}
-
-function renderPunchContent(p, pid){
-  return `<div class="sec-hdr" style="margin-top:12px">😂 Punch Buffer</div>
-  <div class="punch-card">
-    <div class="punch-lang">${p.lang}</div>
-    <div class="punch-q">${p.q}</div>
-    <div class="punch-tip">💡 ${p.tip}</div>
-    <button class="punch-btn" onclick="revealPunch('${pid}')">REVEAL SAMPLE ANSWER</button>
-    <div class="punch-reveal" id="${pid}">${p.reveal}</div>
-  </div>`;
-}
-
-function renderCodingContent(c, eid){
-  return `
-  <div class="info-box" style="margin-top:10px"><strong>📘 Theory:</strong> ${c.theory}</div>
-  <div class="sec-hdr" style="margin-top:12px">MCQ</div>
-  ${c.mcq.map((q,i)=>`
-    <div class="q-block">
-      <div class="q-num">Q${i+1}</div>
-      <div class="q-text">${q.q}</div>
-      <div class="q-options">
-        ${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ('c${i}${eid}',${j},${q.ans},'cq_${eid}_${i}')" id="cq_${eid}_${i}_${j}"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}
-      </div>
-      <div class="q-explanation" id="cexp_${eid}_${i}">${q.exp}</div>
-    </div>`).join('')}
-  <div class="sec-hdr" style="margin-top:12px">Code Challenge</div>
-  <div class="q-block"><div class="q-text">${c.code.task}</div></div>
-  <div class="code-editor-wrap">
-    <div class="editor-header">
-      <span class="editor-title">&gt; code_editor.js</span>
-      <div class="editor-btns">
-        <button class="hint-btn" onclick="showHint('hint_${eid}')">HINT</button>
-        <button class="reset-btn" onclick="resetCode('${eid}')">RESET</button>
-        <button class="run-btn" onclick="runCode('${eid}')">▶ RUN</button>
-      </div>
-    </div>
-    <textarea class="code-textarea" id="editor_${eid}" spellcheck="false">${c.code.starter}</textarea>
-    <div class="code-output" id="output_${eid}">// Output will appear here</div>
-  </div>
-  <div class="hint-box" id="hint_${eid}">💡 ${c.code.hint}</div>
-  <div style="display:none" id="sol_${eid}">${c.code.solution}</div>`;
-}
-
-function renderVocabContent(v){
-  return `<div class="sec-hdr" style="margin-top:12px">Word of the Day</div>
-  <div class="vocab-card">
-    <div class="vocab-word">${v.word}</div>
-    <div class="vocab-phonetic">${v.ph}</div>
-    <div class="vocab-pos">${v.pos}</div>
-    <div class="vocab-meaning">${v.meaning}</div>
-    <div class="vocab-example">"${v.example}"</div>
-    <div class="vocab-Telugu" style="margin-top:8px">🇮🇳 Telugu: ${v.tel}</div>
-    <div class="vocab-Hindi">🇮🇳 Hindi: ${v.hindi}</div>
-  </div>`;
-}
-
-function renderInterviewContent(t){
-  return `<div class="sec-hdr" style="margin-top:12px">Interview Drill</div>
-  <div class="q-block">
-    <div class="q-num">TOPIC</div>
-    <div class="q-text">${t.topic}</div>
-    <div class="info-box" style="margin-top:8px"><strong>Framework:</strong> ${t.framework}</div>
-    <div style="margin-top:8px;font-size:13px;color:var(--text2);line-height:1.5"><strong style="color:var(--cyan)">Sample:</strong> "${t.sample}"</div>
-    <div style="margin-top:8px;font-size:12px;color:var(--orange)">⚡ Practice: ${t.practice}</div>
-  </div>`;
-}
+function rApt(qs){let h='<div class="sec-hdr" style="margin-top:12px">Aptitude Questions</div>';qs.forEach((q,i)=>{const dc=q.diff==='easy'?'diff-easy':q.diff==='med'?'diff-med':'diff-hard';h+=`<div class="q-block"><div class="q-num">Q${i+1} <span class="diff-badge ${dc}">${q.diff.toUpperCase()}</span></div><div class="q-text">${q.q}</div><div class="q-options">${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ(${i},${j},${q.ans},'aq${i}')" id="aq${i}_${j}"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}</div><div class="q-explanation" id="ae${i}">${q.exp}</div></div>`;});return h;}
+function rPunch(p,pid){return`<div class="sec-hdr" style="margin-top:12px">😂 Punch Buffer</div><div class="punch-card"><div class="punch-lang">${p.lang}</div><div class="punch-q">${p.q}</div><div class="punch-tip">💡 ${p.tip}</div><button class="punch-btn" onclick="revealPunch('${pid}')">REVEAL SAMPLE ANSWER</button><div class="punch-reveal" id="${pid}">${p.reveal}</div></div>`;}
+function rCode(c,eid){return`<div class="info-box" style="margin-top:10px"><strong>📘 Theory:</strong> ${c.theory}</div><div class="sec-hdr" style="margin-top:12px">MCQ</div>${c.mcq.map((q,i)=>`<div class="q-block"><div class="q-num">Q${i+1}</div><div class="q-text">${q.q}</div><div class="q-options">${q.opts.map((o,j)=>`<div class="q-opt" onclick="answerQ('c${i}${eid}',${j},${q.ans},'cq${eid}${i}')" id="cq${eid}${i}_${j}"><span class="opt-letter">${String.fromCharCode(65+j)}.</span>${o.substring(3)}</div>`).join('')}</div><div class="q-explanation" id="ce${eid}${i}">${q.exp}</div></div>`).join('')}<div class="sec-hdr" style="margin-top:12px">Code Challenge</div><div class="q-block"><div class="q-text">${c.code.task}</div></div><div class="code-editor-wrap"><div class="editor-header"><span class="editor-title">&gt; editor.js</span><div class="editor-btns"><button class="hint-btn" onclick="showHint('h${eid}')">HINT</button><button class="reset-btn" onclick="resetCode('${eid}')">RESET</button><button class="run-btn" onclick="runCode('${eid}')">▶ RUN</button></div></div><textarea class="code-textarea" id="ed${eid}" spellcheck="false">${c.code.starter}</textarea><div class="code-output" id="op${eid}">// Output here</div></div><div class="hint-box" id="h${eid}">💡 ${c.code.hint}</div>`;}
+function rVocab(v){return`<div class="sec-hdr" style="margin-top:12px">Word of the Day</div><div class="vocab-card"><div class="vocab-word">${v.word}</div><div class="vocab-phonetic">${v.ph}</div><div class="vocab-pos">${v.pos}</div><div class="vocab-meaning">${v.meaning}</div><div class="vocab-example">"${v.example}"</div><div style="margin-top:8px;font-size:12px;color:var(--text3)">🇮🇳 Telugu: ${v.tel}</div><div style="font-size:12px;color:var(--text3)">🇮🇳 Hindi: ${v.hindi}</div></div>`;}
+function rInterview(t){return`<div class="sec-hdr" style="margin-top:12px">Interview Drill</div><div class="q-block"><div class="q-num">TOPIC</div><div class="q-text">${t.topic}</div><div class="info-box" style="margin-top:8px"><strong>Framework:</strong> ${t.framework}</div><div style="margin-top:8px;font-size:13px;color:var(--text2);line-height:1.5"><strong style="color:var(--cyan)">Sample:</strong> "${t.sample}"</div><div style="margin-top:8px;font-size:12px;color:var(--orange)">⚡ Practice: ${t.practice}</div></div>`;}
 
 function renderProgress(done){
-  const total=4, doneCount=Object.keys(done).length;
+  const total=4,dc=Object.keys(done).length;
   const todayXP=['apt','code','speak','dsa'].filter(k=>done[k]).reduce((s,k)=>s+({apt:40,code:50,speak:35,dsa:50}[k]),0);
-  const maxXP=175;
-  document.getElementById('sessProgress').textContent=doneCount+'/'+total;
-  document.getElementById('sessBar').style.width=(doneCount/total*100)+'%';
+  document.getElementById('sessProgress').textContent=dc+'/'+total;
+  document.getElementById('sessBar').style.width=(dc/total*100)+'%';
   document.getElementById('todayXPLabel').textContent=todayXP+' XP';
-  document.getElementById('todayXPBar').style.width=(todayXP/maxXP*100)+'%';
+  document.getElementById('todayXPBar').style.width=(todayXP/175*100)+'%';
 }
+function renderSchedule(){document.getElementById('schedWrap').innerHTML=SCHEDULE.map(r=>`<div class="sched-row ${r.hl?'highlight':''}"><div class="sched-time">${r.time}</div><div class="sched-act">${r.act}</div><div class="sched-dur">${r.dur}</div></div>`).join('');}
+function renderBosses(){document.getElementById('bossGrid').innerHTML=BOSSES.map(b=>`<div class="boss-card"><div class="boss-row"><div class="boss-emoji">${b.emoji}</div><div><div class="boss-name">${b.name}</div><div class="boss-lvl">LV ${b.lvl} | ${b.threat}</div></div></div><div class="boss-hp-row"><span>BOSS HP</span><span>${S.bossHP[b.id]}%</span></div><div class="boss-track"><div class="boss-fill" style="width:${S.bossHP[b.id]}%"></div></div><div class="boss-tip">⚡ ${b.weakness}</div><div class="boss-tip">🏆 Kill: ${b.kill}</div></div>`).join('');}
+function renderStreaks(){const data=[{icon:'📅',name:'Daily Study',key:'daily'},{icon:'🧠',name:'Aptitude',key:'apt'},{icon:'💻',name:'Coding',key:'code'},{icon:'📖',name:'Vocab',key:'vocab'},{icon:'😂',name:'Punch',key:'punch'}];document.getElementById('streaksGrid').innerHTML=data.map(d=>`<div class="streak-card"><div class="streak-icon">${d.icon}</div><div><div class="streak-name">${d.name}</div><div><span class="streak-count">${S.streaks[d.key]||0}</span> <span class="streak-label">days</span></div></div></div>`).join('');}
+function renderAchievements(){checkAchievements();document.getElementById('achGrid').innerHTML=ACHIEVEMENTS.map(a=>{const u=S.achievements.includes(a.id);return`<div class="ach-card ${u?'unlocked':''}"><span class="ach-icon">${a.icon}</span><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div>`;}).join('');}
+function checkAchievements(){ACHIEVEMENTS.forEach(a=>{if(!S.achievements.includes(a.id)&&a.cond(S)){S.achievements.push(a.id);showToast('🏆 UNLOCKED: '+a.name);}});}
 
-function renderSchedule(){
-  document.getElementById('schedWrap').innerHTML=SCHEDULE.map(r=>`
-    <div class="sched-row ${r.hl?'highlight':''}">
-      <div class="sched-time">${r.time}</div>
-      <div class="sched-act">${r.act}</div>
-      <div class="sched-dur">${r.dur}</div>
-    </div>`).join('');
+// ══ INTERACTIONS ══
+function toggleSession(id){document.getElementById('sb_'+id).classList.toggle('open');}
+function answerQ(qi,chosen,correct,pfx){
+  document.querySelectorAll(`[id^="${pfx}_"]`).forEach((el,j)=>{el.classList.add('disabled');if(j===correct)el.classList.add('correct');else if(j===chosen)el.classList.add('wrong');});
+  const em=pfx.match(/aq(\d+)/);if(em){const e=document.getElementById('ae'+em[1]);if(e)e.classList.add('show');}
+  const cm=pfx.match(/cq(.+?)(\d)$/);if(cm){const e=document.getElementById('ce'+cm[1]+cm[2]);if(e)e.classList.add('show');}
 }
-
-function renderBosses(){
-  document.getElementById('bossGrid').innerHTML=BOSSES.map(b=>`
-    <div class="boss-card">
-      <div class="boss-row">
-        <div class="boss-emoji">${b.emoji}</div>
-        <div>
-          <div class="boss-name">${b.name}</div>
-          <div class="boss-lvl">LEVEL ${b.lvl} | ${b.threat}</div>
-        </div>
-      </div>
-      <div class="boss-hp-row"><span>BOSS HP</span><span>${S.bossHP[b.id]}%</span></div>
-      <div class="boss-track"><div class="boss-fill" style="width:${S.bossHP[b.id]}%"></div></div>
-      <div class="boss-tip">⚡ ${b.weakness}</div>
-      <div class="boss-tip">🏆 Kill: ${b.kill}</div>
-    </div>`).join('');
-}
-
-function renderStreaks(){
-  const data=[
-    {icon:'📅',name:'Daily Study',key:'daily'},
-    {icon:'🧠',name:'Aptitude',key:'apt'},
-    {icon:'💻',name:'Coding',key:'code'},
-    {icon:'📖',name:'Vocab',key:'vocab'},
-    {icon:'😂',name:'Punch',key:'punch'},
-  ];
-  document.getElementById('streaksGrid').innerHTML=data.map(d=>`
-    <div class="streak-card">
-      <div class="streak-icon">${d.icon}</div>
-      <div>
-        <div class="streak-name">${d.name}</div>
-        <div><span class="streak-count">${S.streaks[d.key]||0}</span> <span class="streak-label">days</span></div>
-      </div>
-    </div>`).join('');
-}
-
-function renderAchievements(){
-  checkAchievements();
-  document.getElementById('achGrid').innerHTML=ACHIEVEMENTS.map(a=>{
-    const u=S.achievements.includes(a.id);
-    return `<div class="ach-card ${u?'unlocked':''}">
-      <span class="ach-icon">${a.icon}</span>
-      <div class="ach-name">${a.name}</div>
-      <div class="ach-desc">${a.desc}</div>
-    </div>`;
-  }).join('');
-}
-
-function checkAchievements(){
-  ACHIEVEMENTS.forEach(a=>{
-    if(!S.achievements.includes(a.id) && a.cond(S)){
-      S.achievements.push(a.id);
-      showToast('🏆 UNLOCKED: '+a.name);
-    }
-  });
-}
-
-// ═══════════════════════ INTERACTIONS ═══════════════════════
-function toggleSession(id){
-  const el=document.getElementById('sb_'+id);
-  el.classList.toggle('open');
-}
-
-function answerQ(qIdx, chosen, correct, prefix){
-  // Disable all options for this question
-  const opts=document.querySelectorAll(`[id^="${prefix}_"]`);
-  opts.forEach((el,j)=>{
-    el.classList.add('disabled');
-    if(j===correct) el.classList.add('correct');
-    else if(j===chosen) el.classList.add('wrong');
-  });
-  // Show explanation
-  const expId=prefix.replace('apt_q','apt_exp').replace(/^cq_/,'cexp_').replace(/_\d+$/,'');
-  // Try both naming conventions
-  const exp1=document.getElementById('apt_exp'+qIdx);
-  const exp2=document.getElementById('cexp_'+prefix.split('_').slice(1,-1).join('_'));
-  if(exp1) exp1.classList.add('show');
-  if(exp2) exp2.classList.add('show');
-  // Also try direct
-  document.querySelectorAll('[id^="apt_exp"]').forEach(e=>{});
-}
-
-function revealPunch(id){
-  document.getElementById(id).classList.toggle('show');
-}
-
-function showHint(id){
-  document.getElementById(id).classList.toggle('show');
-}
-
-function resetCode(eid){
-  const ta=document.getElementById('editor_'+eid);
-  const out=document.getElementById('output_'+eid);
-  if(ta) ta.value='// Write your code here\n\n';
-  if(out){ out.textContent='// Output will appear here'; out.className='code-output'; }
-}
-
+function revealPunch(id){document.getElementById(id).classList.toggle('show');}
+function showHint(id){document.getElementById(id).classList.toggle('show');}
+function resetCode(eid){const ta=document.getElementById('ed'+eid),op=document.getElementById('op'+eid);if(ta)ta.value='// Write your code here\n';if(op){op.textContent='// Output here';op.className='code-output';}}
 function runCode(eid){
-  const code=document.getElementById('editor_'+eid).value;
-  const out=document.getElementById('output_'+eid);
-  const logs=[];
-  const fakeConsole={ log:(...args)=>logs.push(args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ')) };
-  try{
-    const fn=new Function('console',code);
-    fn(fakeConsole);
-    out.textContent=logs.length?logs.join('\n'):'// Code ran successfully (no console.log output)';
-    out.className='code-output success';
-    spawnXP('+5 XP');
-    S.totalXP+=5; save();
-    updateXPDisplay();
-  }catch(e){
-    out.textContent='ERROR: '+e.message;
-    out.className='code-output error';
-  }
+  const code=document.getElementById('ed'+eid).value,op=document.getElementById('op'+eid);
+  const logs=[];const fc={log:(...a)=>logs.push(a.map(x=>typeof x==='object'?JSON.stringify(x):String(x)).join(' '))};
+  try{new Function('console',code)(fc);op.textContent=logs.length?logs.join('\n'):'// Ran OK (no console.log output)';op.className='code-output success';spawnXP('+5 XP');S.totalXP+=5;save();updateXPDisplay();}
+  catch(e){op.textContent='ERROR: '+e.message;op.className='code-output error';}
 }
 
-function markSession(id, xp){
+function markSession(id,xp){
   const dk=getDayKey(S.day);
-  if(!S.doneSessions[dk]) S.doneSessions[dk]={};
-  if(S.doneSessions[dk][id]) return;
-  S.doneSessions[dk][id]=true;
-  S.totalXP+=xp;
-
-  // Streak updates
-  if(id==='apt') updateStreak('apt');
-  if(id==='code'||id==='dsa') updateStreak('code');
-  if(id==='speak') { updateStreak('vocab'); updateStreak('punch'); }
-
-  // Boss damage
-  if(id==='apt') S.bossHP.weakMath=Math.max(0,S.bossHP.weakMath-2);
-  if(id==='code'||id==='dsa') S.bossHP.codeRust=Math.max(0,S.bossHP.codeRust-2);
-  if(id==='speak') { S.bossHP.stammering=Math.max(0,S.bossHP.stammering-2); S.bossHP.fog=Math.max(0,S.bossHP.fog-1); }
+  if(!S.doneSessions[dk])S.doneSessions[dk]={};
+  if(S.doneSessions[dk][id])return;
+  S.doneSessions[dk][id]=true;S.totalXP+=xp;
+  if(id==='apt')updateStreak('apt');
+  if(id==='code'||id==='dsa')updateStreak('code');
+  if(id==='speak'){updateStreak('vocab');updateStreak('punch');}
+  if(id==='apt')S.bossHP.weakMath=Math.max(0,S.bossHP.weakMath-2);
+  if(id==='code'||id==='dsa')S.bossHP.codeRust=Math.max(0,S.bossHP.codeRust-2);
+  if(id==='speak'){S.bossHP.stammering=Math.max(0,S.bossHP.stammering-2);S.bossHP.fog=Math.max(0,S.bossHP.fog-1);}
   S.bossHP.procrastination=Math.max(0,S.bossHP.procrastination-1);
-
-  save();
-  spawnXP('+'+xp+' XP');
-  showToast('⚡ SESSION DONE: +'+xp+' XP');
-
-  const mb=document.getElementById('mb_'+id);
-  if(mb){ mb.textContent='✅ COMPLETED'; mb.classList.add('done-btn'); }
-  document.querySelector(`#sb_${id}`).closest('.session-card').querySelector('.session-status').textContent='DONE';
-  document.querySelector(`#sb_${id}`).closest('.session-card').querySelector('.session-status').className='session-status done';
-
-  renderProgress(S.doneSessions[dk]||{});
-  updateXPDisplay();
-  checkAchievements();
+  // Auto-check corresponding checklist item
+  const ck=ckKey(S.day);
+  if(!S.checklistData[ck])S.checklistData[ck]={};
+  if(SESS_TO_CL[id]&&!S.checklistData[ck][SESS_TO_CL[id]])S.checklistData[ck][SESS_TO_CL[id]]=true;
+  save();spawnXP('+'+xp+' XP');showToast('⚡ SESSION DONE: +'+xp+' XP');
+  const mb=document.getElementById('mb_'+id);if(mb){mb.textContent='✅ COMPLETED';mb.classList.add('done-btn');}
+  const card=document.querySelector('#sb_'+id);
+  if(card){const st=card.closest('.session-card').querySelector('.session-status');if(st){st.textContent='DONE';st.className='session-status done';}}
+  renderProgress(S.doneSessions[dk]||{});updateXPDisplay();checkAchievements();
+  renderChecklist(); // sync checklist display
 }
 
-function updateStreak(key){
-  const today=S.day;
-  const last=S.lastDay[key]||0;
-  if(last===today-1){ S.streaks[key]=(S.streaks[key]||0)+1; }
-  else if(last!==today){ S.streaks[key]=1; }
-  S.lastDay[key]=today;
-}
+function updateStreak(key){const today=S.day,last=S.lastDay[key]||0;if(last===today-1)S.streaks[key]=(S.streaks[key]||0)+1;else if(last!==today)S.streaks[key]=1;S.lastDay[key]=today;}
 
 function completeDay(){
-  const dk=getDayKey(S.day);
-  if(S.doneDays[dk]) return;
-  S.doneDays[dk]=true;
-  S.totalXP+=25;
-  updateStreak('daily');
-  save();
+  const dk=getDayKey(S.day);if(S.doneDays[dk])return;
+  S.doneDays[dk]=true;S.totalXP+=25;updateStreak('daily');save();
   showToast('🚀 DAY '+S.day+' COMMITTED! +25 BONUS XP');
   document.getElementById('completeBtn').disabled=true;
   document.getElementById('completeBtn').textContent='✅ DAY COMMITTED';
-  updateXPDisplay();
-  renderStreaks();
-  checkAchievements();
+  updateXPDisplay();renderStreaks();checkAchievements();renderReports();
 }
-
-function changeDay(d){
-  S.day=Math.max(1,Math.min(180,S.day+d));
-  save();
-  renderAll();
-}
+function changeDay(d){S.day=Math.max(1,Math.min(180,S.day+d));save();renderAll();}
 
 function switchTab(name,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');
+  if(name==='reports')renderReports();
+  if(name==='dailies')renderChecklist();
 }
-
-function updateXPDisplay(){
-  const lvd=getLvlData(S.totalXP);
-  document.getElementById('lvlDisplay').textContent=lvd.l;
-  document.getElementById('xpDisplay').textContent=S.totalXP;
-  document.getElementById('xpFill').style.width=lvd.pct+'%';
-  document.getElementById('xpFrac').textContent=S.totalXP+' / '+lvd.nxt;
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-function spawnXP(txt){
-  const el=document.createElement('div');
-  el.className='xp-pop';
-  el.textContent=txt;
-  el.style.left=(20+Math.random()*60)+'%';
-  el.style.top='35%';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1500);
-}
-
-function refreshQuestions(){
-  // Clear cache for current day and re-fetch
-  const cacheKey = 'day_' + S.day;
-  delete aiCache[cacheKey];
-  saveAICache(aiCache);
-  showToast('⚡ REFRESHING AI QUESTIONS...');
-  const dk = getDayKey(S.day);
-  const done = S.doneSessions[dk]||{};
-  renderSessions(S.day, done);
-}
+function updateXPDisplay(){const lvd=getLvlData(S.totalXP);document.getElementById('lvlDisplay').textContent=lvd.l;document.getElementById('xpDisplay').textContent=S.totalXP;document.getElementById('xpFill').style.width=lvd.pct+'%';document.getElementById('xpFrac').textContent=S.totalXP+' / '+lvd.nxt;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function spawnXP(txt){const el=document.createElement('div');el.className='xp-pop';el.textContent=txt;el.style.left=(20+Math.random()*60)+'%';el.style.top='35%';document.body.appendChild(el);setTimeout(()=>el.remove(),1500);}
+function refreshQuestions(){const ck='day_'+S.day;delete aiCache[ck];saveAICache(aiCache);showToast('⚡ REFRESHING...');renderSessions(S.day,S.doneSessions[getDayKey(S.day)]||{});}
 
 // INIT
-loadState(); // loads from cloud, then calls renderAll()
+loadState();
 </script>
 </body>
 </html>
-
